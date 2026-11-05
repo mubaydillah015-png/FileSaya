@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><title>Render PAPIYYAR</title>
+<style>
+@font-face{font-family:SE;src:url(fonts/SpecialElite.woff2)}
+@font-face{font-family:PM;src:url(fonts/PermanentMarker.woff2)}
+@font-face{font-family:BN;src:url(fonts/BebasNeue.woff2)}
+html,body{margin:0;background:#000;overflow:hidden}
+#v{width:540px;height:960px;display:block}
+</style></head>
+<body><div id="stage"></div>
+<script src="helpers.js"></script>
+<script>
+// ---------- timing helpers ----------
+const cl=x=>x<0?0:x>1?1:x;
+const E=x=>1-Math.pow(1-cl(x),3);
+const P=(t,a,b)=>E((t-a)/(b-a));
+const B=x=>{x=cl(x);const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+const PB=(t,a,b)=>B((t-a)/(b-a));
+const sc=(cx,cy,s,inner,op=1)=>`<g opacity="${op}" transform="translate(${cx} ${cy}) scale(${s}) translate(${-cx} ${-cy})">${inner}</g>`;
+const popIn=(t,t0,cx,cy,inner,from=2.2,dur=.35)=>{if(t<t0)return '';const p=cl((t-t0)/dur);return sc(cx,cy,from+(1-from)*B(p),inner,cl(p*3))};
+const draw=(d,p,stroke,w,extra='')=>p<=0?'':`<path d="${d}" pathLength="1" stroke-dasharray="1" stroke-dashoffset="${(1-p).toFixed(4)}" stroke="${stroke}" stroke-width="${w}" fill="none" ${extra}/>`;
+const fadeIn=(t,t0,inner,dur=.3)=>t<t0?'':`<g opacity="${cl((t-t0)/dur)}">${inner}</g>`;
+const shake=(t,t0,dur,amp)=>{if(t<t0||t>t0+dur)return [0,0];const k=1-(t-t0)/dur;return [Math.sin(t*95)*amp*k,Math.cos(t*83)*amp*k]};
+
+function ransomA(txt,x,y,size,opt,t,t0,step){let s='',cx=x,i=0;const fonts=['BN','SE','PM','Georgia','Impact'];
+ for(const ch of txt){if(ch===' '){cx+=size*.45;continue}
+  const w=size*.78,h=size*1.08,rot=r(-9,9),isRed=opt.redChars&&opt.redChars.includes(ch);
+  const bgc=isRed?'#fff':['#fff','#F3EBD3','#1d1d1d','#E8D9B5','#fff'][Math.floor(r(0,5))];
+  const fg=isRed?C.red:(bgc==='#1d1d1d'?'#fff':C.ink);const f=fonts[Math.floor(r(0,5))];const pts=torn(-w/2,-h*.78,w,h,2,6);
+  const ta=t0+i*step;i++;
+  if(t>=ta){const p=cl((t-ta)/.25);const k=2.4+(1-2.4)*B(p);
+   s+=`<g transform="translate(${cx+w/2},${y}) rotate(${rot.toFixed(1)}) scale(${k})" opacity="${cl(p*3)}" filter="url(#sh)"><polygon points="${pts}" fill="${bgc}"/><text x="0" y="${(h*.12).toFixed(1)}" text-anchor="middle" font-family="${f}" font-size="${size}" font-weight="900" fill="${fg}">${ch}</text></g>`}
+  cx+=w+size*.06}return s}
+
+// ---------- VO & captions ----------
+const SC=[
+{n:1,D:6,vo:'Seorang pria duduk di ruang interogasi selama empat puluh menit... dan tatapannya tidak pernah lepas sedikit pun.'},
+{n:2,D:5,vo:'Semua orang yakin dia jujur. Masalahnya... justru itu yang membuat saya curiga.'},
+{n:3,D:6,vo:'Kasusnya begini. Sebuah kantor kehilangan uang kas tiga puluh juta rupiah dalam satu malam.'},
+{n:4,D:10,vo:'Ada dua tersangka. Tersangka pertama gelisah, pelipisnya berkeringat, tangannya terus memainkan ujung baju, dan matanya melirik ke kiri atas setiap kali ditanya. Kata internet, itu tanda klasik pembohong.'},
+{n:5,D:8,vo:'Tersangka kedua tenang. Duduk tegak, tangan di atas meja, menatap lurus, menjawab tanpa ragu. Rapi. Terlalu rapi.'},
+{n:6,D:8,vo:'Penyidik sudah hampir menutup berkas. Si gelisah, jelas pelakunya. Mudah sekali, ya... seperti sinetron yang endingnya ketahuan dari episode satu.'},
+{n:7,D:10,vo:'Tapi detektif tidak membaca gerakan. Detektif membaca perubahan. Pertama, ajak bicara soal hal remeh, cuaca, makan siang, jalan pulang. Catat cara dia bergerak saat santai. Itu garis dasarnya.'},
+{n:8,D:6,vo:'Kedua, masukkan pertanyaan inti, lalu perhatikan. Bukan apa yang muncul, tapi apa yang tiba-tiba hilang.'},
+{n:9,D:9,vo:'Dan di sinilah tamparannya. Si gelisah... memang gelisah sejak awal. Ngobrol soal cuaca pun tangannya tidak bisa diam. Dia bukan pembohong, dia cuma gampang panik.'},
+{n:10,D:13,vo:'Sementara si tenang? Saat bicara soal makan siang, dia bersandar, tangannya bergerak bebas. Tapi begitu ditanya soal malam kejadian... tubuhnya membeku. Tatapannya terkunci. Tangannya diam total. Dia tidak tenang. Dia sedang menahan.'},
+{n:11,D:4,vo:'Pembohong yang pintar tidak gugup, dia mengendalikan diri secara berlebihan.'},
+{n:12,D:7,vo:'Papiyyar! Selama ini kita nuduh yang keringetan, padahal yang paling kalem itu yang paling sibuk ngatur napas, Cong.'},
+{n:13,D:6,vo:'Penelitian bahkan menyebut, manusia menebak kebohongan dengan akurasi sekitar lima puluh empat persen. Hampir sama dengan lempar koin.'},
+{n:14,D:8,vo:'Tapi tunggu dulu. Saat rekaman kamera pengawas diputar ulang, ada satu detail kecil... sesuatu yang dilakukan si gelisah tepat satu menit sebelum lampu kantor padam.'},
+{n:15,D:7,vo:'Jadi menurutmu, siapa yang mengambil uang itu? Si tenang... atau justru mereka berdua? Tulis tebakanmu di kolom komentar.'},
+];
+let acc=0;for(const s of SC){s.T0=acc;acc+=s.D;
+ const words=s.vo.split(' ');const chunks=[];let cur=[];
+ for(const w of words){cur.push(w);const txt=cur.join(' ');if(txt.length>=22||/[.?!]$/.test(w)||(/,$/.test(w)&&txt.length>=12)){chunks.push(txt);cur=[]}}
+ if(cur.length)chunks.push(cur.join(' '));
+ const wt=chunks.map(c=>c.length+(/(\.\.\.|[.?!])$/.test(c)?8:/,$/.test(c)?3:0));const tot=wt.reduce((a,b)=>a+b,0);
+ const lead=.15,usable=s.D-.3;let a=lead;s.caps=chunks.map((c,i)=>{const d=usable*wt[i]/tot;const o={a,b:a+d,txt:c};a+=d;return o})}
+const TOTAL=acc;
+const capAt=(s,t)=>{const c=s.caps.find(c=>t>=c.a&&t<c.b)||(t<s.caps[0].a?null:null);return c?c.txt.toUpperCase():''};
+function captionA(txt,t,s){if(!txt)return '';const c=s.caps.find(c=>t>=c.a&&t<c.b);const p=cl((t-c.a)/.12);
+ return `<g transform="translate(270 900) scale(${.85+.15*E(p)})" opacity="${p}"><text x="0" y="0" text-anchor="middle" font-family="BN" font-size="40" fill="#fff" stroke="${C.ink}" stroke-width="8" paint-order="stroke" letter-spacing="1">${txt}</text></g>`}
+window.SRT=()=>{const f=x=>{const ms=Math.round(x*1000);const h=Math.floor(ms/3600000),m=Math.floor(ms/60000)%60,se=Math.floor(ms/1000)%60,mm=ms%1000;return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(se).padStart(2,'0')},${String(mm).padStart(3,'0')}`};
+ let i=1,o='';for(const s of SC)for(const c of s.caps){o+=`${i++}\n${f(s.T0+c.a)} --> ${f(s.T0+c.b)}\n${c.txt}\n\n`}return o};
+
+// ---------- scenes: return {body, cam:[s,cx,cy], sh:[dx,dy]} ----------
+const D={};
+D[1]=(t,d)=>{const op=P(t,.1,1.3);
+ return {cam:[1+.22*E(t/d),270,420],body:`<rect width="540" height="960" fill="#111"/>
+ <polygon points="${torn(60,150,420,620,14,22)}" fill="#7d7f84"/><rect x="60" y="150" width="420" height="620" fill="#6c6f75" opacity=".6"/>
+ <g transform="rotate(${(Math.sin(t*1.8)*5).toFixed(2)} 270 150)"><line x1="270" y1="150" x2="270" y2="230" stroke="#222" stroke-width="3"/><polygon points="240,230 300,230 320,265 220,265" fill="#2c2e33" stroke="#111" stroke-width="2"/><polygon points="220,265 320,265 440,640 100,640" fill="#fff3c4" opacity="${(.2+.04*Math.sin(t*23)).toFixed(3)}"/></g>
+ <g filter="url(#sh)"><circle cx="400" cy="230" r="34" fill="#F4EED7" stroke="${C.ink}" stroke-width="4"/><line x1="400" y1="230" x2="400" y2="205" stroke="${C.ink}" stroke-width="4" transform="rotate(${t*360/2} 400 230)"/><line x1="400" y1="230" x2="420" y2="240" stroke="${C.ink}" stroke-width="4" transform="rotate(${t*30} 400 230)"/></g>
+ ${tenang(170,330,1.25,{eyePhoto:true})}
+ <polygon points="90,640 450,640 470,700 70,700" fill="#4b3f36" stroke="${C.ink}" stroke-width="3" filter="url(#sh)"/>
+ <g transform="translate(${-230*op} 0)"><polygon points="${torn(-10,120,300,700,16,20)}" fill="#E7DFC9"/>${newsprint(10,150,250,640,3)}</g>
+ <g transform="translate(${230*op} 0)"><polygon points="${torn(250,120,310,700,16,20)}" fill="#E7DFC9"/>${newsprint(280,150,250,640,3)}</g>`}};
+D[2]=(t,d)=>{const y=960-350*PB(t,2.0,2.6);const crack=P(t,2.4,2.9);const sh=shake(t,.35,.35,7);
+ return {cam:[1+.04*t/d,270,480],sh,body:`${bg()}${newsprint(30,90,480,760,3)}
+ ${polaroid(110,150,320,380,-4,tenang(48,40,1.4))}
+ ${popIn(t,.3,265,420,stamp('JUJUR',265,420,-12,62))}
+ ${draw('M220 360 l30 40 l-14 20 l36 30 l-10 24',crack,C.paper,6)}
+ ${popIn(t,3.0,430,180,ransom('?',395,190,90))}
+ ${detective(170,y,1.2,{brow:t>3?'up':'',mouth:'smirk'})}`}};
+D[3]=(t,d)=>{const hy=-420*(1-PB(t,0,.6));
+ return {cam:[1+.05*t/d,270,400],body:`${bg('#2f3036')}
+ <g transform="translate(${140*(1-P(t,0,1.2))} 0)"><path d="M440 130 a50 50 0 1 0 30 80 a40 40 0 1 1 -30 -80z" fill="#F4EED7" filter="url(#sh)"/></g>
+ <g transform="translate(0 ${hy})"><g transform="rotate(-3 270 260)" filter="url(#sh)"><polygon points="${torn(40,150,460,240,5)}" fill="#EFE7CF"/>
+ <text x="60" y="185" font-family="SE" font-size="15" fill="${C.ink}">HARIAN KOTA · EDISI MALAM · 5 NOV</text><line x1="60" y1="195" x2="480" y2="195" stroke="${C.ink}" stroke-width="2"/>${newsprint(60,300,420,80,3)}</g>
+ ${ransom('KAS KANTOR',62,250,40)}${ransomA('RAIB!',140,300,46,{redChars:'RAIB!'},t,.9,.12)}</g>
+ <g filter="url(#sh)"><rect x="150" y="470" width="240" height="260" rx="10" fill="#5d6168" stroke="${C.ink}" stroke-width="4"/><rect x="172" y="492" width="196" height="216" fill="#1b1c20"/>
+ <g transform="rotate(${-25*P(t,1.5,2.3)} 150 600)"><polygon points="150,470 60,500 60,760 150,730" fill="#73777e" stroke="${C.ink}" stroke-width="4"/><circle cx="105" cy="615" r="22" fill="none" stroke="${C.ink}" stroke-width="5"/></g></g>
+ ${[...Array(12)].map((_,i)=>{const t0=2+i*.25;if(t<t0)return '';const k=t-t0;const x=270+r(-80,80)+k*r(-30,60);const y=560-k*r(70,130);const rt=r(-40,40)+k*r(-90,90);
+  return `<g transform="translate(${x.toFixed(1)},${y.toFixed(1)}) rotate(${rt.toFixed(1)})" opacity="${(1-cl((k-2.2)/1.2)).toFixed(2)}" filter="url(#sh)"><rect width="62" height="30" fill="#c9b6d6" stroke="${C.ink}" stroke-width="1.5"/><text x="31" y="20" text-anchor="middle" font-family="BN" font-size="15" fill="${C.ink}">100.000</text></g>`}).join('')}`}};
+D[4]=(t,d)=>{const j=(Math.floor(t*9)%2?2.5:-2.5);
+ return {cam:[1.08-.05*t/d,200,350],body:`${bg('#B98E5E')}<rect width="540" height="960" fill="#00000015"/>
+ ${[...Array(160)].map(()=>`<circle cx="${r(0,540)}" cy="${r(0,960)}" r="${r(1,3)}" fill="#7a5530" opacity=".5"/>`).join('')}
+ ${polaroid(40,120,320,400,-3,gelisah(48+j,30+Math.abs(j)/2,1.4,{look:t>5.8}))}
+ ${draw('M100 257 a48 26 -8 1 0 96 0 a48 26 -8 1 0 -96 0',P(t,6.0,6.6),C.red,5)}
+ ${fadeIn(t,6.6,`<path d="M190 240 q30 -40 70 -30" stroke="${C.red}" stroke-width="4" fill="none"/><text x="250" y="200" font-family="PM" font-size="22" fill="${C.red}">kiri atas!</text>`)}
+ <rect x="180" y="110" width="40" height="26" rx="4" fill="#9aa0a6" stroke="${C.ink}" stroke-width="2"/>
+ <g transform="translate(${400*(1-PB(t,7.3,7.8))} 0)"><g transform="rotate(4 380 680)" filter="url(#sh)"><rect x="230" y="560" width="280" height="250" fill="#F7F5EF" stroke="${C.ink}" stroke-width="3"/><rect x="230" y="560" width="280" height="34" fill="#C7CCD3" stroke="${C.ink}" stroke-width="3"/>
+ <circle cx="250" cy="577" r="6" fill="${C.red}"/><circle cx="268" cy="577" r="6" fill="#d8b23a"/><circle cx="286" cy="577" r="6" fill="#5b9a5b"/>
+ <text x="250" y="630" font-family="BN" font-size="30" fill="${C.ink}">CIRI PEMBOHONG</text>
+ ${['Berkeringat','Gelisah','Lirik kiri atas'].map((tx,i)=>`<text x="285" y="${675+i*40}" font-family="SE" font-size="19" fill="${C.ink}">${tx}</text>${draw(`M252 ${665+i*40} l8 9 l14 -18`,P(t,8.0+i*.45,8.3+i*.45),C.red,4)}`).join('')}</g></g>`}};
+D[5]=(t,d)=>{const z=P(t,6.3,6.6);
+ return {cam:[1+.04*t/d+.75*z,270+27*z,480-160*z],body:`${bg('#B98E5E')}<rect width="540" height="960" fill="#00000015"/>
+ ${polaroid(110,110,330,430,2,tenang(55,30,1.5))}
+ <g transform="translate(${-200*(1-PB(t,1.8,2.3))} 0)"><g transform="rotate(90 80 330)" filter="url(#sh)"><rect x="-80" y="300" width="330" height="40" fill="#EAD9A6" stroke="${C.ink}" stroke-width="2"/>${[...Array(33)].map((_,i)=>`<line x1="${-80+i*10}" y1="300" x2="${-80+i*10}" y2="${i%5?312:322}" stroke="${C.ink}" stroke-width="1.5"/>`).join('')}</g></g>
+ ${t>5.2?`<g transform="translate(400,170) rotate(${t*90}) scale(${Math.sin(cl((t-5.2)/.6)*Math.PI)*1.3})"><path d="M0 -26 L6 -6 L26 0 L6 6 L0 26 L-6 6 L-26 0 L-6 -6z" fill="#fff" filter="url(#sh)"/></g>`:''}
+ ${popIn(t,5.9,270,640,`<g transform="rotate(-6 270 640)" filter="url(#sh)"><polygon points="${torn(120,590,300,90,5)}" fill="#F4EED7"/><text x="270" y="650" text-anchor="middle" font-family="PM" font-size="40" fill="${C.red}">TERLALU RAPI.</text></g>`)}
+ ${t>6.3?`<rect x="0" y="0" width="540" height="960" fill="#fff" opacity="${(1-cl((t-6.3)/.25))*.6}"/>`:''}`}};
+D[6]=(t,d)=>{const sh=shake(t,4.3,.4,5);
+ return {cam:[1.02+.04*t/d,270,480],sh,body:`${bg()}${newsprint(30,80,480,780,3,'#00000018')}
+ <g filter="url(#sh)"><polygon points="40,520 500,520 500,860 40,860" fill="#B98A50" stroke="${C.ink}" stroke-width="3"/><polygon points="40,520 200,520 220,500 40,500" fill="#B98A50" stroke="${C.ink}" stroke-width="3"/></g>
+ <g filter="url(#sh)"><polygon points="50,${540+260*(1-P(t,0,1))} 490,${560+240*(1-P(t,0,1))} 480,850 60,850" fill="#C99A5E" stroke="${C.ink}" stroke-width="2"/></g>
+ ${detective(180,600-40*PB(t,.2,.8),.95,{eyes:t>5.6?'roll':'',mouth:t<3.5?'yawn':'smirk'})}
+ ${polaroid(60,120,220,270,-6,gelisah(20,10,1))}
+ ${draw('M170 260 C300 300 330 500 400 600',P(t,1.3,2.2),C.red,4)}<circle cx="170" cy="260" r="7" fill="${C.red}"/>
+ ${popIn(t,2.3,170,380,`<g transform="rotate(-10 170 380)" filter="url(#sh)"><rect x="95" y="355" width="150" height="50" fill="${C.red}"/><text x="170" y="393" text-anchor="middle" font-family="BN" font-size="40" fill="#fff">PELAKU</text></g>`)}
+ ${popIn(t,4.1,405,230,`<g filter="url(#sh)"><rect x="300" y="140" width="210" height="180" rx="22" fill="#6b5a48" stroke="${C.ink}" stroke-width="4"/><rect x="318" y="158" width="150" height="130" rx="18" fill="#9fb2b0"/><circle cx="487" cy="190" r="9" fill="#333"/><circle cx="487" cy="222" r="9" fill="#333"/><line x1="350" y1="140" x2="320" y2="100" stroke="${C.ink}" stroke-width="3"/><line x1="440" y1="140" x2="470" y2="100" stroke="${C.ink}" stroke-width="3"/>
+ <svg x="318" y="158" width="150" height="130" viewBox="${40+10*P(t,4.4,5)} ${40+12*P(t,4.4,5)} ${90-30*P(t,4.4,5)} ${80-27*P(t,4.4,5)}">${gelisah(0,0,1,{hands:false})}</svg></g>`)}
+ ${fadeIn(t,4.4,`<text x="393" y="345" text-anchor="middle" font-family="PM" font-size="18" fill="${C.ink}">*jreng jreng*</text>`)}`}};
+D[7]=(t,d)=>({cam:[1+.04*t/d,270,480],body:`<rect width="540" height="960" fill="#DCE5EA"/><rect width="540" height="960" fill="url(#grid)"/><rect width="540" height="960" filter="url(#grain)" opacity=".3"/>
+ ${[['awan',90],['piring',230],['jalan',370]].map(([k,x],i)=>popIn(t,3.3+i*.7,x+50,200,`<g filter="url(#sh)"><rect x="${x}" y="150" width="100" height="100" fill="#FBF8F0" stroke="${C.ink}" stroke-width="2" transform="rotate(${[-5,3,-2][i]} ${x+50} 200)"/>${tape(x+25,138,50,[-5,3,-2][i])}
+ ${k==='awan'?`<path d="M${x+20} ${215} a18 18 0 0 1 10 -32 a24 24 0 0 1 44 4 a16 16 0 0 1 8 28z" fill="#cfd8de" stroke="${C.ink}" stroke-width="2.5"/>`:k==='piring'?`<ellipse cx="${x+50}" cy="210" rx="36" ry="16" fill="#fff" stroke="${C.ink}" stroke-width="2.5"/><ellipse cx="${x+50}" cy="200" rx="18" ry="11" fill="#f6f1e2" stroke="${C.ink}" stroke-width="2"/>`:`<path d="M${x+30} 240 C${x+40} 210 ${x+70} 200 ${x+60} 165" stroke="#a07b4f" stroke-width="12" fill="none"/><path d="M${x+30} 240 C${x+40} 210 ${x+70} 200 ${x+60} 165" stroke="#fff" stroke-width="2" stroke-dasharray="6 6" fill="none"/>`}</g>`,1.8)).join('')}
+ ${draw('M40 430 Q90 410 140 432 T240 428 T340 434 T440 426 T510 430',P(t,5.8,8.2),C.ink,5)}
+ ${fadeIn(t,8.6,`<text x="300" y="400" font-family="PM" font-size="34" fill="${C.ink}" transform="rotate(-4 300 400)">GARIS DASAR</text><path d="M300 410 q-20 10 -30 18" stroke="${C.ink}" stroke-width="2.5" fill="none"/>`)}
+ ${fadeIn(t,5.8,`<text x="40" y="490" font-family="SE" font-size="16" fill="#3b4b55">1. obrolan santai → catat gerak normal</text>`)}
+ ${detective(60-320*(1-PB(t,.2,.9)),520,1.15,{arm:'glass',mouth:'smirk',brow:t>1.8?'up':''})}`});
+D[8]=(t,d)=>{const hole=t>3.9;const tw=P(t,3.9,4.8);
+ return {cam:[1+.05*t/d,270,420],body:`<rect width="540" height="960" fill="#DCE5EA"/><rect width="540" height="960" fill="url(#grid)"/><rect width="540" height="960" filter="url(#grain)" opacity=".3"/>
+ ${draw('M30 360 Q80 340 130 362 T220 356 L250 356 L275 560 L300 362 T400 356 T510 360',P(t,1.2,2.8),C.ink,5)}
+ ${hole?`<polygon points="${torn(230,420,90,120,10,10)}" fill="#272A2F" transform="translate(${275*(1-E((t-3.9)/.2))*0} 0)"/>`:''}
+ <g transform="translate(${500*(1-PB(t,0,.5))} 0)"><g transform="rotate(-6 270 220)" filter="url(#sh)"><rect x="120" y="170" width="300" height="110" fill="#FBF8F0" stroke="${C.ink}" stroke-width="3"/><text x="270" y="240" text-anchor="middle" font-family="BN" font-size="46" fill="${C.red}">MALAM KEJADIAN?</text></g></g>
+ ${t>3.3?`<g transform="translate(${-100*(1-P(t,3.3,3.9))+60*tw} ${-60*tw})"><g filter="url(#sh)" transform="rotate(30 400 520)"><path d="M380 420 L392 600 L398 600 L392 420z M408 420 L404 600 L410 600 L420 420z" fill="#b8bcc2" stroke="${C.ink}" stroke-width="2"/></g>
+ ${hole?`<g transform="rotate(25 420 480)"><polygon points="${torn(270,440,70,80,8,10)}" fill="#272A2F" filter="url(#sh)"/></g>`:''}</g>`:''}
+ ${fadeIn(t,4.2,`<text x="270" y="680" text-anchor="middle" font-family="PM" font-size="30" fill="${C.ink}">apa yang <tspan fill="${C.red}">HILANG?</tspan></text>`)}
+ ${fadeIn(t,1.2,`<text x="40" y="740" font-family="SE" font-size="16" fill="#3b4b55">2. pertanyaan inti → bandingkan</text>`)}`}};
+D[9]=(t,d)=>{const hp=P(t,0,.3);const sh=shake(t,.3,.6,12);const flip=t>6.4;const fl=.85+.15*Math.sin(t*37);
+ return {cam:[1.04-.04*t/d,270,480],sh,body:`${bg('#3a3a3a')}
+ <g filter="url(#sh)"><rect x="50" y="250" width="440" height="430" fill="#111"/>${[...Array(12)].map((_,i)=>`<rect x="${62+i*36}" y="262" width="18" height="14" fill="#ddd"/><rect x="${62+i*36}" y="654" width="18" height="14" fill="#ddd"/>`).join('')}
+ <rect x="70" y="290" width="400" height="350" fill="#a69d8c"/><svg x="70" y="290" width="400" height="350" viewBox="-60 0 280 260">${gelisah((Math.floor(t*9)%2?2:-2),0,1)}</svg>
+ <rect x="70" y="290" width="400" height="350" filter="url(#grain)" opacity=".7"/><rect x="70" y="290" width="400" height="350" fill="#000" opacity="${(1-fl).toFixed(3)}"/><line x1="${160+Math.sin(t*7)*40}" y1="290" x2="${150+Math.sin(t*7)*40}" y2="640" stroke="#fff" opacity=".35"/></g>
+ ${fadeIn(t,2.6,`<text x="100" y="330" font-family="SE" font-size="18" fill="#fff">☁ "cuacanya panas, ya..."</text>`)}
+ ${t<2.2?`<g opacity="${1-cl((t-1.6)/.6)}">${hand(330+300*(1-hp),40-200*(1-hp),1.6,-25)}${t>.3?[0,1,2,3].map(i=>`<path d="M${330-i*14} ${120+i*28} l-70 ${10+i*4}" stroke="#fff" stroke-width="5" stroke-linecap="round"/>`).join(''):''}</g>`:''}
+ ${!flip?`<g transform="rotate(8 270 760)" filter="url(#sh)"><polygon points="${torn(120,710,240,56,4)}" fill="${C.red}"/><text x="240" y="750" text-anchor="middle" font-family="BN" font-size="38" fill="#fff">PELAKU</text></g>`
+ :`<g transform="rotate(8 270 760)" filter="url(#sh)"><polygon points="${torn(120,710,140,56,4)}" fill="${C.red}"/><text x="190" y="750" text-anchor="middle" font-family="BN" font-size="36" fill="#fff">PELA</text>
+ <g transform="translate(${30*(1-P(t,6.4,6.8))} ${-30*(1-P(t,6.4,6.8))}) rotate(${-14*P(t,6.4,6.8)} 340 744)"><g transform="translate(340 744) scale(${Math.abs(Math.cos(Math.PI*cl((t-6.4)/.5)))},1) translate(-340 -744)"><polygon points="${torn(268,716,160,56,4)}" fill="${t<6.65?C.red:'#F4EED7'}"/><text x="350" y="760" text-anchor="middle" font-family="BN" font-size="38" fill="${t<6.65?'#fff':C.ink}">${t<6.65?'KU':'PANIKAN'}</text></g></g></g>`}`}};
+D[10]=(t,d)=>{const rp=P(t,4.3,5.0);const ice=t>5.6;
+ return {cam:[1+.04*t/d,270,480],body:`<rect x="0" y="0" width="540" height="960" fill="${C.paper}"/><rect width="540" height="960" filter="url(#grain)" opacity=".4"/>
+ <g transform="translate(${-135*(1-E(rp))} 0)">
+ <text x="${135+135*(1-E(rp))}" y="140" text-anchor="middle" font-family="BN" font-size="30" fill="${C.ink}">"MAKAN SIANG?"</text>
+ <g transform="translate(${135*(1-E(rp))} 0) rotate(${(Math.sin(t*2.2)*4).toFixed(2)} 135 600)">${tenang(55,300,1.0,{pose:'relax'})}</g></g>
+ ${rp>0?`<g transform="translate(${270*(1-E(rp))} 0)"><rect x="270" y="0" width="270" height="960" fill="#cfe0ea"/><rect x="270" y="0" width="270" height="960" filter="url(#grain)" opacity=".35"/><line x1="270" y1="0" x2="270" y2="960" stroke="${C.ink}" stroke-width="4" stroke-dasharray="14 8"/>
+ <text x="405" y="140" text-anchor="middle" font-family="BN" font-size="30" fill="${C.red}">"MALAM KEJADIAN?"</text>
+ ${tenang(325,300,1.0,{frozen:true})}
+ ${ice?`<rect x="270" y="0" width="270" height="960" fill="#e6f3fa" opacity="${.25*P(t,5.6,7)}"/>`:''}
+ ${[...Array(12)].map((_,i)=>{const x=r(280,530),y=r(180,820),s=r(8,20);const t0=5.6+i*.18;if(t<t0)return '';const k=E((t-t0)/.3);return `<g stroke="#fff" stroke-width="2.5" opacity=".9" transform="translate(${x} ${y}) scale(${k}) rotate(${t*20})"><line x1="${-s}" y1="0" x2="${s}" y2="0"/><line x1="0" y1="${-s}" x2="0" y2="${s}"/><line x1="${-s*.7}" y1="${-s*.7}" x2="${s*.7}" y2="${s*.7}"/><line x1="${-s*.7}" y1="${s*.7}" x2="${s*.7}" y2="${-s*.7}"/></g>`}).join('')}
+ ${draw('M330 470 Q405 450 480 470',P(t,11.3,11.8),'#9b7a4a',7)}${draw('M326 490 Q405 470 484 492',P(t,11.5,12),'#9b7a4a',7)}
+ ${[[405,385,7.2],[350,445,8.2],[405,540,9.1]].map(([x,y,t0])=>popIn(t,t0,x,y,`<g transform="translate(${x-12},${y-14})" filter="url(#sh)"><path d="M4 12 v-6 a8 8 0 0 1 16 0 v6" stroke="${C.ink}" stroke-width="3.5" fill="none"/><rect x="0" y="12" width="24" height="18" rx="3" fill="${C.brass}" stroke="${C.ink}" stroke-width="2"/></g>`,2.5,.25)).join('')}
+ ${fadeIn(t,11.8,`<text x="405" y="700" text-anchor="middle" font-family="PM" font-size="26" fill="${C.ink}">menahan.</text>`)}</g>`:''}`}};
+D[11]=(t,d)=>{const by=Math.sin(t*3)*10;const sw=Math.sin(t*2.4)*3;
+ const hands=[[170,170,10],[350,160,-6],[470,180,-14]];
+ return {cam:[1+.06*t/d,270,500],body:`${bg('#25272c')}${vig}
+ ${hands.map(([x,y,rt],i)=>hand(x,y+by*(i%2?-1:1),.9,180+rt,'#111')).join('')}
+ ${[[110,140,195,470,0],[175,140,200,590,0],[300,130,345,470,1],[300,130,330,590,1],[400,150,275,360,0]].map(([a,b,c,dd,k])=>`<line x1="${a}" y1="${b+by*(k?-1:1)}" x2="${c+sw*2}" y2="${dd}" stroke="#ddd" stroke-width="1.5"/>`).join('')}
+ <g transform="rotate(${sw-3} 270 600) translate(0 ${by*.4})">${tenang(150,300,1.5,{frozen:true})}</g>
+ ${fadeIn(t,1.2,`<text x="270" y="820" text-anchor="middle" font-family="SE" font-size="18" fill="#cfc6b0">mengendalikan diri secara berlebihan</text>`)}`}};
+D[12]=(t,d)=>{const z=t<.35?1+.18*E(t/.35):1.18-.13*P(t,.35,d);const sh=shake(t,0,1.4,14);const sh2=shake(t,5.6,.4,6);
+ return {cam:[z,270,470],sh:[sh[0]+sh2[0],sh[1]+sh2[1]],body:`<rect width="540" height="960" fill="${C.red}"/><rect width="540" height="960" filter="url(#grain)" opacity=".35"/>
+ <g transform="rotate(${t*25} 270 420)">${[...Array(18)].map((_,i)=>`<line x1="270" y1="420" x2="${270+Math.cos(i/18*6.283)*800}" y2="${420+Math.sin(i/18*6.283)*800}" stroke="#ffffff22" stroke-width="${i%2?18:6}"/>`).join('')}</g>
+ ${detective(150,170,1.55,{arm:'cup',mouth:'smirk',brow:'up'})}
+ ${draw('M0 625 L540 532',P(t,.9,1.15),'#fff',28,'filter="url(#sh)"')}
+ ${ransomA('PAPIYYAR!',44,600,54,{redChars:'YY'},t,.1,.07)}
+ ${[...Array(26)].map(()=>{const x=r(0,520),y0=r(-200,880),w=r(10,26),h=r(8,20);const yy=((y0+t*140)%1100)-100;return `<g transform="translate(${x} ${yy}) rotate(${r(0,90)+t*r(-120,120)})"><polygon points="${torn(-w/2,-h/2,w,h,3,6)}" fill="${['#F4EED7','#fff','#272A2F','#E8D9B5'][Math.floor(r(0,4))]}" opacity=".9"/></g>`}).join('')}
+ ${t<.15?`<rect width="540" height="960" fill="#fff" opacity="${1-t/.15}"/>`:''}`}};
+D[13]=(t,d)=>{const cp=cl((t-3.2)/2.2);const cy=690-170*Math.sin(Math.PI*cp);const fx=Math.cos(t*14);
+ return {cam:[1+.04*t/d,270,480],body:`${bg()}
+ <g transform="translate(0 ${-500*(1-PB(t,0,.55))})"><g transform="rotate(-3 270 330)" filter="url(#sh)"><polygon points="${torn(50,120,440,420,6)}" fill="#F3ECD8"/>
+ <text x="80" y="170" font-family="SE" font-size="15" fill="${C.ink}">JURNAL PSIKOLOGI · META-ANALISIS</text><line x1="80" y1="180" x2="460" y2="180" stroke="${C.ink}"/>
+ ${newsprint(80,200,380,120,2)}
+ <text x="270" y="430" text-anchor="middle" font-family="BN" font-size="130" fill="${C.ink}">${Math.round(54*P(t,.8,2.4))}%</text>
+ ${draw('M135 390 a135 70 -6 1 0 270 0 a135 70 -6 1 0 -270 0',P(t,2.4,3),C.red,6)}
+ ${newsprint(80,470,380,50,2)}</g></g>
+ ${t>3?`<g transform="translate(270,${cy.toFixed(1)}) scale(${fx.toFixed(3)},1)"><ellipse cx="0" cy="0" rx="78" ry="78" fill="#d7b44a" stroke="${C.ink}" stroke-width="4" filter="url(#sh)"/><ellipse cx="0" cy="0" rx="62" ry="62" fill="none" stroke="#8a6a1a" stroke-width="3"/><text y="12" text-anchor="middle" font-family="BN" font-size="38" fill="${C.ink}" transform="scale(${fx<0?-1:1},1)">${fx>=0?'BOHONG':'JUJUR'}</text></g>`:''}
+ ${fadeIn(t,4.2,`<text x="270" y="830" text-anchor="middle" font-family="PM" font-size="24" fill="${C.ink}">≈ lempar koin</text>`)}`}};
+D[14]=(t,d,fi)=>{const z=1+.3*P(t,2.9,3.05)+.4*P(t,4.1,4.25)+.5*P(t,5.3,5.45);const sh=[shake(t,2.9,.25,6),shake(t,4.1,.25,6),shake(t,5.3,.25,6)].reduce((a,b)=>[a[0]+b[0],a[1]+b[1]]);
+ const sec=String(Math.floor(t)%60).padStart(2,'0');
+ return {cam:[z,230,470],sh,body:`<rect width="540" height="960" fill="#0d0e10"/>
+ <filter id="nz${fi%7}"><feTurbulence type="fractalNoise" baseFrequency="1.8" numOctaves="2" seed="${fi%97}"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0"/></filter>
+ <g filter="url(#sh)"><rect x="30" y="170" width="480" height="560" rx="18" fill="#2b2d31" stroke="#111" stroke-width="4"/>
+ <rect x="54" y="194" width="432" height="470" fill="${C.cctv}"/>
+ <polygon points="54,560 486,560 486,664 54,664" fill="#6e756e"/><rect x="300" y="300" width="120" height="180" fill="#5f665f"/><rect x="100" y="250" width="60" height="40" fill="#a9b0a9"/>
+ <g filter="url(#blur)" opacity=".85" transform="translate(${Math.sin(t*1.3)*12} 0)"><circle cx="210" cy="400" r="30" fill="#2a2d2a"/><path d="M170 440 L250 440 L270 600 L150 600z" fill="#2a2d2a"/></g>
+ ${popIn(t,1.6,235,497,`<g transform="rotate(-8 230 500)"><rect x="150" y="475" width="170" height="44" fill="#111"/><text x="235" y="507" text-anchor="middle" font-family="BN" font-size="32" fill="#fff" letter-spacing="3">DISENSOR</text></g>`)}
+ <rect x="54" y="194" width="432" height="470" filter="url(#nz${fi%7})" opacity=".22"/><rect x="54" y="${194+(t*60)%4}" width="432" height="470" fill="url(#scan)"/>
+ ${t<1.5?`<rect x="54" y="${194+((t*900)%470)}" width="432" height="18" fill="#fff" opacity=".25"/><text x="270" y="440" text-anchor="middle" font-family="SE" font-size="40" fill="#fff">◀◀ REWIND</text>`:''}
+ ${Math.floor(t*2)%2?'':`<circle cx="80" cy="222" r="8" fill="${C.red}"/>`}<text x="96" y="230" font-family="SE" font-size="20" fill="#fff">REC</text>
+ <text x="470" y="230" text-anchor="end" font-family="SE" font-size="22" fill="#fff">23:59:${sec}</text>
+ <text x="70" y="650" font-family="SE" font-size="15" fill="#fff">CAM 02 · KANTOR LT.1</text></g>
+ <rect x="54" y="194" width="432" height="470" fill="none" stroke="${C.red}" stroke-width="3" stroke-dasharray="16 10"/>
+ ${t>6.9?`<rect x="-500" y="-500" width="1540" height="1960" fill="#000"/>`:''}`}};
+D[15]=(t,d)=>{const sw=Math.sin(t*1.6)*3;const sl=shake(t,5.7,.35,7);const fl=t>2.6&&t<3.0?.35*Math.sin(Math.PI*(t-2.6)/.4):0;
+ return {cam:[1.03-.03*t/d,270,480],sh:sl,body:`<rect width="540" height="960" fill="#121316"/>
+ <polygon points="230,0 310,0 520,760 20,760" fill="url(#spot)" opacity="${P(t,0,.6)}"/>
+ <g opacity="${P(t,.2,.8)}">
+ <path d="M60 130 Q270 220 480 130" stroke="${C.red}" stroke-width="4" fill="none"/>
+ <g transform="rotate(${sw} 135 130)">${polaroid(40,150,190,240,-7,tenang(10,0,.85))}</g><g transform="rotate(${-sw} 405 130)">${polaroid(310,150,190,240,6,gelisah(10,0,.85))}</g>
+ ${draw('M200 300 Q270 360 340 300',P(t,2.4,2.8),C.red,5)}
+ ${popIn(t,1.0,265,320,ransom('?',245,330,60))}
+ ${fadeIn(t,.8,`<text x="135" y="420" text-anchor="middle" font-family="BN" font-size="24" fill="#fff">SI TENANG?</text>`)}${fadeIn(t,2.4,`<text x="405" y="420" text-anchor="middle" font-family="BN" font-size="24" fill="#fff">BERDUA?</text>`)}
+ ${detective(40,440,.95,{arm:'point',mouth:'smirk'})}</g>
+ ${popIn(t,3.8,390,555,`<g transform="rotate(-6 380 560)" filter="url(#sh)"><circle cx="390" cy="555" r="88" fill="#fff"/><clipPath id="bigl"><circle cx="390" cy="555" r="80"/></clipPath><image href="logo.jpg" x="310" y="475" width="160" height="160" clip-path="url(#bigl)"/></g>`)}
+ ${fadeIn(t,4.2,`<text x="390" y="680" text-anchor="middle" font-family="BN" font-size="34" fill="#fff">@PAPIYYAR</text>`)}
+ ${t>4.6&&Math.floor(t*3)%2?`<path d="M270 812 l0 50 l-18 -18 M270 862 l18 -18" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round"/>`:''}
+ ${popIn(t,5.6,270,770,stamp('KASUS BELUM DITUTUP',270,785,-4,34),2.6,.25)}
+ ${fl>0?`<rect width="540" height="960" fill="${C.red}" opacity="${fl}"/>`:''}`}};
+
+// transition: torn paper sheet sliding away at scene start
+function trans(n,t){if(n===1||t>.4)return '';const p=E(t/.4);seed=999;return `<g transform="translate(0 ${-1000*p})"><polygon points="${torn(-20,-20,580,1000,18,20)}" fill="#E7DFC9"/>${newsprint(20,20,500,900,3,'#00000020')}</g>`}
+
+function frameSVG(T,fi){let s=SC.find(s=>T>=s.T0&&T<s.T0+s.D)||SC[SC.length-1];const t=T-s.T0;
+ seed=s.n*97+3;const f=D[s.n](t,s.D,fi);let [z,cx,cy]=f.cam;z=Math.max(z,1);const hw=270/z,hh=480/z;cx=Math.min(Math.max(cx,hw),540-hw);cy=Math.min(Math.max(cy,hh),960-hh);const [dx,dy]=f.sh||[0,0];
+ return `<svg id="v" viewBox="0 0 540 960" xmlns="http://www.w3.org/2000/svg">${defs}
+ <g transform="translate(${270+dx} ${480+dy}) scale(${z}) translate(${-cx} ${-cy})">${f.body}</g>
+ ${trans(s.n,t)}${s.n!==15?watermark:''}${captionA(capAt(s,t),t,s)}</svg>`}
+window.renderAt=(T,fi)=>{document.getElementById('stage').innerHTML=frameSVG(T,fi||0)};
+window.TOTAL=TOTAL;window.SCENES=SC.map(s=>({n:s.n,T0:s.T0,D:s.D}));
+renderAt(+(new URLSearchParams(location.search).get('t')||0));
+</script></body></html>
