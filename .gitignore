@@ -1,2 +1,3 @@
 output/*.mp4
 preview/render/vo_track.wav
+preview/render/*.wav
