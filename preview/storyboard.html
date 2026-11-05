@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Preview Storyboard PAPIYYAR</title>
+<style>
+@font-face{font-family:SE;src:url(fonts/SpecialElite.woff2)}
+@font-face{font-family:PM;src:url(fonts/PermanentMarker.woff2)}
+@font-face{font-family:BN;src:url(fonts/BebasNeue.woff2)}
+:root{--ink:#272A2F;--red:#B4213D;--paper:#E8D9B5}
+body{margin:0;background:#1a1b1e;font-family:SE,monospace;color:#eee}
+#sheet{display:grid;grid-template-columns:repeat(5,300px);gap:22px;padding:28px;width:max-content}
+#sheet h1{grid-column:1/-1;margin:0 0 4px;font-family:BN;font-size:44px;letter-spacing:2px;color:#fff}
+#sheet h1 span{color:var(--red)}
+.cell{display:flex;flex-direction:column;gap:6px}
+.cell svg{width:300px;height:533px;display:block;border-radius:6px;box-shadow:0 6px 18px #0008}
+.meta{font-size:13px;color:#cfc6b0}
+.meta b{color:#fff;font-family:BN;font-size:18px;letter-spacing:1px;margin-right:6px}
+body.single #sheet{display:block;padding:0}
+body.single #sheet h1,body.single .meta{display:none}
+body.single .cell svg{width:540px;height:960px;border-radius:0;box-shadow:none}
+</style>
+</head>
+<body>
+<div id="sheet"><h1>PREVIEW STORYBOARD · <span>PAPIYYAR</span> · KEBOHONGAN BAHASA TUBUH</h1></div>
+<script>
+const C={paper:'#E8D9B5',paper2:'#DCCB9F',ink:'#272A2F',red:'#B4213D',blue:'#7A9BB0',cctv:'#8E968E',skin:'#E6C29C',brass:'#C9A227'};
+let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+const r=(a,b)=>a+rnd()*(b-a);
+
+// ---------- helpers ----------
+function torn(x,y,w,h,a=6,st=14){let p=[];
+ for(let i=0;i<=w;i+=st)p.push([x+i,y+r(-a,a)]);
+ for(let i=0;i<=h;i+=st)p.push([x+w+r(-a,a),y+i]);
+ for(let i=w;i>=0;i-=st)p.push([x+i,y+h+r(-a,a)]);
+ for(let i=h;i>=0;i-=st)p.push([x+r(-a,a),y+i]);
+ return p.map(q=>q.map(v=>v.toFixed(1)).join(',')).join(' ')}
+const tornP=(x,y,w,h,fill,extra='',a=6)=>`<polygon points="${torn(x,y,w,h,a)}" fill="${fill}" ${extra}/>`;
+function newsprint(x,y,w,h,cols=3,col='#0000002a'){let s='',cw=(w-(cols-1)*10)/cols;
+ for(let c=0;c<cols;c++)for(let yy=y;yy<y+h;yy+=9){const ww=cw*r(.55,1);s+=`<rect x="${x+c*(cw+10)}" y="${yy}" width="${ww.toFixed(1)}" height="3.2" fill="${col}"/>`}return s}
+function ransom(txt,x,y,size,opt={}){let s='',cx=x;const fonts=['BN','SE','PM','Georgia','Impact'];
+ for(const ch of txt){if(ch===' '){cx+=size*.45;continue}
+  const red=opt.red&&opt.red.includes(cx===x?0:-1);const w=size*.78,h=size*1.08,rot=r(-9,9);
+  const isRed=opt.redChars&&opt.redChars.includes(ch);
+  const bg=isRed?(opt.redBg||'#fff'):[ '#fff','#F3EBD3','#1d1d1d','#E8D9B5','#fff'][Math.floor(r(0,5))];
+  const fg=isRed?C.red:(bg==='#1d1d1d'?'#fff':C.ink);
+  s+=`<g transform="translate(${cx+w/2},${y}) rotate(${rot.toFixed(1)})" filter="url(#sh)"><polygon points="${torn(-w/2,-h*.78,w,h,2,6)}" fill="${bg}"/><text x="0" y="${(h*.12).toFixed(1)}" text-anchor="middle" font-family="${fonts[Math.floor(r(0,5))]}" font-size="${size}" font-weight="900" fill="${fg}">${ch}</text></g>`;
+  cx+=w+size*.06}return s}
+const tape=(x,y,w,rot,col='#f4eecfcc')=>`<rect x="${x}" y="${y}" width="${w}" height="22" fill="${col}" transform="rotate(${rot} ${x+w/2} ${y+11})"/>`;
+const stamp=(txt,x,y,rot,size=40,col=C.red)=>`<g transform="translate(${x},${y}) rotate(${rot})" opacity=".9"><rect x="${-txt.length*size*.3-14}" y="${-size*.85}" width="${txt.length*size*.6+28}" height="${size*1.25}" rx="6" fill="none" stroke="${col}" stroke-width="5"/><text text-anchor="middle" font-family="BN" font-size="${size}" fill="${col}" letter-spacing="2">${txt}</text></g>`;
+const polaroid=(x,y,w,h,rot,inner)=>`<g transform="translate(${x},${y}) rotate(${rot})" filter="url(#sh)"><rect x="0" y="0" width="${w}" height="${h}" fill="#FBF8F0"/><svg x="12" y="12" width="${w-24}" height="${h-60}" viewBox="0 0 ${w-24} ${h-60}" preserveAspectRatio="xMidYMid slice"><rect width="100%" height="100%" fill="#C8BFAA"/>${inner}</svg></g>`;
+const caption=(t)=>`<g><text x="270" y="905" text-anchor="middle" font-family="BN" font-size="34" fill="#fff" stroke="${C.ink}" stroke-width="7" paint-order="stroke" letter-spacing="1">${t}</text></g>`;
+const badge=(n,dur)=>`<g filter="url(#sh)"><polygon points="${torn(18,22,236,44,3,10)}" fill="#F4EED7"/><text x="30" y="54" font-family="BN" font-size="30" fill="${C.ink}">SCENE ${String(n).padStart(2,'0')}</text><text x="140" y="52" font-family="SE" font-size="17" fill="${C.red}">${dur}</text></g>`;
+const watermark=`<g opacity=".75"><clipPath id="wmc"><circle cx="490" cy="50" r="30"/></clipPath><image href="logo.jpg" x="460" y="20" width="60" height="60" clip-path="url(#wmc)"/></g>`;
+const bg=(fill=C.paper)=>`<rect width="540" height="960" fill="${fill}"/><rect width="540" height="960" filter="url(#grain)" opacity=".55"/>`;
+const sweat=(x,y,s=1)=>`<path d="M${x} ${y} q${-6*s} ${10*s} 0 ${14*s} q${6*s} -4 0 -14z" fill="#BFD6E6" stroke="${C.blue}" stroke-width="1.5" opacity=".9"/>`;
+
+// ---------- characters (local box ~160x300) ----------
+function detective(x,y,s,o={}){const brow=o.brow==='up'?'M60 80 L76 72':'M60 80 L76 79';
+ const mouth=o.mouth==='yawn'?`<ellipse cx="80" cy="112" rx="8" ry="11" fill="#5a2a2a"/>`:o.mouth==='smirk'?`<path d="M70 113 q12 4 20 -4" stroke="${C.ink}" stroke-width="2.5" fill="none"/>`:`<path d="M71 113 h16" stroke="${C.ink}" stroke-width="2.5"/>`;
+ const eyes=o.eyes==='roll'?`<circle cx="68" cy="93" r="3.5" fill="${C.ink}"/><circle cx="92" cy="93" r="3.5" fill="${C.ink}"/>`:`<circle cx="68" cy="96" r="3.5" fill="${C.ink}"/><circle cx="92" cy="96" r="3.5" fill="${C.ink}"/>`;
+ let arm='';
+ if(o.arm==='point')arm=`<path d="M130 160 L170 230 L160 236 L122 175z" fill="#9C7547" stroke="${C.ink}" stroke-width="2"/><circle cx="168" cy="238" r="9" fill="${C.skin}" stroke="${C.ink}" stroke-width="2"/><path d="M170 244 l4 22" stroke="${C.ink}" stroke-width="6" stroke-linecap="round"/>`;
+ if(o.arm==='glass')arm=`<path d="M130 160 L175 150 L176 162 L128 178z" fill="#9C7547" stroke="${C.ink}" stroke-width="2"/><circle cx="182" cy="156" r="9" fill="${C.skin}"/><line x1="188" y1="150" x2="205" y2="128" stroke="#5b3b22" stroke-width="7"/><circle cx="222" cy="106" r="26" fill="#cfe3ee88" stroke="${C.brass}" stroke-width="6"/>`;
+ if(o.arm==='cup')arm=`<path d="M128 165 L120 125 L132 122 L142 162z" fill="#9C7547" stroke="${C.ink}" stroke-width="2"/><rect x="104" y="100" width="28" height="26" rx="3" fill="#F4EED7" stroke="${C.ink}" stroke-width="2"/><path d="M104 104 q-10 6 0 14" stroke="${C.ink}" stroke-width="2" fill="none"/><path d="M112 96 q4 -8 0 -14 M122 96 q4 -8 0 -14" stroke="#fff" stroke-width="2" fill="none" opacity=".8"/>`;
+ return `<g transform="translate(${x},${y}) scale(${s})" filter="url(#sh)">
+ <polygon points="34,140 126,140 150,300 10,300" fill="#A98153" stroke="${C.ink}" stroke-width="2.5"/>
+ <polygon points="58,140 80,200 102,140 92,140 80,172 68,140" fill="#8A6438" stroke="${C.ink}" stroke-width="2"/>
+ <line x1="80" y1="200" x2="80" y2="300" stroke="${C.ink}" stroke-width="2"/>
+ <circle cx="80" cy="230" r="3" fill="${C.ink}"/><circle cx="80" cy="260" r="3" fill="${C.ink}"/>
+ <circle cx="40" cy="152" r="4" fill="${C.brass}" stroke="${C.ink}"/><circle cx="120" cy="152" r="4" fill="${C.brass}" stroke="${C.ink}"/>
+ <rect x="70" y="122" width="20" height="22" fill="${C.skin}"/>
+ <ellipse cx="80" cy="96" rx="33" ry="36" fill="${C.skin}" stroke="${C.ink}" stroke-width="2.5"/>
+ ${eyes}<path d="${brow}" stroke="${C.ink}" stroke-width="3.5"/><path d="M84 79 L100 79" stroke="${C.ink}" stroke-width="3.5"/>${mouth}
+ <ellipse cx="80" cy="64" rx="64" ry="12" fill="#3B2F2A" stroke="${C.ink}" stroke-width="2"/>
+ <path d="M48 64 L52 24 Q80 10 108 24 L112 64z" fill="#4A3B34" stroke="${C.ink}" stroke-width="2"/>
+ <rect x="49" y="48" width="62" height="10" fill="${C.red}"/>${arm}</g>`}
+function gelisah(x,y,s,o={}){const look=o.look==='upleft';
+ return `<g transform="translate(${x},${y}) scale(${s})" filter="url(#sh)">
+ <polygon points="30,140 130,140 145,300 15,300" fill="#E4DCCB" stroke="${C.ink}" stroke-width="2.5"/>
+ <polyline points="40,170 60,180 45,195 70,205 50,225" stroke="#00000030" stroke-width="2" fill="none"/><polyline points="110,175 95,190 115,205 98,222" stroke="#00000030" stroke-width="2" fill="none"/>
+ <rect x="68" y="122" width="24" height="22" fill="#EAD3B8"/>
+ <ellipse cx="80" cy="95" rx="34" ry="38" fill="#EED8BE" stroke="${C.ink}" stroke-width="2.5"/>
+ <path d="M46 80 q4 -40 34 -38 q30 -2 34 38 l-6 -12 l-6 10 l-6 -14 l-6 10 l-8 -12 l-6 12 l-8 -10 l-6 12z" fill="#5a4a3e" stroke="${C.ink}" stroke-width="2"/>
+ <circle cx="67" cy="96" r="9" fill="#fff" stroke="${C.ink}" stroke-width="2"/><circle cx="93" cy="96" r="9" fill="#fff" stroke="${C.ink}" stroke-width="2"/>
+ <circle cx="${look?62:67}" cy="${look?91:97}" r="4" fill="${C.ink}"/><circle cx="${look?88:93}" cy="${look?91:97}" r="4" fill="${C.ink}"/>
+ <path d="M58 82 l16 4 M102 82 l-16 4" stroke="${C.ink}" stroke-width="3"/>
+ <path d="M68 118 q4 -5 8 0 q4 5 8 0 q4 -5 8 0" stroke="${C.ink}" stroke-width="2.5" fill="none"/>
+ ${sweat(44,70)}${sweat(118,78)}${sweat(122,104,.8)}
+ ${o.hands!==false?`<path d="M50 230 q14 -10 22 6 q10 -14 22 0" stroke="${C.ink}" stroke-width="3" fill="#EED8BE"/><path d="M40 222 l-8 -6 M120 222 l8 -6 M38 236 l-10 0" stroke="${C.ink}" stroke-width="2"/>`:''}</g>`}
+function tenang(x,y,s,o={}){const pose=o.pose||'straight';
+ const lean=pose==='relax'?'rotate(-8 80 300)':'';
+ const smile=o.frozen?`<path d="M70 116 h20" stroke="${C.ink}" stroke-width="2.5"/>`:`<path d="M68 114 q12 6 24 0" stroke="${C.ink}" stroke-width="2.5" fill="none"/>`;
+ let arms=pose==='relax'?`<path d="M30 160 L-20 120 L-12 110 L36 145z" fill="#3A3F4A" stroke="${C.ink}" stroke-width="2"/><circle cx="-20" cy="112" r="10" fill="#E3C7A8" stroke="${C.ink}" stroke-width="2"/><path d="M130 160 L180 130 L184 142 L134 176z" fill="#3A3F4A" stroke="${C.ink}" stroke-width="2"/><circle cx="186" cy="134" r="10" fill="#E3C7A8" stroke="${C.ink}" stroke-width="2"/>`
+ :`<rect x="36" y="232" width="88" height="16" rx="8" fill="#E3C7A8" stroke="${C.ink}" stroke-width="2"/>`;
+ return `<g transform="translate(${x},${y}) scale(${s})" filter="url(#sh)"><g transform="${lean}">
+ <polygon points="32,140 128,140 140,300 20,300" fill="#3A3F4A" stroke="${C.ink}" stroke-width="2.5"/>
+ <polygon points="64,140 80,190 96,140" fill="#F7F5EF"/><polygon points="76,146 84,146 86,196 80,204 74,196" fill="${C.red}"/>
+ <rect x="70" y="122" width="20" height="22" fill="#E3C7A8"/>
+ <ellipse cx="80" cy="95" rx="33" ry="37" fill="#E9CDAF" stroke="${C.ink}" stroke-width="2.5"/>
+ <path d="M47 86 Q48 52 80 52 Q112 52 113 86 L108 72 Q80 64 52 72z" fill="#22252b"/>
+ ${o.eyePhoto?`<g><rect x="54" y="86" width="52" height="20" fill="#fff" stroke="${C.ink}" stroke-width="1.2" transform="rotate(-2 80 96)"/><ellipse cx="67" cy="96" rx="8" ry="5" fill="#f2eee8"/><circle cx="67" cy="96" r="4.2" fill="#4a3220"/><circle cx="67" cy="96" r="1.8" fill="#000"/><ellipse cx="93" cy="96" rx="8" ry="5" fill="#f2eee8"/><circle cx="93" cy="96" r="4.2" fill="#4a3220"/><circle cx="93" cy="96" r="1.8" fill="#000"/><path d="M58 92 q9 -6 18 0 M84 92 q9 -6 18 0" stroke="#3a2a20" stroke-width="1.5" fill="none"/></g>`
+ :`<circle cx="68" cy="96" r="3.5" fill="${C.ink}"/><circle cx="92" cy="96" r="3.5" fill="${C.ink}"/><path d="M60 86 h16 M84 86 h16" stroke="${C.ink}" stroke-width="3"/>`}
+ ${smile}${arms}</g></g>`}
+function hand(x,y,s,rot,fill=C.skin){return `<g transform="translate(${x},${y}) rotate(${rot}) scale(${s})" filter="url(#sh)"><path d="M0 60 L0 10 Q0 0 10 0 Q20 0 20 10 L20 40 L24 -10 Q26 -20 36 -18 Q44 -16 42 -6 L40 40 L46 -14 Q48 -24 58 -22 Q66 -20 64 -10 L60 42 L68 0 Q70 -10 80 -8 Q88 -6 86 4 L80 60 Q90 40 100 44 Q110 50 100 64 L76 110 Q66 128 40 128 L20 128 Q0 120 0 100z" fill="${fill}" stroke="${C.ink}" stroke-width="3"/></g>`}
+
+const defs=`<defs>
+<filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="3"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .28  0 0 0 0 .18  0 0 0 .55 0"/></filter>
+<filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="1.8" numOctaves="2" seed="9"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0"/></filter>
+<filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="3" dy="5" stdDeviation="2.5" flood-color="#000" flood-opacity=".45"/></filter>
+<filter id="blur"><feGaussianBlur stdDeviation="5"/></filter>
+<radialGradient id="spot" cx="50%" cy="0%" r="100%"><stop offset="0" stop-color="#fff6d8" stop-opacity=".85"/><stop offset="1" stop-color="#fff6d8" stop-opacity="0"/></radialGradient>
+<radialGradient id="vig" cx="50%" cy="50%" r="75%"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".6"/></radialGradient>
+<pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0 H0 V20" fill="none" stroke="#7A9BB066" stroke-width="1"/></pattern>
+<pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="2" fill="#0000002e"/></pattern>
+</defs>`;
+const vig=`<rect width="540" height="960" fill="url(#vig)"/>`;
+
+// ---------- scenes ----------
+const S=[];
+S.push({n:1,d:'0:00–0:06',t:'Hook: tatapan 40 menit',body:()=>`<rect width="540" height="960" fill="#111"/>
+ <polygon points="${torn(60,150,420,620,14,22)}" fill="#7d7f84"/>
+ <rect x="60" y="150" width="420" height="620" fill="#6c6f75" opacity=".6" clip-path="none"/>
+ ${newsprint(0,0,60,960,1,'#ffffff14')}
+ <line x1="270" y1="150" x2="270" y2="230" stroke="#222" stroke-width="3"/><polygon points="240,230 300,230 320,265 220,265" fill="#2c2e33" stroke="#111" stroke-width="2"/>
+ <polygon points="220,265 320,265 440,640 100,640" fill="#fff3c4" opacity=".22"/>
+ <g filter="url(#sh)"><circle cx="400" cy="230" r="34" fill="#F4EED7" stroke="${C.ink}" stroke-width="4"/><path d="M400 230 L400 205 M400 230 L420 240" stroke="${C.ink}" stroke-width="4"/></g>
+ ${tenang(170,330,1.25,{eyePhoto:true})}
+ <polygon points="90,640 450,640 470,700 70,700" fill="#4b3f36" stroke="${C.ink}" stroke-width="3" filter="url(#sh)"/>
+ <polygon points="${torn(-10,140,90,640,16,20)}" fill="#E7DFC9"/>${newsprint(0,160,60,600,1)}
+ <polygon points="${torn(462,140,90,640,16,20)}" fill="#E7DFC9"/>${newsprint(476,160,60,600,1)}
+ <text x="270" y="808" text-anchor="middle" font-family="SE" font-size="17" fill="#d9d2bf">← sobekan koran membuka seperti tirai →</text>
+ ${caption('...TATAPANNYA TIDAK PERNAH LEPAS')}`});
+S.push({n:2,d:'0:06–0:11',t:'Stempel "JUJUR" retak',body:()=>`${bg()}${newsprint(30,90,480,760,3)}
+ ${polaroid(110,150,320,380,-4,tenang(48,40,1.4))}
+ ${stamp('JUJUR',265,420,-12,62)}
+ <path d="M220 360 l30 40 l-14 20 l36 30 l-10 24" stroke="${C.paper}" stroke-width="5" fill="none"/>
+ ${ransom('?',395,190,90)}
+ ${detective(170,610,1.2,{brow:'up',mouth:'smirk'})}
+ <path d="M150 960 L160 830 M390 960 L380 830" stroke="${C.ink}" stroke-width="3" stroke-dasharray="6 5"/>
+ ${caption('JUSTRU ITU YANG MEMBUAT SAYA CURIGA')}`});
+S.push({n:3,d:'0:11–0:17',t:'Kronologi: kas raib',body:()=>`${bg('#2f3036')}
+ <path d="M440 130 a50 50 0 1 0 30 80 a40 40 0 1 1 -30 -80z" fill="#F4EED7" filter="url(#sh)"/>
+ <g transform="rotate(-3 270 260)" filter="url(#sh)"><polygon points="${torn(40,150,460,240,5)}" fill="#EFE7CF"/>
+ <text x="60" y="185" font-family="SE" font-size="15" fill="${C.ink}">HARIAN KOTA · EDISI MALAM · 5 NOV</text><line x1="60" y1="195" x2="480" y2="195" stroke="${C.ink}" stroke-width="2"/>
+ ${newsprint(60,300,420,80,3)}</g>
+ ${ransom('KAS KANTOR',62,250,40)}${ransom('RAIB!',140,300,46,{redChars:'RAIB!'})}
+ <g filter="url(#sh)"><rect x="150" y="470" width="240" height="260" rx="10" fill="#5d6168" stroke="${C.ink}" stroke-width="4"/><rect x="172" y="492" width="196" height="216" fill="#1b1c20"/>
+ <polygon points="150,470 60,500 60,760 150,730" fill="#73777e" stroke="${C.ink}" stroke-width="4"/><circle cx="105" cy="615" r="22" fill="none" stroke="${C.ink}" stroke-width="5"/></g>
+ ${[...Array(9)].map((_,i)=>`<g transform="translate(${r(190,470)},${r(380,560)}) rotate(${r(-40,40)})" filter="url(#sh)" opacity="${r(.5,1).toFixed(2)}"><rect width="62" height="30" fill="#c9b6d6" stroke="${C.ink}" stroke-width="1.5"/><text x="31" y="20" text-anchor="middle" font-family="BN" font-size="15" fill="${C.ink}">100.000</text></g>`).join('')}
+ ${caption('TIGA PULUH JUTA RUPIAH, SATU MALAM')}`});
+S.push({n:4,d:'0:17–0:27',t:'Tersangka 1: Si Gelisah',body:()=>`${bg('#B98E5E')}<rect width="540" height="960" fill="#00000015"/>
+ ${[...Array(160)].map(()=>`<circle cx="${r(0,540)}" cy="${r(0,960)}" r="${r(1,3)}" fill="#7a5530" opacity=".5"/>`).join('')}
+ ${polaroid(40,120,320,400,-3,gelisah(48,30,1.4,{look:'upleft'}))}
+ <ellipse cx="148" cy="257" rx="48" ry="26" fill="none" stroke="${C.red}" stroke-width="5" transform="rotate(-8 148 257)"/>
+ <path d="M190 240 q30 -40 70 -30" stroke="${C.red}" stroke-width="4" fill="none"/><text x="250" y="200" font-family="PM" font-size="22" fill="${C.red}">kiri atas!</text>
+ <rect x="180" y="110" width="40" height="26" rx="4" fill="#9aa0a6" stroke="${C.ink}" stroke-width="2"/>
+ <g transform="rotate(4 380 680)" filter="url(#sh)"><rect x="230" y="560" width="280" height="250" fill="#F7F5EF" stroke="${C.ink}" stroke-width="3"/><rect x="230" y="560" width="280" height="34" fill="#C7CCD3" stroke="${C.ink}" stroke-width="3"/>
+ <circle cx="250" cy="577" r="6" fill="${C.red}"/><circle cx="268" cy="577" r="6" fill="#d8b23a"/><circle cx="286" cy="577" r="6" fill="#5b9a5b"/>
+ <text x="250" y="630" font-family="BN" font-size="30" fill="${C.ink}">CIRI PEMBOHONG</text>
+ ${['Berkeringat','Gelisah','Lirik kiri atas'].map((t,i)=>`<text x="285" y="${675+i*40}" font-family="SE" font-size="19" fill="${C.ink}">${t}</text><path d="M252 ${665+i*40} l8 9 l14 -18" stroke="${C.red}" stroke-width="4" fill="none"/>`).join('')}</g>
+ <path d="M440 830 l14 26 l8 -10 l12 18" stroke="${C.ink}" stroke-width="3" fill="#fff"/>
+ ${caption('KATA INTERNET, ITU TANDA PEMBOHONG')}`});
+S.push({n:5,d:'0:27–0:35',t:'Tersangka 2: Si Tenang',body:()=>`${bg('#B98E5E')}<rect width="540" height="960" fill="#00000015"/>
+ ${polaroid(110,110,330,430,2,tenang(55,30,1.5))}
+ <g transform="rotate(90 80 330)" filter="url(#sh)"><rect x="-80" y="300" width="330" height="40" fill="#EAD9A6" stroke="${C.ink}" stroke-width="2"/>${[...Array(33)].map((_,i)=>`<line x1="${-80+i*10}" y1="300" x2="${-80+i*10}" y2="${i%5?312:322}" stroke="${C.ink}" stroke-width="1.5"/>`).join('')}</g>
+ <g transform="translate(400,170)"><path d="M0 -26 L6 -6 L26 0 L6 6 L0 26 L-6 6 L-26 0 L-6 -6z" fill="#fff" filter="url(#sh)"/></g>
+ <g transform="rotate(-6 270 640)" filter="url(#sh)"><polygon points="${torn(120,590,300,90,5)}" fill="#F4EED7"/><text x="270" y="650" text-anchor="middle" font-family="PM" font-size="40" fill="${C.red}">TERLALU RAPI.</text></g>
+ <rect x="0" y="0" width="540" height="960" fill="none" stroke="#fff" stroke-width="10" opacity=".7"/>
+ <text x="270" y="760" text-anchor="middle" font-family="SE" font-size="16" fill="#2a2016">[ freeze frame + zoom ke senyum ]</text>
+ ${caption('RAPI. TERLALU RAPI.')}`});
+S.push({n:6,d:'0:35–0:43',t:'Penyidik salah tuduh',body:()=>`${bg()}${newsprint(30,80,480,780,3,'#00000018')}
+ <g filter="url(#sh)"><polygon points="40,520 500,520 500,860 40,860" fill="#B98A50" stroke="${C.ink}" stroke-width="3"/><polygon points="40,520 200,520 220,500 40,500" fill="#B98A50" stroke="${C.ink}" stroke-width="3"/><polygon points="50,540 490,560 480,850 60,850" fill="#C99A5E" stroke="${C.ink}" stroke-width="2"/></g>
+ ${polaroid(60,120,220,270,-6,gelisah(20,10,1))}
+ <g transform="rotate(-10 170 380)" filter="url(#sh)"><rect x="95" y="355" width="150" height="50" fill="${C.red}"/><text x="170" y="393" text-anchor="middle" font-family="BN" font-size="40" fill="#fff">PELAKU</text></g>
+ <path d="M170 260 C300 300 330 500 400 600" stroke="${C.red}" stroke-width="4" fill="none"/><circle cx="170" cy="260" r="7" fill="${C.red}"/>
+ <g filter="url(#sh)"><rect x="300" y="140" width="210" height="180" rx="22" fill="#6b5a48" stroke="${C.ink}" stroke-width="4"/><rect x="318" y="158" width="150" height="130" rx="18" fill="#9fb2b0"/><circle cx="487" cy="190" r="9" fill="#333"/><circle cx="487" cy="222" r="9" fill="#333"/><line x1="350" y1="140" x2="320" y2="100" stroke="${C.ink}" stroke-width="3"/><line x1="440" y1="140" x2="470" y2="100" stroke="${C.ink}" stroke-width="3"/>
+ <svg x="318" y="158" width="150" height="130" viewBox="40 40 90 80">${gelisah(0,0,1,{hands:false})}</svg></g>
+ <text x="393" y="345" text-anchor="middle" font-family="PM" font-size="18" fill="${C.ink}">*jreng jreng*</text>
+ ${detective(180,560,.95,{eyes:'roll',mouth:'yawn'})}
+ ${caption('SEPERTI SINETRON...')}`});
+S.push({n:7,d:'0:43–0:53',t:'Metode: garis dasar',body:()=>`<rect width="540" height="960" fill="#DCE5EA"/><rect width="540" height="960" fill="url(#grid)"/><rect width="540" height="960" filter="url(#grain)" opacity=".3"/>
+ ${[['awan',90],['piring',230],['jalan',370]].map(([k,x],i)=>`<g filter="url(#sh)"><rect x="${x}" y="150" width="100" height="100" fill="#FBF8F0" stroke="${C.ink}" stroke-width="2" transform="rotate(${[-5,3,-2][i]} ${x+50} 200)"/>${tape(x+25,138,50,[-5,3,-2][i])}
+ ${k==='awan'?`<path d="M${x+20} ${215} a18 18 0 0 1 10 -32 a24 24 0 0 1 44 4 a16 16 0 0 1 8 28z" fill="#cfd8de" stroke="${C.ink}" stroke-width="2.5"/>`:k==='piring'?`<ellipse cx="${x+50}" cy="210" rx="36" ry="16" fill="#fff" stroke="${C.ink}" stroke-width="2.5"/><ellipse cx="${x+50}" cy="200" rx="18" ry="11" fill="#f6f1e2" stroke="${C.ink}" stroke-width="2"/>`:`<path d="M${x+30} 240 C${x+40} 210 ${x+70} 200 ${x+60} 165" stroke="#a07b4f" stroke-width="12" fill="none"/><path d="M${x+30} 240 C${x+40} 210 ${x+70} 200 ${x+60} 165" stroke="#fff" stroke-width="2" stroke-dasharray="6 6" fill="none"/>`}</g>`).join('')}
+ <path d="M40 430 Q90 410 140 432 T240 428 T340 434 T440 426 T510 430" stroke="${C.ink}" stroke-width="5" fill="none"/>
+ <text x="300" y="400" font-family="PM" font-size="34" fill="${C.ink}" transform="rotate(-4 300 400)">GARIS DASAR</text><path d="M300 410 q-20 10 -30 18" stroke="${C.ink}" stroke-width="2.5" fill="none"/>
+ <text x="40" y="490" font-family="SE" font-size="16" fill="#3b4b55">1. obrolan santai → catat gerak normal</text>
+ ${detective(60,520,1.15,{arm:'glass',mouth:'smirk'})}
+ ${caption('ITU GARIS DASARNYA.')}`});
+S.push({n:8,d:'0:53–0:59',t:'Pertanyaan inti',body:()=>`<rect width="540" height="960" fill="#DCE5EA"/><rect width="540" height="960" fill="url(#grid)"/><rect width="540" height="960" filter="url(#grain)" opacity=".3"/>
+ <path d="M30 360 Q80 340 130 362 T220 356 L250 356 L275 560 L300 362 T400 356 T510 360" stroke="${C.ink}" stroke-width="5" fill="none"/>
+ <polygon points="${torn(230,420,90,120,10,10)}" fill="#272A2F"/>
+ <g transform="rotate(-6 270 220)" filter="url(#sh)"><rect x="120" y="170" width="300" height="110" fill="#FBF8F0" stroke="${C.ink}" stroke-width="3"/><text x="270" y="240" text-anchor="middle" font-family="BN" font-size="46" fill="${C.red}">MALAM KEJADIAN?</text></g>
+ <g filter="url(#sh)" transform="rotate(30 400 520)"><path d="M380 420 L392 600 L398 600 L392 420z M408 420 L404 600 L410 600 L420 420z" fill="#b8bcc2" stroke="${C.ink}" stroke-width="2"/></g>
+ <g transform="rotate(25 420 480)"><rect x="380" y="470" width="80" height="20" fill="#272A2F" filter="url(#sh)"/></g>
+ <text x="270" y="680" text-anchor="middle" font-family="PM" font-size="30" fill="${C.ink}">apa yang <tspan fill="${C.red}">HILANG?</tspan></text>
+ <text x="40" y="740" font-family="SE" font-size="16" fill="#3b4b55">2. pertanyaan inti → bandingkan</text>
+ ${caption('APA YANG TIBA-TIBA HILANG')}`});
+S.push({n:9,d:'0:59–1:08',t:'Tamparan #1: cuma panikan',body:()=>`${bg('#3a3a3a')}
+ <g filter="url(#sh)"><rect x="50" y="250" width="440" height="430" fill="#111"/>${[...Array(12)].map((_,i)=>`<rect x="${62+i*36}" y="262" width="18" height="14" fill="#ddd"/><rect x="${62+i*36}" y="654" width="18" height="14" fill="#ddd"/>`).join('')}
+ <rect x="70" y="290" width="400" height="350" fill="#a69d8c"/><svg x="70" y="290" width="400" height="350" viewBox="-60 0 280 260">${gelisah(0,0,1)}</svg>
+ <rect x="70" y="290" width="400" height="350" filter="url(#grain)" opacity=".7"/><line x1="160" y1="290" x2="150" y2="640" stroke="#fff" opacity=".35"/><line x1="380" y1="290" x2="388" y2="640" stroke="#fff" opacity=".25"/></g>
+ <text x="100" y="330" font-family="SE" font-size="18" fill="#fff">☁ "cuacanya panas, ya..."</text>
+ ${hand(330,40,1.6,-25)}
+ ${[0,1,2,3].map(i=>`<path d="M${330-i*14} ${120+i*28} l-70 ${10+i*4}" stroke="#fff" stroke-width="5" stroke-linecap="round"/>`).join('')}
+ <g transform="rotate(8 270 760)" filter="url(#sh)"><polygon points="${torn(120,710,140,56,4)}" fill="${C.red}"/><text x="190" y="750" text-anchor="middle" font-family="BN" font-size="36" fill="#fff">PELA</text>
+ <polygon points="${torn(268,716,160,56,4)}" fill="#F4EED7" transform="rotate(-14 340 744)"/><text x="350" y="760" text-anchor="middle" font-family="BN" font-size="38" fill="${C.ink}" transform="rotate(-14 340 744)">PANIKAN</text></g>
+ ${caption('DIA CUMA GAMPANG PANIK.')}`});
+S.push({n:10,d:'1:08–1:21',t:'Si Tenang membeku',body:()=>`<rect x="0" y="0" width="270" height="960" fill="${C.paper}"/><rect x="270" y="0" width="270" height="960" fill="#cfe0ea"/><rect width="540" height="960" filter="url(#grain)" opacity=".4"/>
+ <line x1="270" y1="0" x2="270" y2="960" stroke="${C.ink}" stroke-width="4" stroke-dasharray="14 8"/>
+ <text x="135" y="140" text-anchor="middle" font-family="BN" font-size="30" fill="${C.ink}">"MAKAN SIANG?"</text>
+ <text x="405" y="140" text-anchor="middle" font-family="BN" font-size="30" fill="${C.red}">"MALAM KEJADIAN?"</text>
+ ${tenang(55,300,1.0,{pose:'relax'})}
+ ${tenang(325,300,1.0,{frozen:true})}
+ ${[...Array(10)].map(()=>{const x=r(280,530),y=r(180,820),s=r(8,20);return `<g stroke="#fff" stroke-width="2.5" opacity=".9"><line x1="${x-s}" y1="${y}" x2="${x+s}" y2="${y}"/><line x1="${x}" y1="${y-s}" x2="${x}" y2="${y+s}"/><line x1="${x-s*.7}" y1="${y-s*.7}" x2="${x+s*.7}" y2="${y+s*.7}"/><line x1="${x-s*.7}" y1="${y+s*.7}" x2="${x+s*.7}" y2="${y-s*.7}"/></g>`}).join('')}
+ <path d="M330 470 Q405 450 480 470 M326 490 Q405 470 484 492" stroke="#9b7a4a" stroke-width="7" fill="none"/>
+ ${[[405,385],[350,445],[405,540]].map(([x,y])=>`<g transform="translate(${x-12},${y-14})" filter="url(#sh)"><path d="M4 12 v-6 a8 8 0 0 1 16 0 v6" stroke="${C.ink}" stroke-width="3.5" fill="none"/><rect x="0" y="12" width="24" height="18" rx="3" fill="${C.brass}" stroke="${C.ink}" stroke-width="2"/></g>`).join('')}
+ <text x="405" y="700" text-anchor="middle" font-family="PM" font-size="26" fill="${C.ink}">menahan.</text>
+ ${caption('DIA TIDAK TENANG. DIA MENAHAN.')}`});
+S.push({n:11,d:'1:21–1:25',t:'Boneka bertali',body:()=>`${bg('#25272c')}${vig}
+ ${[[170,170,10],[350,160,-6],[470,180,-14]].map(([x,y,rt])=>hand(x,y,.9,180+rt,'#111')).join('')}
+ ${[[110,140,195,470],[175,140,200,590],[300,130,345,470],[300,130,330,590],[400,150,275,360]].map(([a,b,c,d])=>`<line x1="${a}" y1="${b}" x2="${c}" y2="${d}" stroke="#ddd" stroke-width="1.5"/>`).join('')}
+ <g transform="rotate(-3 270 600)">${tenang(150,300,1.5,{frozen:true})}</g>
+ ${[[195,470],[345,470],[275,360]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="4" fill="${C.brass}"/>`).join('')}
+ <text x="270" y="820" text-anchor="middle" font-family="SE" font-size="18" fill="#cfc6b0">mengendalikan diri secara berlebihan</text>
+ ${caption('PEMBOHONG YANG PINTAR TIDAK GUGUP')}`});
+S.push({n:12,d:'1:25–1:32',t:'PAPIYYAR! (puncak)',body:()=>`<rect width="540" height="960" fill="${C.red}"/><rect width="540" height="960" filter="url(#grain)" opacity=".35"/>
+ ${[...Array(18)].map((_,i)=>`<line x1="270" y1="420" x2="${270+Math.cos(i/18*6.283)*700}" y2="${420+Math.sin(i/18*6.283)*700}" stroke="#ffffff22" stroke-width="${i%2?18:6}"/>`).join('')}
+ <g transform="translate(270,430) scale(1.05) translate(-270,-430)">${detective(150,170,1.55,{arm:'cup',mouth:'smirk'})}</g>
+ <polygon points="${torn(-20,40,580,0,0,1)}" fill="none"/>
+ <polygon points="0,610 540,520 540,545 0,640" fill="#fff" filter="url(#sh)"/>
+ ${ransom('PAPIYYAR!',28,600,62,{redChars:'YY'})}
+ ${[...Array(26)].map(()=>`<polygon points="${torn(r(0,520),r(0,880),r(10,26),r(8,20),3,6)}" fill="${['#F4EED7','#fff','#272A2F','#E8D9B5'][Math.floor(r(0,4))]}" transform="rotate(${r(0,90)})" opacity=".9"/>`).join('')}
+ <text x="270" y="730" text-anchor="middle" font-family="SE" font-size="19" fill="#fff">[ layar merah + zoom cepat + shake ]</text>
+ ${caption('...SIBUK NGATUR NAPAS, CONG.')}`});
+S.push({n:13,d:'1:32–1:38',t:'Fakta: 54%',body:()=>`${bg()}
+ <g transform="rotate(-3 270 330)" filter="url(#sh)"><polygon points="${torn(50,120,440,420,6)}" fill="#F3ECD8"/>
+ <text x="80" y="170" font-family="SE" font-size="15" fill="${C.ink}">JURNAL PSIKOLOGI · META-ANALISIS</text><line x1="80" y1="180" x2="460" y2="180" stroke="${C.ink}"/>
+ ${newsprint(80,200,380,120,2)}
+ <text x="270" y="430" text-anchor="middle" font-family="BN" font-size="130" fill="${C.ink}">54%</text>
+ <ellipse cx="270" cy="390" rx="135" ry="70" fill="none" stroke="${C.red}" stroke-width="6" transform="rotate(-6 270 390)"/>
+ ${newsprint(80,470,380,50,2)}</g>
+ <g transform="translate(270,690)"><ellipse cx="0" cy="0" rx="78" ry="78" fill="#d7b44a" stroke="${C.ink}" stroke-width="4" filter="url(#sh)"/><ellipse cx="0" cy="0" rx="62" ry="62" fill="none" stroke="#8a6a1a" stroke-width="3"/><text y="12" text-anchor="middle" font-family="BN" font-size="38" fill="${C.ink}">BOHONG</text></g>
+ <path d="M190 640 q-30 -40 0 -80 M350 640 q30 -40 0 -80" stroke="${C.ink}" stroke-width="3" fill="none" stroke-dasharray="6 6"/>
+ <text x="270" y="810" text-anchor="middle" font-family="PM" font-size="22" fill="${C.ink}">≈ lempar koin</text>
+ ${caption('HAMPIR SAMA DENGAN LEMPAR KOIN.')}`});
+S.push({n:14,d:'1:38–1:46',t:'Cliffhanger: rekaman CCTV',body:()=>`<rect width="540" height="960" fill="#0d0e10"/>
+ <g filter="url(#sh)"><rect x="30" y="170" width="480" height="560" rx="18" fill="#2b2d31" stroke="#111" stroke-width="4"/>
+ <rect x="54" y="194" width="432" height="470" fill="${C.cctv}"/>
+ <polygon points="54,560 486,560 486,664 54,664" fill="#6e756e"/><rect x="300" y="300" width="120" height="180" fill="#5f665f"/><rect x="100" y="250" width="60" height="40" fill="#a9b0a9"/>
+ <g filter="url(#blur)" opacity=".85"><circle cx="210" cy="400" r="30" fill="#2a2d2a"/><path d="M170 440 L250 440 L270 600 L150 600z" fill="#2a2d2a"/></g>
+ <g transform="rotate(-8 230 500)"><rect x="150" y="475" width="170" height="44" fill="#111"/><text x="235" y="507" text-anchor="middle" font-family="BN" font-size="32" fill="#fff" letter-spacing="3">DISENSOR</text></g>
+ <rect x="54" y="194" width="432" height="470" filter="url(#noise)" opacity=".22"/><rect x="54" y="194" width="432" height="470" fill="url(#scan)"/>
+ <circle cx="80" cy="222" r="8" fill="${C.red}"/><text x="96" y="230" font-family="SE" font-size="20" fill="#fff">REC</text>
+ <text x="470" y="230" text-anchor="end" font-family="SE" font-size="22" fill="#fff">23:59</text>
+ <text x="70" y="650" font-family="SE" font-size="15" fill="#fff">CAM 02 · KANTOR LT.1</text></g>
+ <rect x="54" y="194" width="432" height="470" fill="none" stroke="${C.red}" stroke-width="3" stroke-dasharray="16 10"/>
+ <text x="270" y="790" text-anchor="middle" font-family="SE" font-size="17" fill="#bbb">[ zoom x3 → lampu padam → gelap total ]</text>
+ ${caption('SATU MENIT SEBELUM LAMPU PADAM')}`});
+S.push({n:15,d:'1:46–1:53',t:'Siapa pelakunya? + CTA',body:()=>`<rect width="540" height="960" fill="#121316"/>
+ <polygon points="230,0 310,0 520,760 20,760" fill="url(#spot)"/>
+ <path d="M60 130 Q270 220 480 130" stroke="${C.red}" stroke-width="4" fill="none"/>
+ ${polaroid(40,150,190,240,-7,tenang(10,0,.85))}${polaroid(310,150,190,240,6,gelisah(10,0,.85))}
+ <path d="M200 300 Q270 360 340 300" stroke="${C.red}" stroke-width="5" fill="none"/>
+ ${ransom('?',245,330,60)}
+ <text x="135" y="420" text-anchor="middle" font-family="BN" font-size="24" fill="#fff">SI TENANG?</text><text x="405" y="420" text-anchor="middle" font-family="BN" font-size="24" fill="#fff">BERDUA?</text>
+ ${detective(40,440,.95,{arm:'point',mouth:'smirk'})}
+ <g transform="rotate(-6 380 560)" filter="url(#sh)"><circle cx="390" cy="555" r="88" fill="#fff"/><clipPath id="bigl"><circle cx="390" cy="555" r="80"/></clipPath><image href="logo.jpg" x="310" y="475" width="160" height="160" clip-path="url(#bigl)"/></g>
+ <text x="390" y="680" text-anchor="middle" font-family="BN" font-size="34" fill="#fff">@PAPIYYAR</text>
+ <path d="M270 812 l0 50 l-18 -18 M270 862 l18 -18" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round"/>
+ ${stamp('KASUS BELUM DITUTUP',270,785,-4,34)}
+ ${caption('TULIS TEBAKANMU DI KOMENTAR')}`});
+
+// ---------- render ----------
+const sheet=document.getElementById('sheet');
+const only=new URLSearchParams(location.search).get('scene');
+if(only)document.body.classList.add('single');
+for(const s of S){if(only&&+only!==s.n)continue;seed=s.n*97+3;
+ const d=document.createElement('div');d.className='cell';
+ d.innerHTML=`<svg viewBox="0 0 540 960" xmlns="http://www.w3.org/2000/svg">${defs}${s.body()}${s.n!==15?watermark:''}${badge(s.n,s.d)}</svg><div class="meta"><b>${String(s.n).padStart(2,'0')}</b>${s.t}</div>`;
+ sheet.appendChild(d)}
+</script>
+</body>
+</html>
