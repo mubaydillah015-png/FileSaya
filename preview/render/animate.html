@@ -50,7 +50,9 @@ const SC=[
 {n:14,D:8,vo:'Tapi tunggu dulu. Saat rekaman kamera pengawas diputar ulang, ada satu detail kecil... sesuatu yang dilakukan si gelisah tepat satu menit sebelum lampu kantor padam.'},
 {n:15,D:7,vo:'Jadi menurutmu, siapa yang mengambil uang itu? Si tenang... atau justru mereka berdua? Tulis tebakanmu di kolom komentar.'},
 ];
-let acc=0;for(const s of SC){s.T0=acc;acc+=s.D;
+const VO=[7.236,6.113,6.034,13.949,10.527,9.482,13.322,8.124,11.311,17.868,4.754,8.829,8.673,10.919,9.091];
+const VO_LEAD=.15;
+let acc=0;for(const [i,s] of SC.entries()){s.D0=s.D;s.D=+(VO[i]+VO_LEAD+.35).toFixed(3);s.T0=acc;acc+=s.D;
  const words=s.vo.split(' ');const chunks=[];let cur=[];
  for(const w of words){cur.push(w);const txt=cur.join(' ');if(txt.length>=22||/[.?!]$/.test(w)||(/,$/.test(w)&&txt.length>=12)){chunks.push(txt);cur=[]}}
  if(cur.length)chunks.push(cur.join(' '));
@@ -220,11 +222,11 @@ D[15]=(t,d)=>{const sw=Math.sin(t*1.6)*3;const sl=shake(t,5.7,.35,7);const fl=t>
 function trans(n,t){if(n===1||t>.4)return '';const p=E(t/.4);seed=999;return `<g transform="translate(0 ${-1000*p})"><polygon points="${torn(-20,-20,580,1000,18,20)}" fill="#E7DFC9"/>${newsprint(20,20,500,900,3,'#00000020')}</g>`}
 
 function frameSVG(T,fi){let s=SC.find(s=>T>=s.T0&&T<s.T0+s.D)||SC[SC.length-1];const t=T-s.T0;
- seed=s.n*97+3;const f=D[s.n](t,s.D,fi);let [z,cx,cy]=f.cam;z=Math.max(z,1);const hw=270/z,hh=480/z;cx=Math.min(Math.max(cx,hw),540-hw);cy=Math.min(Math.max(cy,hh),960-hh);const [dx,dy]=f.sh||[0,0];
+ seed=s.n*97+3;const f=D[s.n](t*s.D0/s.D,s.D0,fi);let [z,cx,cy]=f.cam;z=Math.max(z,1);const hw=270/z,hh=480/z;cx=Math.min(Math.max(cx,hw),540-hw);cy=Math.min(Math.max(cy,hh),960-hh);const [dx,dy]=f.sh||[0,0];
  return `<svg id="v" viewBox="0 0 540 960" xmlns="http://www.w3.org/2000/svg">${defs}
  <g transform="translate(${270+dx} ${480+dy}) scale(${z}) translate(${-cx} ${-cy})">${f.body}</g>
  ${trans(s.n,t)}${s.n!==15?watermark:''}${captionA(capAt(s,t),t,s)}</svg>`}
 window.renderAt=(T,fi)=>{document.getElementById('stage').innerHTML=frameSVG(T,fi||0)};
-window.TOTAL=TOTAL;window.SCENES=SC.map(s=>({n:s.n,T0:s.T0,D:s.D}));
+window.TOTAL=TOTAL;window.SCENES=SC.map(s=>({n:s.n,T0:s.T0,D:s.D}));window.VO_LEAD=VO_LEAD;
 renderAt(+(new URLSearchParams(location.search).get('t')||0));
 </script></body></html>
