@@ -43,18 +43,14 @@ body{font-family:Montserrat,sans-serif;color:#F5F5F5}
 <rect width="300" height="533" fill="url(#tn)"/>
 <g stroke="#2a2a2a" stroke-width="2" fill="none"><path d="M0 60 L120 200"/><path d="M300 60 L180 200"/><path d="M0 500 L120 300"/><path d="M300 500 L180 300"/></g>
 <rect x="120" y="200" width="60" height="100" fill="#d9d2b8" opacity=".35"/>
-<g id="s3fig" style="transform-origin:150px 533px"><g fill="#000"><circle cx="150" cy="300" r="20"/><path d="M112 400 Q114 326 150 322 Q186 326 188 400Z"/><rect x="116" y="398" width="68" height="60"/><path d="M122 456 L118 533 L140 533 L146 456Z M178 456 L182 533 L160 533 L154 456Z"/></g>
-<text x="150" y="385" text-anchor="middle" font-family="Oswald,Montserrat,sans-serif" font-weight="700" font-size="44" fill="#E8AB1F" opacity=".85">7</text></g></svg></div>
+</svg><img id="s3fig" src="../storyboard/assets/scene3-silhouette.png" style="position:absolute;left:0;top:70px;width:300px;transform-origin:150px 533px;filter:drop-shadow(0 0 3px rgba(255,228,138,.9)) drop-shadow(0 0 14px rgba(232,171,31,.55))"></div>
 <div id="s3line" style="position:absolute;top:142px;left:70px;width:160px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform-origin:left;transform:scaleX(0)"></div></div>
 
 <!-- 4 -->
-<div class="scene" id="s4"><div class="cam" style="filter:sepia(.4) contrast(1.15)"><svg viewBox="0 0 300 533">
-<rect width="300" height="533" fill="#14120f"/><path d="M0 360 L300 340 L300 533 L0 533Z" fill="#1f1c17"/>
-<g stroke="#2a2620" stroke-width="1.5" fill="none"><path d="M0 400 L300 385"/><path d="M0 440 L300 425"/><path d="M0 485 L300 470"/><path d="M60 360 L40 533"/><path d="M140 352 L130 533"/><path d="M220 346 L230 533"/></g>
-<rect x="0" y="120" width="70" height="230" fill="#1a1814"/><rect x="230" y="100" width="70" height="245" fill="#1a1814"/>
-<g fill="#000"><circle cx="138" cy="250" r="12"/><path d="M128 262 L148 262 L146 312 L130 312Z"/><path d="M131 312 L120 360 L128 362 L138 318Z M145 312 L168 346 L174 340 L148 310Z"/><path d="M130 268 L112 298 M146 268 L162 292" stroke="#000" stroke-width="5"/></g>
-<circle id="s4ball" cx="186" cy="352" r="9" fill="#cfc6ad"/>
-<rect id="s4scratch" x="18" y="0" width="1.5" height="533" fill="#fff" opacity=".14"/><rect x="250" y="0" width="1" height="533" fill="#fff" opacity=".1"/></svg></div></div>
+<div class="scene" id="s4"><div class="cam"><img id="s4img" src="../storyboard/assets/scene4-kid.jpg" style="position:absolute;height:533px;left:50%;top:58px;transform:translateX(-50%);filter:grayscale(.55) sepia(.45) contrast(1.25) brightness(.62)">
+<svg viewBox="0 0 300 533" style="position:absolute;inset:0;width:100%;height:100%"><defs><linearGradient id="s4fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".75"/><stop offset=".25" stop-color="#000" stop-opacity="0"/><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".85"/></linearGradient></defs>
+<rect width="300" height="533" fill="url(#s4fade)"/>
+<rect id="s4scratch" x="18" y="0" width="1.5" height="533" fill="#fff" opacity=".18"/><rect x="250" y="0" width="1" height="533" fill="#fff" opacity=".12"/></svg></div></div>
 
 <!-- 5 -->
 <div class="scene" id="s5"><div class="cam"><svg viewBox="0 0 300 533">
@@ -237,9 +233,9 @@ window.setTime=function(t){
     $('s2glow').style.opacity=(1-out)*(0.85+0.15*rnd(f+3))*cl(lt/0.15);
     $('s2smoke').style.opacity=out*0.7*(1-cl((t-S(4)-1)/1.2));$('s2smoke').style.transform=`translateY(${-30*out}px)`;
     if(lt<0.12)$('flash').style.opacity=0;}
-  if(sc===3){$('s3fig').style.transform=`scale(${1-0.12*p})`;$('s3line').style.transform=`scaleX(${ease((t-S(5)-0.5)/0.6)})`;hit(E(5)-0.6,2.5);}
+  if(sc===3){$('s3fig').style.transform=`scale(${1.06-0.1*p})`;$('s3line').style.transform=`scaleX(${ease((t-S(5)-0.5)/0.6)})`;hit(E(5)-0.6,2.5);}
   if(sc===4){tx=(rnd(f)-0.5)*2.2;ty=(rnd(f+7)-0.5)*2.2;cam.style.opacity=0.82+0.18*rnd(f+11);$('s4scratch').setAttribute('x',10+280*rnd(Math.floor(f/3)));
-    $('s4ball').setAttribute('cx',186+40*p);hit(S(7),4);hit(S(9),5);}
+    hit(S(7),4);hit(S(9),5);}
   else cam.style.opacity=1;
   if(sc===5){const k=ease((t-S(10))/0.9);$('s5num').style.opacity=cl((t-S(10))/0.1);$('s5num').textContent=Math.round(15*k);
     $('s5ecg').style.strokeDashoffset=700*(1-cl(lt/2.6));}
