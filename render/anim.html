@@ -1,0 +1,285 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Oswald:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#E8AB1F}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:300px;height:533px;overflow:hidden;background:#060606}
+body{font-family:Montserrat,sans-serif;color:#F5F5F5}
+.scene{position:absolute;inset:0;display:none;overflow:hidden;background:#060606}
+.cam{position:absolute;inset:0;transform-origin:50% 50%}
+.cam svg{position:absolute;inset:0;width:100%;height:100%}
+.head{position:absolute;left:14px;right:14px;text-align:center;font-weight:900;text-transform:uppercase;line-height:1.04;text-shadow:0 2px 14px rgba(0,0,0,.95)}
+.w{display:inline-block;opacity:0;white-space:pre}
+.g{background:linear-gradient(180deg,#FFE48A,#E8AB1F 55%,#B57F0E);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 9px rgba(232,171,31,.45))}
+.dim{color:#5a5a5a}
+#grain{position:absolute;inset:-60px;opacity:.2;mix-blend-mode:overlay;pointer-events:none;z-index:50;
+ background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+#vig{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.85) 100%);z-index:49;pointer-events:none}
+#cap{position:absolute;top:34px;left:0;right:0;text-align:center;font-weight:800;font-size:12px;letter-spacing:.04em;z-index:60;text-shadow:0 1px 6px #000}
+#capline{position:absolute;top:52px;left:141px;width:18px;height:2px;background:var(--gold);z-index:60}
+#wm{position:absolute;top:12px;right:12px;width:30px;opacity:.55;z-index:60}
+#handle{position:absolute;bottom:12px;left:0;right:0;text-align:center;font-size:9px;font-weight:700;letter-spacing:.08em;color:rgba(245,245,245,.5);z-index:60}
+#flash{position:absolute;inset:0;background:#fff;opacity:0;z-index:70;pointer-events:none}
+#black{position:absolute;inset:0;background:#000;opacity:0;z-index:80;pointer-events:none}
+</style></head><body>
+
+<!-- 1 -->
+<div class="scene" id="s1"><div class="cam"><svg viewBox="0 0 300 533"><defs><linearGradient id="sp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
+<polygon id="s1spot" points="130,0 170,0 230,420 70,420" fill="url(#sp)"/>
+<rect x="40" y="330" width="220" height="14" fill="#1a1a1a"/><rect x="55" y="344" width="8" height="60" fill="#111"/><rect x="237" y="344" width="8" height="60" fill="#111"/>
+<g fill="#000"><circle cx="150" cy="268" r="17"/><path d="M122 330 Q125 288 150 286 Q175 288 178 330Z"/><path d="M128 330 L120 400 L134 400 L142 340Z M172 330 L180 400 L166 400 L158 340Z"/></g>
+<g fill="#121212"><rect x="20" y="140" width="40" height="190"/><rect x="240" y="140" width="40" height="190"/></g></svg></div></div>
+
+<!-- 2 -->
+<div class="scene" id="s2"><div class="cam"><svg viewBox="0 0 300 533"><defs><radialGradient id="fl"><stop offset="0" stop-color="#FFE48A" stop-opacity=".9"/><stop offset=".4" stop-color="#E8AB1F" stop-opacity=".35"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs>
+<circle id="s2glow" cx="150" cy="300" r="140" fill="url(#fl)"/>
+<g id="s2flame" style="transform-origin:150px 322px"><path d="M150 250 C130 280 136 310 150 322 C164 310 170 280 150 250Z" fill="#FFE48A"/><path d="M150 278 C142 295 145 310 150 316 C155 310 158 295 150 278Z" fill="#fff"/></g>
+<rect x="146" y="320" width="8" height="140" fill="#3a2a14"/><rect id="s2head" x="144" y="316" width="12" height="10" rx="4" fill="#5a1a10"/>
+<path id="s2smoke" d="M152 310 q12 -30 -4 -60 q-14 -24 4 -55 q14 -24 -2 -50" stroke="#777" stroke-width="2.5" fill="none" opacity="0" stroke-linecap="round"/></svg></div></div>
+
+<!-- 3 -->
+<div class="scene" id="s3"><div class="cam"><svg viewBox="0 0 300 533"><defs><radialGradient id="tn" cx=".5" cy=".42"><stop offset="0" stop-color="#e8e2cc" stop-opacity=".55"/><stop offset=".3" stop-color="#6b5a2a" stop-opacity=".25"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs>
+<rect width="300" height="533" fill="url(#tn)"/>
+<g stroke="#2a2a2a" stroke-width="2" fill="none"><path d="M0 60 L120 200"/><path d="M300 60 L180 200"/><path d="M0 500 L120 300"/><path d="M300 500 L180 300"/></g>
+<rect x="120" y="200" width="60" height="100" fill="#d9d2b8" opacity=".35"/>
+<g id="s3fig" style="transform-origin:150px 533px"><g fill="#000"><circle cx="150" cy="300" r="20"/><path d="M112 400 Q114 326 150 322 Q186 326 188 400Z"/><rect x="116" y="398" width="68" height="60"/><path d="M122 456 L118 533 L140 533 L146 456Z M178 456 L182 533 L160 533 L154 456Z"/></g>
+<text x="150" y="385" text-anchor="middle" font-family="Oswald,Montserrat,sans-serif" font-weight="700" font-size="44" fill="#E8AB1F" opacity=".85">7</text></g></svg></div>
+<div id="s3line" style="position:absolute;top:142px;left:70px;width:160px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform-origin:left;transform:scaleX(0)"></div></div>
+
+<!-- 4 -->
+<div class="scene" id="s4"><div class="cam" style="filter:sepia(.4) contrast(1.15)"><svg viewBox="0 0 300 533">
+<rect width="300" height="533" fill="#14120f"/><path d="M0 360 L300 340 L300 533 L0 533Z" fill="#1f1c17"/>
+<g stroke="#2a2620" stroke-width="1.5" fill="none"><path d="M0 400 L300 385"/><path d="M0 440 L300 425"/><path d="M0 485 L300 470"/><path d="M60 360 L40 533"/><path d="M140 352 L130 533"/><path d="M220 346 L230 533"/></g>
+<rect x="0" y="120" width="70" height="230" fill="#1a1814"/><rect x="230" y="100" width="70" height="245" fill="#1a1814"/>
+<g fill="#000"><circle cx="138" cy="250" r="12"/><path d="M128 262 L148 262 L146 312 L130 312Z"/><path d="M131 312 L120 360 L128 362 L138 318Z M145 312 L168 346 L174 340 L148 310Z"/><path d="M130 268 L112 298 M146 268 L162 292" stroke="#000" stroke-width="5"/></g>
+<circle id="s4ball" cx="186" cy="352" r="9" fill="#cfc6ad"/>
+<rect id="s4scratch" x="18" y="0" width="1.5" height="533" fill="#fff" opacity=".14"/><rect x="250" y="0" width="1" height="533" fill="#fff" opacity=".1"/></svg></div></div>
+
+<!-- 5 -->
+<div class="scene" id="s5"><div class="cam"><svg viewBox="0 0 300 533">
+<g stroke="#1a1a1a"><path d="M0 330 H300"/><path d="M0 290 H300"/><path d="M0 370 H300"/></g>
+<polyline id="s5ecg" points="0,330 40,330 52,330 60,300 68,360 76,330 110,330 118,280 128,380 136,330 170,330 176,310 182,345 188,330 230,330 236,300 244,362 250,330 300,330" fill="none" stroke="#E8AB1F" stroke-width="3" stroke-dasharray="700" stroke-dashoffset="700" style="filter:drop-shadow(0 0 6px #E8AB1F)"/></svg></div>
+<div class="head g" id="s5num" style="top:84px;font-size:150px;font-family:Oswald,Montserrat,sans-serif;font-weight:700;opacity:0">0</div></div>
+
+<!-- 6 -->
+<div class="scene" id="s6"><div class="cam"><svg viewBox="0 0 300 533"><defs><radialGradient id="bt" cx=".5" cy=".55"><stop offset="0" stop-color="#3a3018"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs>
+<rect width="300" height="533" fill="url(#bt)"/>
+<path d="M40 330 Q60 250 140 250 L180 250 Q200 300 270 320 Q285 340 270 360 L50 360 Q35 350 40 330Z" fill="#111" stroke="#333"/>
+<g fill="#222"><rect x="60" y="360" width="10" height="12"/><rect x="110" y="360" width="10" height="12"/><rect x="200" y="360" width="10" height="12"/><rect x="245" y="360" width="10" height="12"/></g>
+<g stroke="#e6e6e6" stroke-width="3"><path d="M120 260 L170 290"/><path d="M120 290 L170 260"/><path d="M120 280 L165 305"/></g>
+<path id="s6lace" d="M150 255 Q120 180 90 150 M150 255 Q190 170 230 140" stroke="#e6e6e6" stroke-width="3" fill="none"/>
+<g id="s6hands" fill="#000"><ellipse id="s6hl" cx="80" cy="140" rx="34" ry="22"/><ellipse id="s6hr" cx="240" cy="132" rx="34" ry="22"/></g></svg></div></div>
+
+<!-- 7 -->
+<div class="scene" id="s7"><div class="cam"><svg viewBox="0 0 300 533"><defs><linearGradient id="fog" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c1c1c"/><stop offset=".6" stop-color="#0a0a0a"/><stop offset="1" stop-color="#060606"/></linearGradient><radialGradient id="lt"><stop offset="0" stop-color="#fff"/><stop offset=".3" stop-color="#FFE48A" stop-opacity=".6"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs>
+<rect width="300" height="533" fill="url(#fog)"/>
+<path d="M0 220 Q150 170 300 220 L300 300 L0 300Z" fill="#141414"/>
+<g stroke="#1f1f1f"><path d="M0 240 Q150 195 300 240"/><path d="M0 260 Q150 215 300 260"/><path d="M0 280 Q150 235 300 280"/></g>
+<path d="M0 300 L300 300 L300 533 L0 533Z" fill="#0d140d"/>
+<g stroke="#2a3a2a" stroke-width="1.5" fill="none"><path d="M150 300 L150 533"/><ellipse cx="150" cy="420" rx="60" ry="22"/></g>
+<circle id="s7l1" cx="40" cy="150" r="40" fill="url(#lt)" opacity="0"/><circle id="s7l2" cx="260" cy="150" r="40" fill="url(#lt)" opacity="0"/>
+<rect x="38" y="150" width="3" height="80" fill="#222"/><rect x="258" y="150" width="3" height="80" fill="#222"/>
+<g id="s7run"><circle cx="190" cy="372" r="4" fill="#000"/><path d="M186 376 L194 376 L195 392 L185 392Z" fill="#000"/><path d="M186 392 L180 404 M194 392 L199 402" stroke="#000" stroke-width="2.5"/></g>
+<rect id="s7fog" width="300" height="533" fill="#fff" opacity=".04"/></svg></div></div>
+
+<!-- 8 -->
+<div class="scene" id="s8"><div class="cam"><svg viewBox="0 0 300 533">
+<g id="s8a"><circle cx="150" cy="270" r="140" fill="#1a1508" opacity=".6"/><g transform="translate(150 270) scale(2.4)"><circle r="40" fill="#0b0b0b" stroke="#bbb" stroke-width="3"/><g stroke="#ccc" stroke-width="1.5"><path d="M0 -36 V-31 M36 0 H31 M0 36 V31 M-36 0 H-31"/></g><path d="M0 0 L0 -28" stroke="#fff" stroke-width="3"/><path d="M0 0 L-22 12" stroke="#fff" stroke-width="3.5"/><circle r="2.5" fill="#E8AB1F"/></g></g>
+<g id="s8b"><circle cx="150" cy="280" r="150" fill="#1a1508" opacity=".6"/><g transform="translate(150 280) scale(2)"><ellipse rx="70" ry="22" fill="#1d1d1d" stroke="#555"/><ellipse rx="50" ry="14" fill="#2a2a2a"/><circle cx="-15" cy="-4" r="9" fill="#5a6b3a"/><rect x="5" y="-10" width="26" height="10" rx="4" fill="#8a6a4a"/></g></g>
+<g id="s8c"><g transform="translate(150 300) scale(1.55)"><rect x="-90" y="-10" width="180" height="60" rx="8" fill="#1a2328" stroke="#3a4a52"/><g fill="#cde" opacity=".55"><rect x="-60" y="-4" width="14" height="10" transform="rotate(20 -53 1)"/><rect x="20" y="-2" width="12" height="9" transform="rotate(-15 26 2)"/><rect x="50" y="2" width="12" height="9"/><rect x="-30" y="6" width="12" height="9" transform="rotate(30 -24 10)"/></g><g id="s8foot"><path d="M-20 -80 L-14 -6 L6 -6 L10 -80Z" fill="#000"/></g></g></g></svg></div></div>
+
+<!-- 9 -->
+<div class="scene" id="s9"><div class="cam"><svg viewBox="0 0 300 533">
+<g fill="#121212"><rect x="0" y="120" width="300" height="18"/><rect x="0" y="170" width="300" height="18"/><rect x="0" y="220" width="300" height="18"/><rect x="0" y="270" width="300" height="18"/><rect x="0" y="320" width="300" height="18"/><rect x="0" y="370" width="300" height="18"/></g>
+<g fill="#181818" id="s9seats"></g></svg></div></div>
+
+<!-- 10 -->
+<div class="scene" id="s10"><div class="cam"><svg viewBox="0 0 300 533"><defs><linearGradient id="rim" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#FFE48A" stop-opacity=".5"/><stop offset=".4" stop-color="#000" stop-opacity="0"/></linearGradient></defs>
+<rect id="s10rim" width="300" height="533" fill="url(#rim)"/>
+<path d="M0 420 L300 420 L300 533 L0 533Z" fill="#0d0d0d"/>
+<g id="s10fig" style="transform-origin:150px 420px"><g fill="#000" stroke="#6b5a2a" stroke-width="1"><circle cx="160" cy="300" r="17"/><path d="M128 320 Q150 312 178 318 L196 372 L180 380 L172 350 L150 360 L130 420 L110 420 Z"/><path d="M178 318 L210 400 L200 404 L170 340Z"/><path d="M150 360 L180 420 L160 420 L140 380Z"/></g></g>
+<rect x="198" y="398" width="34" height="6" fill="#333"/><circle cx="198" cy="401" r="12" fill="#222"/><circle cx="232" cy="401" r="12" fill="#222"/></svg></div>
+<div id="s10strike" style="position:absolute;left:62px;width:176px;height:2px;top:487px;background:#777;transform-origin:left;transform:scaleX(0);z-index:5"></div></div>
+
+<!-- 11 -->
+<div class="scene" id="s11"><div class="cam"><svg viewBox="0 0 300 533"><defs><radialGradient id="gl"><stop offset="0" stop-color="#E8AB1F" stop-opacity=".3"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs>
+<ellipse id="s11glow" cx="150" cy="266" rx="200" ry="120" fill="url(#gl)"/></svg></div>
+<div id="s11shine" style="position:absolute;top:200px;height:140px;width:40px;left:-60px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-20deg);z-index:6;mix-blend-mode:overlay"></div></div>
+
+<!-- 12 -->
+<div class="scene" id="s12"><div class="cam"><svg viewBox="0 0 300 533"><g stroke="#E8AB1F" stroke-width="2" fill="#0f0d07" id="s12bricks">
+<rect x="40" y="440" width="70" height="26"/><rect x="115" y="440" width="70" height="26"/><rect x="190" y="440" width="70" height="26"/>
+<rect x="77" y="410" width="70" height="26"/><rect x="152" y="410" width="70" height="26"/>
+<rect x="40" y="380" width="70" height="26"/><rect x="115" y="380" width="70" height="26"/><rect x="190" y="380" width="70" height="26"/>
+<rect x="77" y="350" width="70" height="26"/><rect x="152" y="350" width="70" height="26"/></g>
+<g id="s12hand" fill="#000" stroke="#444"><path d="M200 230 L240 230 L250 300 L210 302Z"/></g></svg></div></div>
+
+<!-- 13 -->
+<div class="scene" id="s13"><div class="cam"><svg viewBox="0 0 300 533"><defs><radialGradient id="dw" cx=".5" cy=".3"><stop offset="0" stop-color="#FFE48A" stop-opacity=".7"/><stop offset=".35" stop-color="#E8AB1F" stop-opacity=".2"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs>
+<rect id="s13light" width="300" height="533" fill="url(#dw)"/>
+<path d="M0 533 L130 180 L170 180 L300 533Z" fill="#0c0c0c"/>
+<g id="s13fig" style="transform-origin:150px 450px"><g fill="#000"><circle cx="150" cy="300" r="14"/><path d="M136 312 L164 312 L170 380 L130 380Z"/><path id="s13legs" d="M136 378 L118 440 L130 444 L148 386Z M162 378 L178 425 L168 452 L178 455 L190 425 L168 376Z"/><path d="M138 320 L116 360 M162 320 L182 352" stroke="#000" stroke-width="8"/></g></g></svg></div></div>
+
+<!-- 14 -->
+<div class="scene" id="s14"><div class="cam"><svg viewBox="0 0 300 533"><defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#050505"/><stop offset=".55" stop-color="#1a1408"/><stop offset=".62" stop-color="#050505"/></linearGradient></defs>
+<rect width="300" height="533" fill="url(#sky)"/>
+<path d="M0 380 L70 300 L110 330 L170 230 L230 310 L260 290 L300 330 L300 533 L0 533Z" fill="#000"/>
+<path id="s14edge" d="M110 330 L170 230 L230 310" fill="none" stroke="#E8AB1F" stroke-width="2.5" stroke-dasharray="240" stroke-dashoffset="240" style="filter:drop-shadow(0 0 6px #E8AB1F)"/></svg></div>
+<div id="s14end" style="position:absolute;inset:0;opacity:0;z-index:20;background:#060606">
+<img src="../storyboard/logo-ad.png" style="position:absolute;left:0;right:0;margin:auto;top:205px;width:150px;filter:drop-shadow(0 0 16px rgba(232,171,31,.5))">
+<div style="position:absolute;top:330px;left:0;right:0;text-align:center;font-size:15px;font-weight:800;letter-spacing:.04em">@Ubaid.Apex.Discipline</div></div></div>
+
+<div id="vig"></div><div id="grain"></div>
+<div id="cap"></div><div id="capline"></div>
+<img id="wm" src="../storyboard/logo-ad.png"><div id="handle">@Ubaid.Apex.Discipline</div>
+<div id="flash"></div><div id="black"></div>
+
+<script>
+// ---- timing from VO (speech segments detected in vo.mp3) ----
+const SEG=[
+['Motivation will leave you.',0.05,1.46],['Probably tonight.',2.23,3.19],
+['It is a spark.',4.13,5.03],['It burns hot,',5.67,6.57],['then it dies.',7.03,7.80],
+['Cristiano Ronaldo did not build his career on feelings.',8.97,12.35],
+['He was a skinny kid from Madeira.',13.19,15.02],['Too thin,',15.82,16.91],['they said.',17.67,18.29],['Too weak.',19.37,20.26],
+['At fifteen,',20.50,21.25],['a heart problem almost ended everything.',21.35,22.80],
+['He did not wait to feel ready.',23.92,25.56],['He trained when the stadium was empty.',26.24,28.11],
+['He slept on schedule.',28.62,29.87],['He ate with purpose.',30.45,31.65],['He recovered like it was his job.',32.26,34.06],
+['Nobody claps for that.',35.05,36.38],
+['When you are alone,',37.30,38.30],['at your lowest,',38.40,39.32],['motivation does not show up.',39.79,41.41],
+['Discipline does.',42.40,43.51],
+['It is not a mood.',44.45,45.47],['It is a floor you build,',45.94,47.32],['one boring day at a time.',47.80,49.61],
+['So stop waiting to feel it.',50.62,52.22],['Do the work anyway.',52.89,54.13],
+['The summit isn\'t given.',55.23,56.46],['It is earned.',57.00,57.82],['Stay disciplined.',58.70,59.70]];
+const S=i=>SEG[i][1], E=i=>SEG[i][2];
+const CUTS=[0,3.66,8.38,12.77,20.38,23.36,25.90,28.37,34.56,36.84,41.90,43.98,50.11,54.68,64.5];
+const TOTAL=63.5;
+
+// caption words
+const CAP=[];SEG.forEach(([txt,a,b])=>{const ws=txt.split(' ');const L=ws.reduce((s,w)=>s+w.length+1,0);let t=a;ws.forEach(w=>{const d=(b-a)*(w.length+1)/L;CAP.push([w,t,t+d]);t+=d;});});
+
+// headlines: [scene, css, text, t0, t1, mode]  (*word* = gold, ~word~ = dim)
+const H=[
+[1,'top:96px;font-size:30px','MOTIVATION|WILL *LEAVE*|YOU.',S(0),E(0),'pop'],
+[1,'bottom:56px;font-size:19px','PROBABLY TONIGHT.',S(1),E(1),'pop'],
+[2,'top:84px;font-size:28px','IT IS A|*SPARK.*',S(2),E(2),'pop'],
+[2,'bottom:50px;font-size:24px','THEN IT ~DIES.~',S(4),E(4),'pop'],
+[3,'top:76px;font-size:26px','CRISTIANO|RONALDO',S(5),S(5)+1.1,'pop'],
+[3,'bottom:68px;font-size:17px','NOT BUILT ON',S(5)+1.8,E(5)-0.6,'pop'],
+[3,'bottom:34px;font-size:26px','*FEELINGS.*',E(5)-0.6,E(5),'slam'],
+[4,'top:70px;font-size:15px;font-weight:800','A SKINNY KID|FROM MADEIRA.',S(6),E(6),'pop'],
+[4,'top:390px;font-size:30px','TOO *THIN.*',S(7),S(7)+0.35,'slam'],
+[4,'top:424px;font-size:30px','TOO *WEAK.*',S(9),S(9)+0.35,'slam'],
+[5,'bottom:56px;font-size:19px','ALMOST ENDED|*EVERYTHING.*',S(11)+0.4,E(11),'pop'],
+[6,'bottom:70px;font-size:30px','HE DID NOT|*WAIT.*',S(12),S(12)+0.8,'pop'],
+[7,'top:430px;font-size:22px','THE STADIUM|WAS *EMPTY.*',S(13)+0.6,E(13),'pop'],
+[8,'bottom:80px;font-size:40px','*SLEEP.*',S(14),S(14)+0.2,'slam'],
+[8,'bottom:80px;font-size:40px','*EAT.*',S(15),S(15)+0.2,'slam'],
+[8,'bottom:80px;font-size:40px','*RECOVER.*',S(16),S(16)+0.2,'slam'],
+[9,'top:440px;font-size:16px;font-weight:800;letter-spacing:.12em','NOBODY CLAPS.',S(17)+0.2,S(17)+0.2,'fade'],
+[10,'top:86px;font-size:24px','AT YOUR|*LOWEST,*',S(19),E(19),'pop'],
+[10,'bottom:30px;font-size:18px','MOTIVATION|DOES NOT SHOW UP.',S(20),E(20),'pop'],
+[11,'top:228px;font-size:41px','*DISCIPLINE.*',S(21),S(21)+0.2,'slam'],
+[11,'top:292px;font-size:13px;letter-spacing:.3em;color:#aaa','DOES.',S(21)+0.7,S(21)+0.7,'fade'],
+[12,'top:84px;font-size:21px','NOT A ~MOOD.~',S(22),E(22),'pop'],
+[12,'top:130px;font-size:30px','A *FLOOR*|YOU BUILD.',S(23),E(23),'pop'],
+[12,'top:256px;font-size:12px;letter-spacing:.14em;font-weight:800;color:#bbb','ONE BORING DAY AT A TIME.',S(24),E(24),'pop'],
+[13,'top:84px;font-size:18px;color:#bbb','STOP WAITING.',S(25),S(25)+0.8,'pop'],
+[13,'bottom:56px;font-size:32px','DO THE|*WORK.*',S(26),E(26)-0.3,'pop'],
+[14,'top:80px;font-size:17px','THE SUMMIT|ISN\'T *GIVEN.*',S(27),E(27),'pop'],
+[14,'top:140px;font-size:22px','IT IS *EARNED.*',S(28),E(28),'pop'],
+[14,'top:330px;font-size:26px','*STAY* *DISCIPLINED.*',S(29),E(29)-0.3,'pop'],
+];
+const WORDS=[];
+H.forEach(([sc,css,txt,t0,t1,mode],hi)=>{
+  const d=document.createElement('div');d.className='head';d.style.cssText=css;d.dataset.h=hi;
+  const lines=txt.split('|');const all=[];
+  lines.forEach((ln,li)=>{ln.split(' ').forEach((w,wi)=>{const sp=document.createElement('span');sp.className='w';
+    let cls='';if(/^\*.*\*$/.test(w)){cls='g';w=w.slice(1,-1);}else if(/^~.*~$/.test(w)){cls='dimw';w=w.slice(1,-1);}
+    sp.textContent=w;if(cls==='g')sp.classList.add('g');sp.dataset.dim=cls==='dimw'?1:0;
+    d.appendChild(sp);all.push(sp);d.appendChild(document.createTextNode(' '));});
+    if(li<lines.length-1)d.appendChild(document.createElement('br'));});
+  all.forEach((sp,i)=>{const tt=all.length>1?t0+(t1-t0)*0.72*i/(all.length-1):t0;WORDS.push({sp,t:tt,mode,sc});});
+  document.getElementById('s'+sc).appendChild(d);
+});
+// seats for scene 9
+{let g=document.getElementById('s9seats');let h='';for(let r=0;r<6;r++)for(let c=0;c<12;c++)h+=`<rect x="${10+c*24}" y="${102+r*50}" width="16" height="18"/>`;g.innerHTML=h;}
+
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ease=x=>1-Math.pow(1-cl(x),3);
+function rnd(n){const x=Math.sin(n*12.9898)*43758.5453;return x-Math.floor(x);}
+function sceneAt(t){for(let i=0;i<14;i++)if(t>=CUTS[i]&&t<CUTS[i+1])return i+1;return 14;}
+
+window.setTime=function(t){
+  const sc=sceneAt(t);const a=CUTS[sc-1],b=Math.min(CUTS[sc],TOTAL);const lt=t-a,dur=b-a,p=lt/dur;
+  const f=Math.round(t*30);
+  for(let i=1;i<=14;i++)$('s'+i).style.display=i===sc?'block':'none';
+  const cam=$('s'+sc).querySelector('.cam');
+  // camera: settle-in on cut + slow push
+  const settle=1+0.05*(1-ease(lt/0.25));
+  let push=1+0.06*p;let tx=0,ty=0;
+  // words
+  WORDS.forEach(o=>{if(o.sc!==sc)return;const q=(t-o.t);const sp=o.sp;
+    if(q<0){sp.style.opacity=0;return;}
+    if(o.mode==='slam'){const k=ease(q/0.18);sp.style.opacity=cl(q/0.06);sp.style.transform=`scale(${1.9-0.9*k})`;}
+    else if(o.mode==='fade'){sp.style.opacity=ease(q/0.5);sp.style.transform='none';}
+    else{const k=ease(q/0.16);sp.style.opacity=cl(q/0.08);sp.style.transform=`translateY(${8*(1-k)}px) scale(${1.18-0.18*k})`;}
+    if(sp.dataset.dim==='1'){sp.style.color=q>0.25?'#5a5a5a':'#F5F5F5';}
+  });
+  // shake helper
+  let shake=0;
+  const hit=(tt,amp=3,len=0.25)=>{const q=t-tt;if(q>=0&&q<len)shake=Math.max(shake,amp*(1-q/len));};
+  // per-scene fx
+  if(sc===1){$('s1spot').style.opacity=0.85+0.15*rnd(f);}
+  if(sc===2){const out=cl((t-S(4))/0.5);const fl=1+0.08*Math.sin(t*23)+0.05*rnd(f);
+    $('s2flame').style.transform=`scale(${(1-out)*fl},${(1-out)*fl*(1+0.06*Math.sin(t*17))})`;
+    $('s2glow').style.opacity=(1-out)*(0.85+0.15*rnd(f+3))*cl(lt/0.15);
+    $('s2smoke').style.opacity=out*0.7*(1-cl((t-S(4)-1)/1.2));$('s2smoke').style.transform=`translateY(${-30*out}px)`;
+    if(lt<0.12)$('flash').style.opacity=0;}
+  if(sc===3){$('s3fig').style.transform=`scale(${1-0.12*p})`;$('s3line').style.transform=`scaleX(${ease((t-S(5)-0.5)/0.6)})`;hit(E(5)-0.6,2.5);}
+  if(sc===4){tx=(rnd(f)-0.5)*2.2;ty=(rnd(f+7)-0.5)*2.2;cam.style.opacity=0.82+0.18*rnd(f+11);$('s4scratch').setAttribute('x',10+280*rnd(Math.floor(f/3)));
+    $('s4ball').setAttribute('cx',186+40*p);hit(S(7),4);hit(S(9),5);}
+  else cam.style.opacity=1;
+  if(sc===5){const k=ease((t-S(10))/0.9);$('s5num').style.opacity=cl((t-S(10))/0.1);$('s5num').textContent=Math.round(15*k);
+    $('s5ecg').style.strokeDashoffset=700*(1-cl(lt/2.6));}
+  if(sc===6){const k=ease((t-S(12)+0.2)/0.6);$('s6hl').setAttribute('cy',140-30*k);$('s6hr').setAttribute('cy',132-30*k);$('s6hl').setAttribute('cx',80-15*k);$('s6hr').setAttribute('cx',240+15*k);
+    $('s6lace').setAttribute('d',`M150 255 Q120 ${180-25*k} ${90-15*k} ${150-30*k} M150 255 Q190 ${170-25*k} ${230+15*k} ${140-30*k}`);hit(S(12)+0.4,3);}
+  if(sc===7){$('s7l1').style.opacity=t>S(13)?0.7+0.3*rnd(f):0;$('s7l2').style.opacity=t>S(13)+0.6?0.7+0.3*rnd(f+5):0;
+    $('s7run').setAttribute('transform',`translate(${-60*p} ${-10*p})`);push=1.04+0.04*p;}
+  if(sc===8){const k=t<S(15)?'a':t<S(16)?'b':'c';['a','b','c'].forEach(x=>$('s8'+x).style.display=x===k?'inline':'none');
+    // only show current headline
+    [...$('s8').querySelectorAll('.head')].forEach((h,i)=>h.style.display=(['a','b','c'][i]===k)?'block':'none');
+    const st=k==='a'?S(14):k==='b'?S(15):S(16);push=1.12-0.08*ease((t-st)/0.5);
+    $('s8foot').setAttribute('transform',`translate(0 ${k==='c'?40*ease((t-S(16))/1):0})`);
+    hit(S(14),3);hit(S(15),3);hit(S(16),3);}
+  if(sc===9){push=1.02;}
+  if(sc===10){$('s10rim').style.opacity=0.7+0.3*Math.sin(t*2.2);$('s10fig').style.transform=`scale(1,${1-0.015*Math.sin(t*5)})`;
+    $('s10strike').style.transform=`scaleX(${ease((t-E(20)+0.1)/0.35)})`;
+    const fade=cl((t-E(20)+0.1)/0.4);[...$('s10').querySelectorAll('.head')][1].style.opacity=1-0.6*fade;}
+  if(sc===11){$('s11shine').style.left=(-60+400*cl((t-S(21)-0.25)/0.7))+'px';$('s11glow').style.opacity=cl((t-S(21))/0.2);hit(S(21),7,0.4);
+    $('flash').style.opacity=0.55*(1-cl((t-S(21))/0.15))*(t>=S(21)?1:0);push=1+0.03*p;}
+  else $('flash').style.opacity=0;
+  if(sc===12){const br=[...$('s12bricks').children];br.forEach((r,i)=>{const tt=a+0.3+i*0.55;r.style.opacity=cl((t-tt)/0.1);r.setAttribute('transform',`translate(0 ${-14*(1-ease((t-tt)/0.2))})`);});
+    const i=cl(Math.floor((lt-0.3)/0.55),0,9);const tgt=br[i];const yy=+tgt.getAttribute('y')-70;const xx=+tgt.getAttribute('x')-195;
+    const ph=((lt-0.3)%0.55)/0.55;$('s12hand').setAttribute('transform',`translate(${xx} ${yy+20*Math.sin(ph*Math.PI)})`);
+    $('s12hand').style.opacity=lt<5.6?1:1-cl((lt-5.6)/0.3);}
+  if(sc===13){const k=ease(p);$('s13fig').style.transform=`translateY(${-60*k}px) scale(${1-0.45*k})`;$('s13light').style.opacity=0.6+0.4*p;
+    $('s13legs').setAttribute('transform',`translate(150 410) scale(${Math.sin(t*14)>0?1:-1} 1) translate(-150 -410)`);}
+  if(sc===14){$('s14edge').style.strokeDashoffset=240*(1-ease((t-a)/1.6));
+    const endT=60.4;const e=cl((t-endT)/0.6);$('s14end').style.opacity=e;
+    [...$('s14').querySelectorAll('.head')].forEach(h=>h.style.opacity=1-e);
+    $('s14end').querySelector('img').style.transform=`scale(${1.12-0.12*ease((t-endT)/1.2)})`;}
+  // overlays
+  const hideUI=sc===14&&t>60.2;
+  $('wm').style.opacity=hideUI?0:0.55;$('handle').style.opacity=hideUI?0:1;
+  $('black').style.opacity=cl((t-(TOTAL-0.7))/0.7);
+  cam.style.transform=`translate(${tx+(rnd(f+1)-0.5)*shake*2}px,${ty+(rnd(f+2)-0.5)*shake*2}px) scale(${push*settle})`;
+  $('grain').style.transform=`translate(${Math.floor(rnd(f+9)*60)-30}px,${Math.floor(rnd(f+19)*60)-30}px)`;
+  // caption
+  let cw='';for(const [w,s0,s1] of CAP){if(t>=s0&&t<s1+0.15)cw=w;}
+  $('cap').textContent=hideUI?'':cw.toLowerCase();$('capline').style.opacity=cw&&!hideUI?1:0;
+};
+window.TOTAL=TOTAL;
+setTime(0);
+</script></body></html>

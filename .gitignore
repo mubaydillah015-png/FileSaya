@@ -1,3 +1,6 @@
 output/*.mp4
 preview/render/vo_track.wav
 preview/render/*.wav
+render/video_only.mp4
+render/sfx_bed.wav
+render/render.log
