@@ -214,6 +214,104 @@
       outline-offset: 3px;
     }
 
+    /* ===== DROPDOWN (tombol berisi daftar link) ===== */
+    .dropdown {
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .dropdown > summary {
+      list-style: none;
+      cursor: pointer;
+      user-select: none;
+      margin-bottom: 0;
+    }
+
+    .dropdown > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    /* panah bawah sebagai penanda bisa dibuka */
+    .dropdown > summary::after {
+      content: "▾";
+      font-size: 1.1rem;
+    }
+
+    .dropdown[open] > summary {
+      background: var(--red);
+      border-color: var(--red);
+      color: #fff;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .dropdown[open] > summary::after {
+      opacity: 1;
+      transform: rotate(180deg);
+    }
+
+    .sub-links {
+      padding: 6px 12px 14px;
+      background: var(--bg-soft);
+      border: 1px solid var(--card-border);
+      border-left: 4px solid var(--red);
+      border-top: none;
+      border-radius: 0 0 var(--radius) var(--radius);
+      animation: drop-in 0.2s ease;
+    }
+
+    @keyframes drop-in {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .sub-label {
+      margin: 12px 4px 8px;
+      font-family: "Special Elite", "Courier New", monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--paper);
+      opacity: 0.8;
+    }
+
+    .sub-btn {
+      display: block;
+      margin-bottom: 8px;
+      padding: 11px 14px;
+      border: 1px dashed var(--card-border);
+      border-radius: 10px;
+      background: var(--card);
+      color: var(--text);
+      font-size: 0.92rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .sub-btn:last-child {
+      margin-bottom: 0;
+    }
+
+    .sub-btn:hover,
+    .sub-btn:focus-visible {
+      background: var(--red);
+      border-color: var(--red);
+      border-style: solid;
+      color: #fff;
+    }
+
+    .sub-btn:active {
+      background: var(--red-dark);
+    }
+
+    .sub-btn:focus-visible {
+      outline: 2px solid var(--paper);
+      outline-offset: 2px;
+    }
+
     /* ===== FOOTER ===== */
     .footer {
       margin-top: 40px;
@@ -268,7 +366,28 @@
 
       <!-- Kategori 1 -->
       <h2 class="category">💼 Upgrade Skill &amp; Karir</h2>
-      <a class="btn" href="#" target="_blank" rel="noopener">🎓 Belajar Skill Baru di Kelas.com / Kelas.work</a>
+      <!-- Tombol dropdown: klik untuk membuka daftar kelas Kelas.work -->
+      <details class="dropdown">
+        <summary class="btn">🎓 Belajar Skill Baru di Kelas.com / Kelas.work</summary>
+        <div class="sub-links">
+          <p class="sub-label">Pilihan Kelas</p>
+          <a class="sub-btn" href="https://kelas.work/classes/mengelola-program-perekrutan-karyawan?refshare=sharelink_mengelola-program-perekrutan-karyawan" target="_blank" rel="noopener">Mengelola Program Perekrutan Karyawan</a>
+          <a class="sub-btn" href="https://kelas.work/classes/microsoft-office-untuk-tugas-administratif?refshare=sharelink_microsoft-office-untuk-tugas-administratif" target="_blank" rel="noopener">Microsoft Office untuk Tugas Administratif</a>
+          <a class="sub-btn" href="https://kelas.work/classes/mengatur-operasional-toko?refshare=sharelink_mengatur-operasional-toko" target="_blank" rel="noopener">Mengatur Operasional Toko</a>
+          <a class="sub-btn" href="https://kelas.work/classes/mengoptimalkan-totalitas-hati-dan-pikiran-di-tempat-kerja?refshare=sharelink_mengoptimalkan-totalitas-hati-dan-pikiran-di-tempat-kerja" target="_blank" rel="noopener">Mengoptimalkan Totalitas Hati dan Pikiran di Tempat Kerja</a>
+          <a class="sub-btn" href="https://kelas.work/classes/langkah-praktis-menjaga-dan-meningkatkan-kesehatan-mental?refshare=sharelink_langkah-praktis-menjaga-dan-meningkatkan-kesehatan-mental" target="_blank" rel="noopener">Langkah Praktis Menjaga dan Meningkatkan Kesehatan Mental</a>
+          <a class="sub-btn" href="https://kelas.work/classes/memimpin-dengan-sepenuh-hati?refshare=sharelink_memimpin-dengan-sepenuh-hati" target="_blank" rel="noopener">Memimpin dengan Sepenuh Hati</a>
+          <a class="sub-btn" href="https://kelas.work/classes/menjadi-pribadi-yang-produktif-dan-efektif?refshare=sharelink_menjadi-pribadi-yang-produktif-dan-efektif" target="_blank" rel="noopener">Menjadi Pribadi yang Produktif dan Efektif</a>
+          <a class="sub-btn" href="https://kelas.work/classes/kemampuan-public-speaking-untuk-pr-profesional?refshare=sharelink_kemampuan-public-speaking-untuk-pr-profesional" target="_blank" rel="noopener">Kemampuan Public Speaking untuk PR Profesional</a>
+          <a class="sub-btn" href="https://kelas.work/classes/belajar-menjadi-konten-kreator-yang-kreatif?refshare=sharelink_belajar-menjadi-konten-kreator-yang-kreatif" target="_blank" rel="noopener">Belajar Menjadi Konten Kreator yang Kreatif</a>
+          <a class="sub-btn" href="https://kelas.work/classes/menangani-peminjam-bermasalah-dalam-perbankan?refshare=sharelink_menangani-peminjam-bermasalah-dalam-perbankan" target="_blank" rel="noopener">Menangani Peminjam Bermasalah dalam Perbankan</a>
+
+          <p class="sub-label">Paket Berlangganan</p>
+          <a class="sub-btn" href="https://kelas.work/subscription" target="_blank" rel="noopener">Paket Berlangganan 1 Bulan</a>
+          <a class="sub-btn" href="https://kelas.work/subscription" target="_blank" rel="noopener">Paket Berlangganan 3 Bulan</a>
+          <a class="sub-btn" href="https://kelas.work/subscription" target="_blank" rel="noopener">Paket Berlangganan 12 Bulan</a>
+        </div>
+      </details>
       <a class="btn" href="#" target="_blank" rel="noopener">🚀 Ikut Bootcamp &amp; Mentoring di dibimbing.id</a>
 
       <!-- Kategori 2 -->
