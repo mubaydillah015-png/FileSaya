@@ -312,6 +312,88 @@
       outline-offset: 2px;
     }
 
+    /* ===== KOTAK KODE PROMO ===== */
+    .promo {
+      margin: 10px 0 4px;
+      padding: 14px;
+      border: 1px solid rgba(232, 217, 181, 0.25);
+      border-radius: 12px;
+      background: rgba(232, 217, 181, 0.06);
+    }
+
+    .promo-title {
+      font-family: "Special Elite", "Courier New", monospace;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--paper);
+      margin-bottom: 6px;
+    }
+
+    .promo-text {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .promo-code {
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
+    }
+
+    .code {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 12px;
+      border: 2px dashed var(--red);
+      border-radius: 10px;
+      background: var(--bg);
+      font-family: "Special Elite", "Courier New", monospace;
+      font-size: clamp(0.92rem, 4.2vw, 1.1rem);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #fff;
+      user-select: all;
+      white-space: nowrap;
+      min-width: 0;
+    }
+
+    .copy-btn {
+      flex-shrink: 0;
+      padding: 10px 12px;
+      white-space: nowrap;
+      border: none;
+      border-radius: 10px;
+      background: var(--red);
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .copy-btn:hover { background: var(--red-dark); }
+    .copy-btn:active { transform: scale(0.96); }
+    .copy-btn.copied { background: #2E7D4F; }
+
+    .copy-btn:focus-visible {
+      outline: 2px solid var(--paper);
+      outline-offset: 2px;
+    }
+
+    .promo-steps {
+      margin: 12px 0 0 18px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .promo-steps li { margin-bottom: 2px; }
+    .promo-steps strong { color: var(--text); font-weight: 600; }
+
     /* ===== FOOTER ===== */
     .footer {
       margin-top: 40px;
@@ -370,6 +452,21 @@
       <details class="dropdown">
         <summary class="btn">🎓 Belajar Skill Baru di Kelas.com / Kelas.work</summary>
         <div class="sub-links">
+          <!-- Kotak kode promo -->
+          <div class="promo">
+            <p class="promo-title">🎟️ Kode Promo Khusus</p>
+            <p class="promo-text">Gunakan kode di bawah ini saat pembayaran kelas maupun paket berlangganan untuk mendapatkan potongan harga.</p>
+            <div class="promo-code">
+              <span class="code" id="promoCode">KELASGROWID</span>
+              <button type="button" class="copy-btn" data-copy="KELASGROWID" aria-live="polite">Salin Kode</button>
+            </div>
+            <ol class="promo-steps">
+              <li>Salin kode promo di atas.</li>
+              <li>Pilih kelas atau paket berlangganan di bawah.</li>
+              <li>Tempel kode pada kolom <strong>Kode Voucher / Promo</strong> saat checkout.</li>
+            </ol>
+          </div>
+
           <p class="sub-label">Pilihan Kelas</p>
           <a class="sub-btn" href="https://kelas.work/classes/mengelola-program-perekrutan-karyawan?refshare=sharelink_mengelola-program-perekrutan-karyawan" target="_blank" rel="noopener">Mengelola Program Perekrutan Karyawan</a>
           <a class="sub-btn" href="https://kelas.work/classes/microsoft-office-untuk-tugas-administratif?refshare=sharelink_microsoft-office-untuk-tugas-administratif" target="_blank" rel="noopener">Microsoft Office untuk Tugas Administratif</a>
@@ -414,5 +511,44 @@
     </footer>
 
   </main>
+
+  <!-- Tombol "Salin Kode": menyalin kode promo ke clipboard -->
+  <script>
+    document.querySelectorAll(".copy-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var text = btn.getAttribute("data-copy");
+
+        function done() {
+          var original = "Salin Kode";
+          btn.textContent = "✓ Tersalin!";
+          btn.classList.add("copied");
+          setTimeout(function () {
+            btn.textContent = original;
+            btn.classList.remove("copied");
+          }, 2000);
+        }
+
+        // Cara cadangan untuk browser lama / saat dibuka sebagai file lokal
+        function fallback() {
+          var temp = document.createElement("textarea");
+          temp.value = text;
+          temp.setAttribute("readonly", "");
+          temp.style.position = "absolute";
+          temp.style.left = "-9999px";
+          document.body.appendChild(temp);
+          temp.select();
+          try { document.execCommand("copy"); } catch (e) {}
+          document.body.removeChild(temp);
+          done();
+        }
+
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(text).then(done, fallback);
+        } else {
+          fallback();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
