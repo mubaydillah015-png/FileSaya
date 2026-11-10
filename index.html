@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Koper Bukti Papiyyar — kuis, misteri, fun-fact, dan rekomendasi pilihan.">
+  <meta name="theme-color" content="#16181B">
+  <title>Papiyyar | Koper Bukti</title>
+
+  <!-- Font: Bebas Neue (nama), Special Elite (mesin tik), Inter (teks tombol) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Special+Elite&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===== Variabel warna (palet brand Papiyyar) ===== */
+    :root {
+      --bg:           #16181B;  /* latar arang gelap */
+      --bg-soft:      #1F2226;
+      --card:         #24272C;  /* warna dasar tombol */
+      --card-border:  #343840;
+      --ink:          #272A2F;
+      --red:          #B4213D;  /* merah Papiyyar */
+      --red-dark:     #8E1A30;
+      --paper:        #E8D9B5;  /* sepia kertas */
+      --text:         #F2EEE6;
+      --text-muted:   #A9A49A;
+      --radius:       14px;
+      --max-width:    600px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      color: var(--text);
+      background-color: var(--bg);
+      /* vignette + sorot lampu dari atas, kesan ruang interogasi */
+      background-image:
+        radial-gradient(ellipse 70% 45% at 50% 0%, rgba(180, 33, 61, 0.18), transparent 70%),
+        radial-gradient(ellipse at 50% 120%, rgba(0, 0, 0, 0.6), transparent 60%),
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.012) 0 1px, transparent 1px 3px);
+      background-attachment: fixed;
+      line-height: 1.5;
+      display: flex;
+      justify-content: center;
+      padding: 48px 16px 40px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--max-width);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ===== 1. HEADER / PROFIL ===== */
+    .profile {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .avatar-wrap {
+      position: relative;
+      width: 116px;
+      height: 116px;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      padding: 4px;
+      background: conic-gradient(var(--red), var(--paper), var(--red));
+      box-shadow: 0 0 0 6px rgba(180, 33, 61, 0.12), 0 12px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .avatar {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--ink);
+      border: 3px solid var(--bg);
+      /* teks alt tetap rapi jika gambar belum ada */
+      color: var(--text-muted);
+      font-size: 11px;
+      text-align: center;
+      line-height: 100px;
+      overflow: hidden;
+    }
+
+    .name {
+      font-family: "Bebas Neue", Impact, "Arial Narrow", sans-serif;
+      font-weight: 400;
+      font-size: clamp(2.6rem, 9vw, 3.4rem);
+      letter-spacing: 0.06em;
+      line-height: 1;
+      color: var(--text);
+      text-shadow: 3px 3px 0 var(--red-dark);
+    }
+
+    .name .accent {
+      color: var(--red);
+      text-shadow: 3px 3px 0 #000;
+    }
+
+    .bio {
+      max-width: 440px;
+      margin: 14px auto 0;
+      font-family: "Special Elite", "Courier New", monospace;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* ===== 2. KATEGORI (pemisah) ===== */
+    .links {
+      width: 100%;
+    }
+
+    .category {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 34px 0 14px;
+      font-family: "Special Elite", "Courier New", monospace;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--paper);
+      white-space: nowrap;
+    }
+
+    /* garis putus-putus di kiri & kanan, seperti garis polisi */
+    .category::before,
+    .category::after {
+      content: "";
+      flex: 1;
+      height: 2px;
+      background: repeating-linear-gradient(90deg, var(--red) 0 10px, transparent 10px 16px);
+      opacity: 0.8;
+    }
+
+    /* ===== TOMBOL ===== */
+    .btn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: var(--max-width);
+      min-height: 58px;
+      margin: 0 auto 12px;
+      padding: 14px 44px;
+      border: 1px solid var(--card-border);
+      border-left: 4px solid var(--red);
+      border-radius: var(--radius);
+      background: var(--card);
+      color: var(--text);
+      font-size: 1rem;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.35);
+      transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+                  transform 0.15s ease, box-shadow 0.15s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* panah kecil di kanan */
+    .btn::after {
+      content: "→";
+      position: absolute;
+      right: 18px;
+      font-weight: 500;
+      opacity: 0.45;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      background: var(--red);
+      border-color: var(--red);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 var(--red-dark), 0 10px 24px rgba(180, 33, 61, 0.35);
+    }
+
+    .btn:hover::after,
+    .btn:focus-visible::after {
+      opacity: 1;
+      transform: translateX(4px);
+    }
+
+    .btn:active {
+      background: var(--red-dark);
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--paper);
+      outline-offset: 3px;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      margin-top: 40px;
+      font-family: "Special Elite", "Courier New", monospace;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+      opacity: 0.7;
+    }
+
+    .stamp {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 4px 12px;
+      border: 2px solid var(--red);
+      border-radius: 4px;
+      color: var(--red);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      transform: rotate(-4deg);
+    }
+
+    /* ===== Responsif ===== */
+    @media (max-width: 380px) {
+      body { padding-top: 36px; }
+      .btn { font-size: 0.92rem; padding: 12px 38px; min-height: 54px; }
+      .category { font-size: 0.8rem; letter-spacing: 0.08em; }
+      .bio { font-size: 0.88rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .btn, .btn::after { transition: none; }
+      .btn:hover, .btn:active { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+
+    <!-- 1. HEADER / PROFIL -->
+    <header class="profile">
+      <div class="avatar-wrap">
+        <!-- Ganti src dengan path foto profil Anda -->
+        <img class="avatar" src="brand/papiyyar_logo.jpg" alt="Logo Sapi Madura" width="108" height="108">
+      </div>
+      <h1 class="name">PAPI<span class="accent">YY</span>AR</h1>
+      <p class="bio">🧳 Koper Bukti Papiyyar! Pecahkan misterinya, asah logikamu, dan temukan kepingan petunjuk serta rekomendasi pilihan di bawah ini.</p>
+    </header>
+
+    <!-- 2. KATEGORI & TOMBOL -->
+    <nav class="links" aria-label="Tautan Papiyyar">
+
+      <!-- Kategori 1 -->
+      <h2 class="category">💼 Upgrade Skill &amp; Karir</h2>
+      <a class="btn" href="#" target="_blank" rel="noopener">🎓 Belajar Skill Baru di Kelas.com / Kelas.work</a>
+      <a class="btn" href="#" target="_blank" rel="noopener">🚀 Ikut Bootcamp &amp; Mentoring di dibimbing.id</a>
+
+      <!-- Kategori 2 -->
+      <h2 class="category">🔍 Buku &amp; Referensi</h2>
+      <a class="btn" href="#" target="_blank" rel="noopener">📚 Cari Referensi Bacaan di Bukunesia</a>
+      <a class="btn" href="#" target="_blank" rel="noopener">📖 Berburu Buku Best Seller di Gramedia</a>
+
+      <!-- Kategori 3 -->
+      <h2 class="category">🛒 Belanja</h2>
+      <a class="btn" href="#" target="_blank" rel="noopener">🛍️ Cek Promo Pilihan di Shopee</a>
+      <a class="btn" href="#" target="_blank" rel="noopener">🎵 Belanja Praktis di TikTok Shop</a>
+      <a class="btn" href="#" target="_blank" rel="noopener">🎁 Kejar Flash Sale di Lazada</a>
+      <a class="btn" href="#" target="_blank" rel="noopener">📦 Ambil Ekstra Diskon di Blibli</a>
+
+      <!-- Kategori 4 -->
+      <h2 class="category">💳 Finansial</h2>
+      <a class="btn" href="#" target="_blank" rel="noopener">💸 Top Up &amp; Klaim Promo DANA</a>
+
+    </nav>
+
+    <footer class="footer">
+      <div class="stamp">KASUS BELUM DITUTUP</div>
+      <p>© 2026 @PAPIYYAR</p>
+    </footer>
+
+  </main>
+</body>
+</html>
