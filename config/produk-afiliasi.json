@@ -1,0 +1,18 @@
+{
+  "_petunjuk": "Isi daftar produk afiliasi di sini. Claude hanya boleh memakai produk yang ada di file ini untuk naskah dan caption MoFu/BoFu. Jangan isi data rahasia (password/token). Hapus contoh di bawah setelah diisi.",
+  "produk": [
+    {
+      "id": "contoh-01",
+      "nama": "CONTOH - Nama produk",
+      "kategori": "misal: keamanan rumah / keuangan / kesehatan",
+      "manfaat_utama": "Satu kalimat: masalah apa yang dipecahkan",
+      "cocok_untuk_topik": ["penipuan online", "rumah pintar"],
+      "platform_toko": "Shopee / Tokopedia / TikTok Shop / lainnya",
+      "link_afiliasi": "https://...",
+      "kode_promo": "",
+      "boleh_dipakai_di": ["MoFu", "BoFu"],
+      "catatan": "Larangan klaim, kata yang tidak boleh dipakai, dll.",
+      "aktif": false
+    }
+  ]
+}

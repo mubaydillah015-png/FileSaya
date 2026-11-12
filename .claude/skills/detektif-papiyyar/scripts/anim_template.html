@@ -1,0 +1,225 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Instrument+Serif:ital@1&family=Space+Grotesk:wght@500;600&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;background:#000;overflow:hidden}
+svg{display:block}
+.mono{font-family:'Special Elite',monospace}
+.cap{font-family:'Space Grotesk';font-weight:600}
+.kw{font-family:'Instrument Serif';font-style:italic}
+.hd{font-family:'Anton'}
+</style></head><body>
+<svg id="v" width="360" height="640" viewBox="0 0 360 640" xmlns="http://www.w3.org/2000/svg"></svg>
+<script>
+const R='#B5203A',INK='#1A1A1A',PAPER='#F2EDE4',DARK='#23262C',KRAFT='#E8D9B5';
+// === GANTI: batas waktu scene (detik) dari align_vo.py -> 'bounds'. Jumlah scene = B.length-1 ===
+const B=[0,2.44,6.13,13.03,18.48,21.56,23.69,30.64,37.12,44.66,49.04,54.64,59.86,64.37];
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const outBack=p=>{const c1=1.9,c3=c1+1;return 1+c3*Math.pow(p-1,3)+c1*Math.pow(p-1,2)};
+const outCubic=p=>1-Math.pow(1-p,3);
+let LT=0,T0=0,TG=0; // local time, scene start, global time
+const L=abs=>abs-T0; // absolute -> local
+const DEFS=`<defs>
+<filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity=".35"/></filter>
+<clipPath id="lc"><circle cx="0" cy="0" r="15"/></clipPath>
+<clipPath id="lc2"><circle cx="0" cy="0" r="50"/></clipPath>
+<pattern id="news" width="60" height="14" patternUnits="userSpaceOnUse"><rect width="60" height="14" fill="#e9e4d8"/><rect x="2" y="4" width="50" height="2" fill="#9a958a"/><rect x="2" y="9" width="38" height="2" fill="#b3ad9f"/></pattern>
+</defs>`;
+const P=s=>`<g filter="url(#sh)">${s}</g>`;
+// ---- animation wrapper: appears at absolute time t ----
+function A(svg,t,type='pop',d=0.38){
+ const lt=TG-t; if(lt<0) return '';
+ const p=cl(lt/d);
+ let tr='',op=1;
+ if(type=='pop'){tr=`scale(${Math.max(0.001,outBack(p))})`;op=cl(p*3)}
+ else if(type=='fade'){op=p}
+ else if(type=='up'){tr=`translate(0px,${(1-outCubic(p))*60}px)`;op=cl(p*2)}
+ else if(type=='down'){tr=`translate(0px,${-(1-outBack(p))*120}px)`;op=cl(p*3)}
+ else if(type=='left'){tr=`translate(${(1-outCubic(p))*-200}px,0px)`;op=cl(p*2)}
+ else if(type=='right'){tr=`translate(${(1-outCubic(p))*200}px,0px)`;op=cl(p*2)}
+ else if(type=='stamp'){tr=`scale(${1+(1-outCubic(p))*1.6}) rotate(${(1-p)*-10}deg)`;op=cl(p*2.5)}
+ return `<g style="transform-box:fill-box;transform-origin:center;transform:${tr||'none'}" opacity="${op}">${svg}</g>`;
+}
+const draw=(len,t,d=0.5)=>{const p=cl((TG-t)/d);return `stroke-dasharray="${len}" stroke-dashoffset="${len*(1-outCubic(p))}"`};
+function bg(type){const f={paper:'paper.png',cork:'cork.png',sepia:'sepia.png',dark:'dark.png'}[type];
+ if(type=='red')return `<rect width="360" height="640" fill="${R}"/>`;
+ return `<image href="${f}" x="0" y="0" width="360" height="640" preserveAspectRatio="none"/>`}
+function torn(x,y,w,h,fill,seed=1){let pts=[],n=14;for(let i=0;i<=n;i++){pts.push([x+w*i/n,y+((i*7+seed*3)%5)-2])}for(let i=0;i<=n;i++){pts.push([x+w-((i*5+seed)%5),y+h*i/n])}for(let i=n;i>=0;i--){pts.push([x+w*i/n,y+h+((i*3+seed*5)%6)-3])}for(let i=n;i>=0;i--){pts.push([x+((i*7+seed)%5),y+h*i/n])}return `<polygon points="${pts.map(p=>p.join(',')).join(' ')}" fill="${fill}"/>`}
+function tape(x,y,r=-8){return `<rect x="${x}" y="${y}" width="46" height="14" fill="#f3e9b8" opacity=".85" transform="rotate(${r} ${x+23} ${y+7})"/>`}
+function label(t,light){return A(`<text x="18" y="30" class="mono" font-size="10" fill="${light?'#d9cfc0':'#777'}">${t}</text>`,T0,'fade',0.3)}
+// caption with word-by-word reveal; words appear starting at abs time ts
+function caption(a,kw,b,light,ts,y=66,step=0.16){
+ const c=light?'#fff':INK,kc=light?'#ff8a9a':R;
+ const words=[];a.split(' ').filter(Boolean).forEach(w=>words.push([w,0]));kw.split(' ').filter(Boolean).forEach(w=>words.push([w,1]));(b||'').split(' ').filter(Boolean).forEach(w=>words.push([w,0]));
+ let s=`<text x="18" y="${y}" class="cap" font-size="19" fill="${c}">`;
+ words.forEach(([w,k],i)=>{const t=ts+i*step;const p=cl((TG-t)/0.22);const op=0.12+0.88*p;const dy=(1-outCubic(p))*6;
+  s+=`<tspan ${k?`class="kw" font-size="22" fill="${kc}"`:`class="cap" fill="${c}"`} opacity="${op}" dy="0">${i?' ':''}${w}</tspan>`});
+ return s+'</text>';
+}
+function head(t,ts,y=150,size=40,fill=INK){return A(`<text x="18" y="${y}" class="hd" font-size="${size}" fill="${fill}">${t}</text>`,ts,'pop',0.4)}
+function logo(){return `<g transform="translate(330,26)" opacity=".75"><image href="logo-papiyyar.jpg" x="-15" y="-15" width="30" height="30" clip-path="url(#lc)"/></g>`}
+function badge(n,ts,x=300,y=118){return A(P(`<rect x="${x}" y="${y}" width="30" height="34" rx="3" fill="${INK}"/><text x="${x+15}" y="${y+27}" class="hd" font-size="24" fill="#fff" text-anchor="middle">${n}</text>`),ts)}
+// ---------- detective ----------
+function det(pose='idle',x=205,y=440,s=1){
+ const skin='#F1C9A0',coat='#B98E55',coatD='#8E6A3C',hat='#2B2B2B';
+ const bob=Math.sin(TG*2.4)*2.5, sway=Math.sin(TG*1.3)*1.2;
+ let arm='';
+ const hand=(cx,cy)=>`<circle cx="${cx}" cy="${cy}" r="11" fill="${skin}" stroke="#fff" stroke-width="3"/>`;
+ const sleeve=(d)=>`<path d="${d}" stroke="#fff" stroke-width="27" fill="none" stroke-linecap="round"/><path d="${d}" stroke="${coat}" stroke-width="21" fill="none" stroke-linecap="round"/>`;
+ const w=Math.sin(TG*3)*4;
+ if(pose=='mag'){arm=sleeve(`M40 150 Q10 120 ${20+w} 80`)+hand(20+w,76)+`<line x1="${20+w}" y1="70" x2="${12+w}" y2="40" stroke="${INK}" stroke-width="6"/><circle cx="${8+w}" cy="26" r="20" fill="#cfe6ee" fill-opacity=".55" stroke="${INK}" stroke-width="6"/>`}
+ else if(pose=='shrug'){arm=sleeve('M40 150 Q5 140 10 105')+hand(10,100)+sleeve('M120 150 Q155 140 150 105')+hand(150,100)}
+ else if(pose=='palm'){arm=sleeve('M40 150 Q30 90 65 62')+hand(66,58)}
+ else if(pose=='point'){arm=sleeve(`M40 150 Q0 120 ${-25+w} ${95-w}`)+hand(-28+w,92-w)}
+ else if(pose=='glasses'){arm=sleeve('M40 150 Q30 110 62 92')+hand(64,90)}
+ else if(pose=='key'){const r=TG*400%360;arm=sleeve('M40 150 Q10 120 18 92')+hand(18,88)+`<g transform="translate(18,72) rotate(${r})"><g transform="translate(0,-14)"><circle r="9" fill="none" stroke="${R}" stroke-width="5"/><rect x="-2.5" y="8" width="5" height="22" fill="${R}"/><rect x="2" y="22" width="8" height="4" fill="${R}"/></g></g>`}
+ else {arm=sleeve('M40 150 Q25 175 35 200')}
+ const blink=(TG%3.7)<0.12;
+ const squint=pose=='squint'||pose=='glasses';
+ const eyes=blink?`<path d="M63 64h10M89 64h10" stroke="${INK}" stroke-width="2.5"/>`:squint?`<path d="M62 64h12M88 64h12" stroke="${INK}" stroke-width="3"/>`:`<circle cx="68" cy="64" r="3" fill="${INK}"/><circle cx="94" cy="64" r="3" fill="${INK}"/>`;
+ const glassY=pose=='glasses'?80:64;
+ return `<g transform="translate(${x},${y+bob}) scale(${s}) rotate(${sway} 80 230)" filter="url(#sh)">
+ <path d="M18 230 L30 140 Q80 115 130 140 L145 230 Z" fill="#fff"/>
+ <path d="M24 226 L35 145 Q80 122 125 145 L139 226 Z" fill="${coat}"/>
+ <path d="M80 135 L60 226 M80 135 L100 226" stroke="${coatD}" stroke-width="4"/>
+ <path d="M58 138 L80 175 L102 138 Z" fill="#fff"/><path d="M74 150 L80 170 L86 150 Z" fill="${R}"/>
+ <path d="M42 145 L62 140 L70 185 Z M118 145 L98 140 L90 185 Z" fill="${coatD}"/>
+ <circle cx="81" cy="70" r="40" fill="#fff"/><circle cx="81" cy="70" r="35" fill="${skin}"/>
+ <path d="M50 85 Q81 112 112 85 Q100 108 81 110 Q62 108 50 85Z" fill="#6b4a32"/>
+ ${eyes}
+ <g fill="none" stroke="${INK}" stroke-width="2.5"><circle cx="68" cy="${glassY}" r="10"/><circle cx="94" cy="${glassY}" r="10"/><path d="M78 ${glassY}h6"/></g>
+ <path d="M60 50 l14 -3 M88 47 l14 3" stroke="${INK}" stroke-width="3"/>
+ <path d="M20 46 Q81 30 142 46 Q140 54 81 50 Q22 54 20 46Z" fill="#fff"/>
+ <path d="M24 44 Q81 32 138 44 Q136 50 81 47 Q26 50 24 44Z" fill="${hat}"/>
+ <path d="M45 42 Q48 6 81 4 Q114 6 117 42Z" fill="${hat}" stroke="#fff" stroke-width="3"/>
+ <path d="M46 34 Q81 26 116 34 L117 41 Q81 34 45 41Z" fill="${R}"/>
+ ${arm}</g>`;
+}
+// pose switch pop
+function D(poses,x=205,y=440,s=1){let cur=poses[0][1],ct=T0;for(const [t,p] of poses){if(TG>=t){cur=p;ct=t}}const p=cl((TG-ct)/0.2);const k=0.94+0.06*outBack(p);return `<g style="transform-box:fill-box;transform-origin:center bottom;transform:scale(${k})">${det(cur,x,y,s)}</g>`}
+// ---------- props ----------
+const bulb=(x,y,s=1,on=true)=>`<g transform="translate(${x},${y}) scale(${s})" filter="url(#sh)">${on?`<circle cx="0" cy="-8" r="46" fill="#ffe27a" opacity=".35"/>`:''}<path d="M-26 -10 A28 28 0 1 1 26 -10 Q16 6 14 22 L-14 22 Q-16 6 -26 -10Z" fill="${on?'#FFF3B0':'#ddd'}" stroke="#fff" stroke-width="4"/><rect x="-14" y="22" width="28" height="16" rx="3" fill="#8b8b8b" stroke="#fff" stroke-width="3"/><path d="M-8 4 L-4 -10 L0 4 L4 -10 L8 4" stroke="#c9a23a" fill="none" stroke-width="2.5"/><rect x="-6" y="-46" width="12" height="7" fill="${R}"/></g>`;
+const door=(x,y,open=0)=>P(`<rect x="${x}" y="${y}" width="110" height="170" fill="#5a3b22" stroke="#fff" stroke-width="5"/><rect x="${x+6}" y="${y+6}" width="98" height="158" fill="#111"/><path d="M${x+6} ${y+6} L${x+104-open} ${y+16} L${x+104-open} ${y+154} L${x+6} ${y+164}Z" fill="#8a5a33" stroke="#fff" stroke-width="3"/><circle cx="${x+92-open}" cy="${y+88}" r="5" fill="#e0c060"/>`);
+const polaroid=(x,y,r,inner,cap)=>`<g transform="rotate(${r} ${x+55} ${y+65})">${P(`<rect x="${x}" y="${y}" width="110" height="130" fill="#fff"/><rect x="${x+8}" y="${y+8}" width="94" height="90" fill="#cfc7b8"/>`)}${inner}<text x="${x+55}" y="${y+120}" class="mono" font-size="10" text-anchor="middle" fill="#555">${cap}</text></g>`;
+const stamp=(x,y,t,r=-12,size=18)=>`<g transform="rotate(${r} ${x} ${y})"><rect x="${x-t.length*size*.32-8}" y="${y-size}" width="${t.length*size*.64+16}" height="${size+10}" fill="none" stroke="${R}" stroke-width="3"/><text x="${x}" y="${y}" class="hd" font-size="${size}" fill="${R}" text-anchor="middle">${t}</text></g>`;
+const qm=(x,y,s=22,o=.5,ph=0)=>`<text x="${x}" y="${y+Math.sin(TG*2+ph)*5}" class="hd" font-size="${s}" fill="#9a8f7c" opacity="${o}">?</text>`;
+const icon=(k,x,y,s=1)=>{const g={
+ lock:`<rect x="-16" y="-4" width="32" height="26" rx="4" fill="${INK}"/><path d="M-10 -4 V-14 A10 10 0 0 1 10 -14 V-4" stroke="${INK}" stroke-width="5" fill="none"/><circle cy="9" r="4" fill="${R}"/>`,
+ cam:`<rect x="-20" y="-12" width="34" height="24" rx="4" fill="${INK}"/><circle cx="-3" cy="0" r="7" fill="#9ad"/><path d="M14 -6 L24 -12 V12 L14 6Z" fill="${INK}"/>`,
+ spk:`<rect x="-14" y="-20" width="28" height="40" rx="12" fill="${INK}"/><circle cy="6" r="7" fill="#666"/><circle cy="-10" r="3" fill="${R}"/>`,
+ bulb:`<circle cy="-4" r="13" fill="#FFE27A" stroke="${INK}" stroke-width="2"/><rect x="-6" y="8" width="12" height="9" fill="#888"/>`,
+ phone:`<rect x="-12" y="-22" width="24" height="44" rx="4" fill="${INK}"/><rect x="-9" y="-17" width="18" height="32" fill="#7aa"/>`,
+ laptop:`<rect x="-22" y="-16" width="44" height="28" rx="2" fill="${INK}"/><rect x="-18" y="-12" width="36" height="20" fill="#7aa"/><rect x="-28" y="12" width="56" height="6" rx="2" fill="#555"/>`,
+ hdd:`<rect x="-16" y="-20" width="32" height="40" rx="4" fill="#555"/><circle cy="-2" r="9" fill="#999"/>`,
+ tv:`<rect x="-24" y="-16" width="48" height="32" rx="3" fill="${INK}"/><rect x="-20" y="-12" width="40" height="24" fill="#456"/>`,
+ ring:`<circle r="12" fill="none" stroke="#d4af37" stroke-width="5"/><path d="M-5 -14 L0 -22 L5 -14Z" fill="#9ef"/>`,
+ router:`<rect x="-34" y="-10" width="68" height="22" rx="6" fill="${INK}"/><line x1="-22" y1="-10" x2="-28" y2="-34" stroke="${INK}" stroke-width="4"/><line x1="22" y1="-10" x2="28" y2="-34" stroke="${INK}" stroke-width="4"/><circle cx="-14" cy="1" r="3" fill="${(TG*4|0)%2?'#4c4':'#272'}"/><circle cx="-4" cy="1" r="3" fill="#4c4"/><circle cx="6" cy="1" r="3" fill="${R}"/>`,
+ moon:`<circle r="15" fill="#444"/><circle cx="7" cy="-5" r="13" fill="#fff"/>`,
+ bag:`<rect x="-16" y="-10" width="32" height="24" rx="3" fill="#6b4a32"/><path d="M-7 -10 V-16 H7 V-10" stroke="#6b4a32" stroke-width="4" fill="none"/>`,
+ camoff:`<rect x="-20" y="-12" width="34" height="24" rx="4" fill="${INK}"/><path d="M14 -6 L24 -12 V12 L14 6Z" fill="${INK}"/><line x1="-24" y1="-16" x2="24" y2="16" stroke="${R}" stroke-width="4"/>`,
+ cart:`<path d="M-20 -12 H-12 L-6 10 H16 L20 -6 H-10" stroke="${INK}" stroke-width="4" fill="none"/><circle cx="-4" cy="16" r="3" fill="${INK}"/><circle cx="14" cy="16" r="3" fill="${INK}"/>`}[k];
+ return `<g transform="translate(${x},${y}) scale(${s})" filter="url(#sh)"><circle r="30" fill="#fff"/>${g}</g>`};
+const check=(x,y)=>`<g transform="translate(${x},${y})"><circle r="9" fill="#2e8b57"/><path d="M-4 0 L-1 4 L5 -4" stroke="#fff" stroke-width="2.5" fill="none"/></g>`;
+const xmark=(x,y,s,t)=>`<path d="M${x-s} ${y-s} L${x+s} ${y+s}" stroke="${R}" stroke-width="7" stroke-linecap="round" ${draw(s*3,t,0.15)}/><path d="M${x+s} ${y-s} L${x-s} ${y+s}" stroke="${R}" stroke-width="7" stroke-linecap="round" ${draw(s*3,t+0.12,0.15)}/>`;
+const thread=(pts,t)=>{const a=pts.split(' ').map(p=>p.split(',').map(Number));let len=0;for(let i=1;i<a.length;i++)len+=Math.hypot(a[i][0]-a[i-1][0],a[i][1]-a[i-1][1]);return TG<t?'':`<polyline points="${pts}" fill="none" stroke="${R}" stroke-width="2.5" ${draw(len,t,0.5)}/>`};
+const pin=(x,y)=>`<circle cx="${x}" cy="${y}" r="5" fill="${R}" stroke="#fff" stroke-width="1.5"/>`;
+function receipt(x,y,lines,hl,ts,lineStep=0.35){const n=lines.length;const p=cl((TG-ts)/(n*lineStep));if(TG<ts)return '';const shown=Math.ceil(p*n);const H=shown*26+20;
+ let s=P(`<path d="M${x} ${y} h170 v${H} ${Array.from({length:17},(_,i)=>`l-10 ${i%2?-6:6}`).join(' ')}Z" fill="#fff"/>`);
+ lines.slice(0,shown).forEach((l,i)=>{s+=`<text x="${x+12}" y="${y+28+i*26}" class="mono" font-size="12" fill="${INK}">${l}</text>`});
+ hl.forEach(([i,t])=>{if(TG>=t)s+=`<ellipse cx="${x+85}" cy="${y+24+i*26}" rx="84" ry="13" fill="none" stroke="${R}" stroke-width="2.5" transform="rotate(-2 ${x+85} ${y+24+i*26})" ${draw(560,t,0.4)}/>`});return s}
+const envelope=(x,y,s=1,shake=0)=>`<g transform="translate(${x+Math.sin(TG*40)*shake},${y}) scale(${s}) rotate(${Math.sin(TG*33)*shake})" filter="url(#sh)"><rect x="-80" y="-50" width="160" height="100" fill="${KRAFT}"/><path d="M-80 -50 L0 10 L80 -50" fill="#d8c79c" stroke="#bfae84" stroke-width="2"/><circle cx="0" cy="8" r="14" fill="${R}"/><rect x="-36" y="22" width="72" height="22" fill="#fff"/><text x="0" y="40" class="hd" font-size="18" fill="${R}" text-anchor="middle">HOW?</text></g>`;
+
+/* === SCENE: CONTOH dari episode 'Jebakan Rumah Pintar' (ToFu). Tulis ulang sesuai storyboard baru. ===
+   Setiap S.push(()=>...) = satu scene, mengembalikan string SVG. Waktu memakai detik ABSOLUT video (TG).
+   Helper penting: bg(), label(), caption(a,kw,b,terang,mulai), head(teks,mulai,y,ukuran,warna), A(svg,mulai,jenis),
+   D([[waktu,pose],...],x,y,skala) untuk detektif, stamp(), receipt(), icon(), bulb(), door(), xmark(), thread(), badge(). */
+const S=[];
+const folder=(x,y,t)=>P(`<path d="M${x} ${y+14} h60 l10 -14 h90 v14 h20 v150 h-180z" fill="${KRAFT}"/><rect x="${x}" y="${y+14}" width="180" height="150" fill="#e2cf9f"/>`)+`<rect x="${x+20}" y="${y+40}" width="140" height="26" fill="#fff"/><text x="${x+90}" y="${y+58}" class="mono" font-size="11" text-anchor="middle" fill="${INK}">${t}</text><text x="${x+90}" y="${y+120}" class="hd" font-size="40" text-anchor="middle" fill="${INK}" opacity=".15">#2</text>`;
+// 1
+S.push(()=>bg('cork')+label('// 01 · TKP',1)+caption('Kasus kemarin belum','selesai.','',1,0.05)+head('KASUS #2',0.4,140,44,'#fff')+A(folder(90,190,'JEBAKAN RUMAH PINTAR'),0.15,'down')+A(stamp(180,330,'BELUM SELESAI',-10,20),1.3,'stamp',0.25)+`<g style="transform:translateY(${(1-outCubic(cl((TG-0.3)/0.5)))*260}px)">${D([[0,'mag']],200,420)}</g>`);
+// 2
+S.push(()=>{const op=cl((TG-2.6)/1.2)*40;const inside=TG>4.33;
+ return bg('cork')+label('// 01 · TKP',1)+caption('Pintu itu dibuka...','dari dalam rumah.','',1,2.6,66,0.25)+head('DARI DALAM?',4.4,150,46,'#ff8a9a')+A(tape(150,180)+door(125,190,op),2.5,'pop')
+ +(inside?A(`<path d="M175 300 L95 300" stroke="${R}" stroke-width="6"/><path d="M95 300 l14 -10 v20z" fill="${R}"/><text x="210" y="420" class="mono" font-size="12" fill="#e8dcc8" text-anchor="middle">dalam → luar</text>`,4.35,'left',0.3):'')+D([[T0,'squint']],205,440,.9)});
+// 3
+S.push(()=>{const empty=TG>6.9;
+ return bg('paper')+label('// 02 · kronologi')+caption('tidak ada siapa pun di','bawah.','',0,6.9,66,0.2)+head(TG<11.8?'LANTAI BAWAH: KOSONG':'KAMERA: MATI',TG<11.8?7.2:11.9,140,32)
+ +A(P(`<path d="M50 230 L180 165 L310 230 V420 H50Z" fill="${KRAFT}" stroke="#fff" stroke-width="4"/>`)+`<line x1="50" y1="320" x2="310" y2="320" stroke="#8a6a40" stroke-width="5"/><text x="60" y="250" class="mono" font-size="10" fill="#7a6a50">LANTAI ATAS</text><text x="60" y="340" class="mono" font-size="10" fill="#7a6a50">LANTAI BAWAH</text>`,6.2,'up')
+ +(empty?A(`<g opacity=".55"><circle cx="180" cy="360" r="13" fill="none" stroke="${INK}" stroke-width="2.5" stroke-dasharray="5 4"/><path d="M160 412 Q180 368 200 412" fill="none" stroke="${INK}" stroke-width="2.5" stroke-dasharray="5 4"/></g><text x="230" y="385" class="hd" font-size="30" fill="${R}">0</text>`,7.0,'fade'):'')
+ +A(`<rect x="130" y="275" width="100" height="30" rx="8" fill="#9fb3c8"/><circle cx="145" cy="282" r="12" fill="#F1C9A0"/><text x="${200}" y="${265-((TG*12)%10)}" class="hd" font-size="20" fill="#9a8f7c">Z z</text>`,9.5,'pop')
+ +A(icon('cam',270,270,.6),11.0,'pop')+(TG>11.9?xmark(270,270,18,11.9):'')+D([[T0,'idle'],[11.9,'squint']],215,455,.85)});
+// 4
+S.push(()=>bg('paper')+label('// 02 · kronologi')+caption('catatan kunci tetap','keras kepala.','',0,13.2,66,0.2)+head('LOG: DARI DALAM',15.9,140,36,R)+receipt(40,170,['LOG KUNCI','01.55 UNLOCK','arah: DARI DALAM','pengguna: ???'],[[2,16.0]],13.3,0.4)+A(stamp(250,410,'KERAS KEPALA',8,18),14.6,'stamp',0.25)+D([[T0,'squint']],215,455,.85));
+// 5
+S.push(()=>{const gl=0.5+0.5*Math.sin(TG*5);
+ return bg('dark')+label('// 02 · kronologi',1)+caption('siapa yang berdiri di balik','pintu?','',1,19.0,66,0.2)+head('SIAPA?',19.4,160,64,'#ff8a9a')
+ +A(`<rect x="110" y="200" width="140" height="220" fill="#2a2a2a" stroke="#555" stroke-width="4"/><g opacity="${0.35+0.4*gl}"><circle cx="180" cy="285" r="22" fill="#000" stroke="#777"/><path d="M145 420 Q180 300 215 420Z" fill="#000" stroke="#777"/></g><text x="180" y="300" class="hd" font-size="36" fill="${R}" text-anchor="middle">?</text>`,18.6,'fade',0.5)
+ +qm(50,260,36,.5,0)+qm(300,240,30,.5,1)+qm(290,450,26,.4,2)+D([[T0,'squint']],215,455,.85)});
+// 6
+S.push(()=>bg('paper')+label('// 03 · edukasi')+caption('Detektif selalu cek','dua hal.','',0,21.7,66,0.18)+head('2 LANGKAH DETEKTIF',21.8,140,34)
+ +A(P(`<rect x="40" y="190" width="125" height="150" rx="8" fill="#fff"/>`)+`<rect x="60" y="210" width="40" height="46" rx="4" fill="${INK}"/><text x="80" y="246" class="hd" font-size="32" fill="#fff" text-anchor="middle">1</text><text x="102" y="300" class="hd" font-size="17" text-anchor="middle">CEK WI-FI</text>`,22.1,'pop')
+ +A(P(`<rect x="195" y="190" width="125" height="150" rx="8" fill="#fff"/>`)+`<rect x="215" y="210" width="40" height="46" rx="4" fill="${R}"/><text x="235" y="246" class="hd" font-size="32" fill="#fff" text-anchor="middle">2</text><text x="257" y="300" class="hd" font-size="17" text-anchor="middle">CEK JAM</text>`,22.5,'pop')+D([[T0,'mag']],215,455,.85));
+// 7
+S.push(()=>{const rows=[['HP Ayah','ok',24.6],['Laptop kerja','ok',25.0],['TV ruang tengah','ok',25.4],['lampu-8F2A','??',26.0]];
+ let list='';rows.forEach(([n,s,t],i)=>{const y=232+i*40;list+=A(`<rect x="70" y="${y}" width="190" height="32" rx="6" fill="${s=='??'?'#fbe3e6':'#f4f4f4'}"/><text x="82" y="${y+21}" class="mono" font-size="12" fill="${INK}">${n}</text>`+(s=='ok'?check(244,y+16):`<text x="244" y="${y+22}" class="hd" font-size="16" fill="${R}" text-anchor="middle">??</text>`),t,'right')});
+ return bg('paper')+label('// 03 · edukasi')+caption('Pertama, buka','daftar perangkat.','',0,23.9,66,0.2)+head('CEK WI-FI RUMAHMU',24.4,140,34)+badge(1,23.8)
+ +A(P(`<rect x="55" y="170" width="220" height="250" rx="22" fill="${INK}"/><rect x="65" y="190" width="200" height="215" rx="6" fill="#fff"/>`)+`<text x="165" y="215" class="cap" font-size="13" text-anchor="middle" fill="${INK}">Perangkat terhubung</text>`,23.8,'up')+list
+ +(TG>27.2?`<ellipse cx="165" cy="368" rx="108" ry="22" fill="none" stroke="${R}" stroke-width="3" ${draw(700,27.2,0.4)}/>`:'')+A(stamp(180,470,'TAMU TAK DIUNDANG',-8,20),28.6,'stamp',0.25)+D([[T0,'idle'],[27.2,'point']],215,455,.85)});
+// 8
+S.push(()=>{const x0=40,w=280,h2x=h=>x0+w*h/24;
+ return bg('paper')+label('// 03 · edukasi')+caption('rumah seharusnya','sepi.','',0,35.0,66,0.2)+head('COCOKKAN JAM',31.2,140,36)+badge(2,30.8)
+ +A(P(`<rect x="${x0-10}" y="190" width="${w+20}" height="180" rx="8" fill="#fff"/>`)+`<text x="180" y="215" class="cap" font-size="13" text-anchor="middle">Riwayat kunci vs jam tidur</text><line x1="${x0}" y1="300" x2="${x0+w}" y2="300" stroke="${INK}" stroke-width="2"/>${[0,6,12,18,24].map(h=>`<line x1="${h2x(h)}" y1="295" x2="${h2x(h)}" y2="305" stroke="${INK}" stroke-width="2"/><text x="${h2x(h)}" y="322" class="mono" font-size="10" text-anchor="middle">${String(h).padStart(2,'0')}</text>`).join('')}`,30.8,'up')
+ +A(`<rect x="${h2x(0)}" y="245" width="${h2x(6)-h2x(0)}" height="40" fill="#9fb3c8" opacity=".8"/><rect x="${h2x(23)}" y="245" width="${h2x(24)-h2x(23)}" height="40" fill="#9fb3c8" opacity=".8"/><text x="${h2x(3)}" y="240" class="mono" font-size="10" text-anchor="middle">jam tidur</text>`,32.4,'fade')
+ +A(`<circle cx="${h2x(7.5)}" cy="300" r="7" fill="#2e8b57"/><circle cx="${h2x(18)}" cy="300" r="7" fill="#2e8b57"/>`,33.0,'pop')
+ +A(`<circle cx="${h2x(2)}" cy="265" r="9" fill="${R}"/><text x="${h2x(2)+12}" y="352" class="mono" font-size="11" fill="${R}">01.55 UNLOCK</text>`,34.3,'pop')+A(stamp(180,430,'TIDAK COCOK',-6,24),35.4,'stamp',0.25)+D([[T0,'idle'],[34.3,'squint']],215,455,.85)});
+// 9
+S.push(()=>bg('paper')+label('// 04 · twist')+caption('dianggap perintah dari','dalam.','',0,42.4,66,0.2)+head('JAWABANNYA:',37.3,140,38,R)
+ +A(P(`<rect x="30" y="170" width="300" height="250" rx="10" fill="#fff"/>`)+`<rect x="42" y="182" width="276" height="226" rx="8" fill="none" stroke="${R}" stroke-width="3" stroke-dasharray="10 6"/>`,37.4,'up')
+ +A(`<text x="180" y="204" class="hd" font-size="16" text-anchor="middle" fill="${R}">WI-FI RUMAH = "DALAM"</text>`,39.4,'pop')
+ +A(icon('router',180,265,.9),39.3)+A(icon('phone',80,350,.7),40.0)+A(icon('laptop',150,365,.7),40.3)+A(icon('bulb',220,365,.7),40.6)+A(icon('lock',285,330,.9),41.0)
+ +thread('80,350 180,265',40.0)+thread('150,365 180,265',40.3)+thread('220,365 180,265',40.6)+thread('180,265 285,330',41.0)
+ +A(stamp(285,395,'DARI DALAM',-8,14),42.5,'stamp',0.25)+D([[T0,'idle'],[39.3,'point']],215,455,.85));
+// 10
+S.push(()=>{const glow=TG>47.9;
+ return bg('paper')+label('// 04 · twist')+caption('Sudah di jaringan,','lewat lampu.','',0,46.5,66,0.18)+head('TIDAK PERLU MASUK',44.9,140,34)
+ +A(P(`<path d="M120 300 L215 230 L310 300 V430 H120Z" fill="${KRAFT}" stroke="#fff" stroke-width="4"/><rect x="195" y="370" width="36" height="60" fill="#8a5a33"/>`),44.7,'up')
+ +A(`<g fill="${INK}"><circle cx="60" cy="355" r="13"/><path d="M42 430 Q60 375 78 430Z"/></g>`,44.8,'right')+(TG>45.3?`<path d="M85 400 L185 400" stroke="${R}" stroke-width="4" stroke-dasharray="8 6"/>`+xmark(135,400,14,45.4):'')
+ +(TG>46.5?`<path d="M72 345 Q140 250 200 280" stroke="${R}" stroke-width="3" fill="none" ${draw(220,46.5,0.8)}/>`:'')
+ +A(`<g transform="translate(250,320) scale(.7)">${bulb(0,0,1,true)}</g>`+(glow?`<circle cx="250" cy="315" r="${40+Math.sin(TG*10)*4}" fill="none" stroke="${R}" stroke-width="4"/>`:''),46.2,'pop')
+ +A(`<text x="250" y="270" class="hd" font-size="18" fill="${R}" text-anchor="middle">LEWAT SINI</text>`,47.9,'stamp',0.2)+D([[T0,'idle']],230,470,.75)});
+// 11 PAPIYYAR
+S.push(()=>{const lt=TG-T0;const slash=cl(lt/0.15);const punch=lt<0.5?1+0.35*(1-outCubic(cl(lt/0.5))):1;
+ const stut=(lt>0.15&&lt<0.45)?[[0,0],[8,-6],[-7,5],[5,4]][Math.floor(lt*30)%4]:[0,0];const shake=lt<0.6?Math.sin(lt*80)*4*(1-lt/0.6):0;
+ const second=TG>=52.2;const op=second?cl((TG-52.4)/0.6)*50:0;
+ let body=`<rect width="360" height="640" fill="${R}"/><path d="M-20 520 L380 120" stroke="#fff" stroke-width="16"/><path d="M-20 545 L380 145" stroke="${DARK}" stroke-width="6"/>`
+ +A(torn(-10,-10,90,90,PAPER,1),T0+0.1,'left',0.2)+A(torn(280,-10,90,90,PAPER,2),T0+0.13,'right',0.2)+A(torn(-10,560,90,90,PAPER,3),T0+0.16,'left',0.2)+A(torn(280,560,90,90,PAPER,4),T0+0.19,'right',0.2)
+ +A(`<g transform="rotate(-8 180 150)"><text x="180" y="165" class="hd" font-size="76" fill="#fff" text-anchor="middle" stroke="${DARK}" stroke-width="3" paint-order="stroke">PAPI<tspan fill="${DARK}" stroke="#fff">YY</tspan>AR!</text></g>`,T0+0.12,'stamp',0.22);
+ if(!second){body+=A(`<g transform="rotate(-3 180 250)">${P(`<rect x="70" y="225" width="220" height="48" fill="${DARK}"/>`)}<text x="180" y="260" class="hd" font-size="30" fill="#fff" text-anchor="middle">DIBOBOL</text></g>`,49.9,'pop')+(TG>50.6?xmark(180,250,26,50.6):'')+A(`<text x="300" y="300" class="kw" font-size="30" fill="#fff" text-anchor="middle">Cak.</text>`,51.6,'pop')+D([[T0,'glasses']],85,300,1.45)}
+ else{body+=`<g transform="translate(150,215)">${door(0,0,op)}</g>`+A(`<g transform="translate(75,300)">${bulb(0,0,0.9,true)}</g>`,52.25,'pop')+A(P(`<path d="M100 225 h80 v34 h-50 l-14 14 v-14 h-16z" fill="#fff"/>`)+`<text x="140" y="249" class="hd" font-size="20" fill="${R}" text-anchor="middle">BUKA!</text>`,52.6,'pop')+A(`<g transform="rotate(-4 180 450)">${P(`<rect x="40" y="420" width="280" height="50" fill="${DARK}"/>`)}<text x="180" y="455" class="hd" font-size="26" fill="#fff" text-anchor="middle">DISURUH LAMPU.</text></g>`,53.4,'stamp',0.25)+D([[T0,'squint']],215,480,.75)}
+ const wipe=slash<1?`<rect width="360" height="640" fill="#fff" opacity="${1-slash}"/>`:'';
+ return `<g transform="translate(${stut[0]+shake} ${stut[1]}) translate(180 320) scale(${punch}) translate(-180 -320)">${body}</g>${wipe}`});
+// 12
+S.push(()=>{const wp=cl((TG-57.4)/2.2);
+ return bg('dark')+label('// 05 · ???',1)+caption(TG<55.7?'Tapi':'siapa yang menggotong',TG<55.7?'tunggu.':'laptopnya?','',1,TG<55.7?54.8:57.4,66,0.18)+head('LAMPU TAK',55.8,150,40,'#fff')+head('PUNYA TANGAN.',56.6,195,40,'#ff8a9a')
+ +A(`<rect x="230" y="260" width="90" height="170" fill="#111" stroke="#555" stroke-width="3"/><rect x="236" y="266" width="${60+wp*0}" height="158" fill="#2a2a2a"/>`,55.0,'fade')
+ +(TG>57.4?`<g transform="translate(${60+wp*190},0)" opacity="${1-cl((wp-0.85)/0.15)}"><g fill="#000" stroke="#666"><circle cx="0" cy="315" r="15"/><path d="M-22 430 Q0 340 22 430Z"/></g><g transform="translate(18,370)">${icon('laptop',0,0,.6)}</g></g>`:'')
+ +A(`<text x="180" y="490" class="hd" font-size="56" fill="${R}" text-anchor="middle">?</text>`,58.6,'pop')});
+// 13
+S.push(()=>{const typed='siapa ya...';const n=Math.max(0,Math.min(typed.length,Math.floor((TG-60.6)*8)));const cur=(TG*2|0)%2?'|':'';
+ return bg('paper')+label('// penutup')+caption('Tulis tebakanmu di','komentar.','',0,60.0,66,0.18)+head('TEBAK DI KOMEN',60.3,125,34)
+ +A(P(`<rect x="20" y="145" width="280" height="120" rx="10" fill="#fff"/>`)+`<text x="34" y="173" class="cap" font-size="13" fill="${INK}">Siapa yang menggotong laptopnya?</text><rect x="34" y="190" width="252" height="40" rx="20" fill="#f1f1f1"/><text x="50" y="215" class="cap" font-size="14" fill="#777">${typed.slice(0,n)}${cur}</text>`,60.0,'pop')
+ +A(`<g transform="rotate(-6 180 360)">${P(`<circle cx="180" cy="360" r="54" fill="#fff"/>`)}<g transform="translate(180,360)"><image href="logo-papiyyar.jpg" x="-50" y="-50" width="100" height="100" clip-path="url(#lc2)"/></g>${tape(155,298,8)}</g>`,62.0,'stamp',0.3)
+ +A(P(`<rect x="60" y="440" width="140" height="40" rx="20" fill="${R}"/>`)+`<text x="130" y="467" class="hd" font-size="18" fill="#fff" text-anchor="middle">IKUTI @PAPIYYAR</text>`,62.4,'pop')
+ +A(`<g transform="rotate(8 80 535)">${P(`<rect x="20" y="515" width="130" height="34" fill="${INK}"/>`)}<text x="85" y="538" class="hd" font-size="16" fill="#fff" text-anchor="middle">KASUS #3 SEGERA</text></g>`,63.2,'stamp',0.25)
+ +(TG>60.2?Array.from({length:14},(_,i)=>{const t=TG-60.2;const x=(i*53)%340+10,y=-20+((t*(60+i*9))+i*37)%680;return torn(x,y,14,8,i%3?R:'#999',i)}).join(''):'')
+ +D([[T0,'point'],[62.4,'key']],215,455,.85)});
+
+function render(t){TG=t;let i=0;while(i<S.length-1&&t>=B[i+1])i++;T0=B[i];LT=t-T0;
+ const zoom=1+0.025*cl(LT/(B[i+1]-B[i]));
+ const punch=LT<0.18?1+0.03*(1-LT/0.18):1;
+ const z=zoom*punch;
+ document.getElementById('v').innerHTML=DEFS+`<g transform="translate(180 320) scale(${z}) translate(-180 -320)">${S[i]()}</g>`+(i<S.length-1?logo():'')  /* logo kecil di semua scene kecuali penutup */;
+}
+window.render=render;
+render(0);
+</script></body></html>

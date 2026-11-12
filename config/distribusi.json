@@ -1,0 +1,64 @@
+{
+  "_status": "DRAF - jam posting adalah perkiraan umum untuk audiens Indonesia (WIB), BELUM berdasarkan data akun Papiyyar. Sesuaikan setelah 2-4 minggu melihat analitik tiap platform.",
+  "zona_waktu": "Asia/Jakarta",
+  "handle": "@PAPIYYAR",
+  "kurir": {
+    "utama": "Buffer atau Metricool (belum dipilih)",
+    "cadangan": "Make (jembatan Google Drive -> kurir/platform)",
+    "penyimpanan_video": "Google Drive, folder Papiyyar/siap-tayang"
+  },
+  "jadwal_mingguan": {
+    "_catatan": "7 video per minggu, 1 per hari. Urutan funnel mengikuti seri: ToFu -> MoFu -> BoFu.",
+    "senin": "ToFu", "selasa": "ToFu", "rabu": "MoFu", "kamis": "ToFu",
+    "jumat": "BoFu", "sabtu": "ToFu", "minggu": "MoFu"
+  },
+  "review_caption": {
+    "ToFu": "otomatis masuk jadwal setelah Cicip 3 (video final) disetujui",
+    "MoFu": "Cicip 4: caption + link afiliasi dicek pengguna dulu",
+    "BoFu": "Cicip 4: caption + link afiliasi dicek pengguna dulu"
+  },
+  "hashtag_inti": {
+    "brand": ["#Papiyyar", "#DetektifPapiyyar"],
+    "niche": ["#misteri", "#faktaunik", "#edukasi", "#kasusnyata", "#tahukahkamu"],
+    "_aturan": "Setiap video: hashtag brand + 1-2 niche + 1-2 hashtag topik episode (dibuat per episode). Jangan hashtag yang tidak relevan dengan isi."
+  },
+  "platform": {
+    "tiktok": {
+      "jam_wib": ["12:00", "19:00", "21:00"],
+      "jumlah_hashtag": "3-5",
+      "caption": "Pendek (1-2 kalimat), pertanyaan tebakan dari cliffhanger untuk memancing komentar.",
+      "link_afiliasi": "Tidak di caption. Arahkan ke link di bio / keranjang (jika memakai TikTok Shop)."
+    },
+    "instagram_reels": {
+      "jam_wib": ["11:00", "19:00"],
+      "jumlah_hashtag": "3-5",
+      "caption": "2-4 kalimat: hook, ringkasan misteri tanpa membocorkan twist, pertanyaan ke komentar.",
+      "link_afiliasi": "Tidak bisa diklik di caption. Tulis 'link di bio'."
+    },
+    "youtube_shorts": {
+      "jam_wib": ["17:00", "20:00"],
+      "jumlah_hashtag": "2-3 (di deskripsi, #Shorts opsional)",
+      "judul": "Maksimal sekitar 60 karakter, berbentuk pertanyaan/misteri.",
+      "caption": "Deskripsi 2-3 kalimat + ajakan subscribe.",
+      "link_afiliasi": "Boleh di deskripsi (MoFu/BoFu), dengan keterangan bahwa ini link afiliasi."
+    },
+    "facebook_reels": {
+      "jam_wib": ["12:00", "20:00"],
+      "jumlah_hashtag": "2-3",
+      "caption": "Gaya bercerita, 2-3 kalimat, pertanyaan di akhir.",
+      "link_afiliasi": "Boleh di caption atau komentar pertama (MoFu/BoFu).",
+      "_cek": "Pastikan batas durasi Reels lewat kurir untuk video 60 detik."
+    },
+    "threads": {
+      "jam_wib": ["07:00", "12:00", "21:00"],
+      "jumlah_hashtag": "1 tag topik (Threads hanya memakai satu tag per posting)",
+      "caption": "Gaya obrolan, opini/pertanyaan yang memancing balasan. Boleh lebih panjang dari platform lain."
+    },
+    "wa_channel": {
+      "jam_wib": ["19:30"],
+      "jumlah_hashtag": "0",
+      "caption": "Teks singkat + link video di YouTube/TikTok.",
+      "_catatan": "MANUAL - belum ada cara otomatis posting ke WA Channel. Claude menyiapkan teks siap salin."
+    }
+  }
+}
