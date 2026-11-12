@@ -1,18 +1,522 @@
 {
-  "_petunjuk": "Isi daftar produk afiliasi di sini. Claude hanya boleh memakai produk yang ada di file ini untuk naskah dan caption MoFu/BoFu. Jangan isi data rahasia (password/token). Hapus contoh di bawah setelah diisi.",
-  "produk": [
-    {
-      "id": "contoh-01",
-      "nama": "CONTOH - Nama produk",
-      "kategori": "misal: keamanan rumah / keuangan / kesehatan",
-      "manfaat_utama": "Satu kalimat: masalah apa yang dipecahkan",
-      "cocok_untuk_topik": ["penipuan online", "rumah pintar"],
-      "platform_toko": "Shopee / Tokopedia / TikTok Shop / lainnya",
-      "link_afiliasi": "https://...",
-      "kode_promo": "",
-      "boleh_dipakai_di": ["MoFu", "BoFu"],
-      "catatan": "Larangan klaim, kata yang tidak boleh dipakai, dll.",
-      "aktif": false
-    }
-  ]
+ "_petunjuk": "Daftar produk afiliasi Papiyyar, diambil dari halaman 'Koper Bukti' (link-in-bio). Claude hanya boleh memakai produk dengan aktif=true untuk naskah dan caption MoFu/BoFu. Jangan isi password/token.",
+ "link_in_bio": {
+  "nama": "Papiyyar | Koper Bukti",
+  "url": "https://claude.ai/artifact/SJWRoVoSUcD5BKysKFJ4W3",
+  "catatan": "Dipakai untuk caption 'link di bio' (TikTok, IG). Pastikan halaman ini sudah dibagikan publik."
+ },
+ "aturan_naskah": "Di narasi sebut jenis solusinya (misal 'kelas public speaking', 'cek CV pakai AI'), nama merchant boleh disebut sekali di BoFu. Link dan kode promo hanya di caption/deskripsi, tidak dibacakan.",
+ "produk": [
+  {
+   "id": "kelaswork-01",
+   "merchant": "Kelas.work",
+   "nama": "Mengelola Program Perekrutan Karyawan",
+   "jenis": "kelas online",
+   "kategori": "Upgrade Skill & Karir",
+   "cocok_untuk_topik": [
+    "HR",
+    "rekrutmen",
+    "lowongan kerja"
+   ],
+   "link_afiliasi": "https://kelas.work/classes/mengelola-program-perekrutan-karyawan?refshare=sharelink_mengelola-program-perekrutan-karyawan",
+   "kode_promo": "KELASGROWID",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "aktif": true
+  },
+  {
+   "id": "kelaswork-02",
+   "merchant": "Kelas.work",
+   "nama": "Microsoft Office untuk Tugas Administratif",
+   "jenis": "kelas online",
+   "kategori": "Upgrade Skill & Karir",
+   "cocok_untuk_topik": [
+    "admin kantor",
+    "produktivitas"
+   ],
+   "link_afiliasi": "https://kelas.work/classes/microsoft-office-untuk-tugas-administratif?refshare=sharelink_microsoft-office-untuk-tugas-administratif",
+   "kode_promo": "KELASGROWID",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "aktif": true
+  },
+  {
+   "id": "kelaswork-03",
+   "merchant": "Kelas.work",
+   "nama": "Mengatur Operasional Toko",
+   "jenis": "kelas online",
+   "kategori": "Upgrade Skill & Karir",
+   "cocok_untuk_topik": [
+    "usaha kecil",
+    "toko",
+    "kecurangan kasir"
+   ],
+   "link_afiliasi": "https://kelas.work/classes/mengatur-operasional-toko?refshare=sharelink_mengatur-operasional-toko",
+   "kode_promo": "KELASGROWID",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "aktif": true
+  },
+  {
+   "id": "kelaswork-04",
+   "merchant": "Kelas.work",
+   "nama": "Mengoptimalkan Totalitas Hati dan Pikiran di Tempat Kerja",
+   "jenis": "kelas online",
+   "kategori": "Upgrade Skill & Karir",
+   "cocok_untuk_topik": [
+    "burnout",
+    "kerja"
+   ],
+   "link_afiliasi": "https://kelas.work/classes/mengoptimalkan-totalitas-hati-dan-pikiran-di-tempat-kerja?refshare=sharelink_mengoptimalkan-totalitas-hati-dan-pikiran-di-tempat-kerja",
+   "kode_promo": "KELASGROWID",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "aktif": true
+  },
+  {
+   "id": "kelaswork-05",
+   "merchant": "Kelas.work",
+   "nama": "Langkah Praktis Menjaga dan Meningkatkan Kesehatan Mental",
+   "jenis": "kelas online",
+   "kategori": "Upgrade Skill & Karir",
+   "cocok_untuk_topik": [
+    "kesehatan mental",
+    "stres"
+   ],
+   "link_afiliasi": "https://kelas.work/classes/langkah-praktis-menjaga-dan-meningkatkan-kesehatan-mental?refshare=sharelink_langkah-praktis-menjaga-dan-meningkatkan-kesehatan-mental",
+   "kode_promo": "KELASGROWID",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "aktif": true
+  },
+  {
+   "id": "kelaswork-06",
+   "merchant": "Kelas.work",
+   "nama": "Memimpin dengan Sepenuh Hati",
+   "jenis": "kelas online",
+   "kategori": "Upgrade Skill & Karir",
+   "cocok_untuk_topik": [
+    "kepemimpinan",
+    "atasan"
+   ],
+   "link_afiliasi": "https://kelas.work/classes/memimpin-dengan-sepenuh-hati?refshare=sharelink_memimpin-dengan-sepenuh-hati",
+   "kode_promo": "KELASGROWID",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "aktif": true
+  },
+  {
+   "id": "kelaswork-07",
+   "merchant": "Kelas.work",
+   "nama": "Menjadi Pribadi yang Produktif dan Efektif",
+   "jenis": "kelas online",
+   "kategori": "Upgrade Skill & Karir",
+   "cocok_untuk_topik": [
+    "produktivitas",
+    "prokrastinasi"
+   ],
+   "link_afiliasi": "https://kelas.work/classes/menjadi-pribadi-yang-produktif-dan-efektif?refshare=sharelink_menjadi-pribadi-yang-produktif-dan-efektif",
+   "kode_promo": "KELASGROWID",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "aktif": true
+  },
+  {
+   "id": "kelaswork-08",
+   "merchant": "Kelas.work",
+   "nama": "Kemampuan Public Speaking untuk PR Profesional",
+   "jenis": "kelas online",
+   "kategori": "Upgrade Skill & Karir",
+   "cocok_untuk_topik": [
+    "public speaking",
+    "bahasa tubuh",
+    "persuasi"
+   ],
+   "link_afiliasi": "https://kelas.work/classes/kemampuan-public-speaking-untuk-pr-profesional?refshare=sharelink_kemampuan-public-speaking-untuk-pr-profesional",
+   "kode_promo": "KELASGROWID",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "aktif": true
+  },
+  {
+   "id": "kelaswork-09",
+   "merchant": "Kelas.work",
+   "nama": "Belajar Menjadi Konten Kreator yang Kreatif",
+   "jenis": "kelas online",
+   "kategori": "Upgrade Skill & Karir",
+   "cocok_untuk_topik": [
+    "konten kreator",
+    "media sosial",
+    "algoritma"
+   ],
+   "link_afiliasi": "https://kelas.work/classes/belajar-menjadi-konten-kreator-yang-kreatif?refshare=sharelink_belajar-menjadi-konten-kreator-yang-kreatif",
+   "kode_promo": "KELASGROWID",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "aktif": true
+  },
+  {
+   "id": "kelaswork-10",
+   "merchant": "Kelas.work",
+   "nama": "Menangani Peminjam Bermasalah dalam Perbankan",
+   "jenis": "kelas online",
+   "kategori": "Upgrade Skill & Karir",
+   "cocok_untuk_topik": [
+    "utang",
+    "pinjol",
+    "perbankan"
+   ],
+   "link_afiliasi": "https://kelas.work/classes/menangani-peminjam-bermasalah-dalam-perbankan?refshare=sharelink_menangani-peminjam-bermasalah-dalam-perbankan",
+   "kode_promo": "KELASGROWID",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "aktif": true
+  },
+  {
+   "id": "kelaswork-langganan",
+   "merchant": "Kelas.work",
+   "nama": "Paket Berlangganan Kelas.work (1/6/12 bulan)",
+   "jenis": "langganan",
+   "kategori": "Upgrade Skill & Karir",
+   "cocok_untuk_topik": [
+    "belajar skill",
+    "karir"
+   ],
+   "link_afiliasi": "https://kelas.work/subscription",
+   "kode_promo": "KELASGROWID",
+   "boleh_dipakai_di": [
+    "BoFu"
+   ],
+   "catatan": "Link langganan TIDAK berisi kode referral; komisi bergantung pada kode promo KELASGROWID. Perlu dicek ke Kelas.work.",
+   "aktif": true
+  },
+  {
+   "id": "myskill-01",
+   "merchant": "MySkill",
+   "nama": "Digital Marketing: Fullstack Intensive Bootcamp (Batch 39)",
+   "jenis": "bootcamp",
+   "kategori": "Upgrade Skill & Karir",
+   "cocok_untuk_topik": [
+    "digital marketing",
+    "iklan online",
+    "algoritma"
+   ],
+   "link_afiliasi": "https://myskill.id/payment/bootcamp/JncaGLhZwARHF9Ogtlz9?affiliate=XQ6KA",
+   "kode_promo": "",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "aktif": true
+  },
+  {
+   "id": "myskill-02",
+   "merchant": "MySkill",
+   "nama": "Data Analysis: Fullstack Intensive Bootcamp (Batch 31)",
+   "jenis": "bootcamp",
+   "kategori": "Upgrade Skill & Karir",
+   "cocok_untuk_topik": [
+    "data",
+    "statistik menyesatkan",
+    "analisis"
+   ],
+   "link_afiliasi": "https://myskill.id/payment/bootcamp/XLjIj5DtRtj6o3LtBNw1?affiliate=Q9BLV",
+   "kode_promo": "",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "aktif": true
+  },
+  {
+   "id": "myskill-03",
+   "merchant": "MySkill",
+   "nama": "Microsoft Excel Basic to Advanced: Fullstack Intensive Bootcamp (Batch 37)",
+   "jenis": "bootcamp",
+   "kategori": "Upgrade Skill & Karir",
+   "cocok_untuk_topik": [
+    "excel",
+    "admin",
+    "keuangan pribadi"
+   ],
+   "link_afiliasi": "https://myskill.id/payment/bootcamp/ol3k2mhQr9SRiF4T1fdb?affiliate=EVX9Q",
+   "kode_promo": "",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "aktif": true
+  },
+  {
+   "id": "myskill-04",
+   "merchant": "MySkill",
+   "nama": "Graphic Design & Canva Bootcamp (Batch 15)",
+   "jenis": "bootcamp",
+   "kategori": "Upgrade Skill & Karir",
+   "cocok_untuk_topik": [
+    "desain",
+    "foto editan",
+    "hoaks visual"
+   ],
+   "link_afiliasi": "https://myskill.id/payment/bootcamp/b9an4Ufox73jfBQb6Yic?affiliate=MPVKX",
+   "kode_promo": "",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "aktif": true
+  },
+  {
+   "id": "myskill-05",
+   "merchant": "MySkill",
+   "nama": "Website Development with Lovable AI (Batch 15)",
+   "jenis": "bootcamp",
+   "kategori": "Upgrade Skill & Karir",
+   "cocok_untuk_topik": [
+    "website",
+    "AI",
+    "situs palsu"
+   ],
+   "link_afiliasi": "https://myskill.id/payment/bootcamp/W2Hqu8UxgwDeiUA9u0CT?affiliate=9YA6L",
+   "kode_promo": "",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "aktif": true
+  },
+  {
+   "id": "myskill-06",
+   "merchant": "MySkill",
+   "nama": "Paket Video E-Learning 1 Bulan",
+   "jenis": "e-learning",
+   "kategori": "Upgrade Skill & Karir",
+   "cocok_untuk_topik": [
+    "belajar skill",
+    "karir"
+   ],
+   "link_afiliasi": "https://myskill.id/payment/e-learning/VXjsithqZKzHsPIXQfBn?affiliate=BAQWL",
+   "kode_promo": "",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "aktif": true
+  },
+  {
+   "id": "myskill-07",
+   "merchant": "MySkill",
+   "nama": "Paket Video E-Learning 6 Bulan",
+   "jenis": "e-learning",
+   "kategori": "Upgrade Skill & Karir",
+   "cocok_untuk_topik": [
+    "belajar skill",
+    "karir"
+   ],
+   "link_afiliasi": "https://myskill.id/payment/e-learning/47qOozJUVg6zMNbCYzMv?affiliate=AAXQL",
+   "kode_promo": "",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "aktif": true
+  },
+  {
+   "id": "myskill-08",
+   "merchant": "MySkill",
+   "nama": "Paket Video E-Learning 12 Bulan",
+   "jenis": "e-learning",
+   "kategori": "Upgrade Skill & Karir",
+   "cocok_untuk_topik": [
+    "belajar skill",
+    "karir"
+   ],
+   "link_afiliasi": "https://myskill.id/payment/e-learning/zGgyeWtC6KQo2uAWetBR?affiliate=P6B9D",
+   "kode_promo": "",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "aktif": true
+  },
+  {
+   "id": "myskill-09",
+   "merchant": "MySkill",
+   "nama": "1x Review CV by AI (1 Bulan)",
+   "jenis": "review-cv-ai",
+   "kategori": "Upgrade Skill & Karir",
+   "cocok_untuk_topik": [
+    "CV",
+    "lamaran kerja",
+    "lowongan palsu",
+    "HRD"
+   ],
+   "link_afiliasi": "https://myskill.id/payment/review-cv-ai/69c4cd50eDJdBX7L7yL4?affiliate=6QE6V",
+   "kode_promo": "",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "aktif": true
+  },
+  {
+   "id": "myskill-10",
+   "merchant": "MySkill",
+   "nama": "7x Review CV by AI (2 Bulan)",
+   "jenis": "review-cv-ai",
+   "kategori": "Upgrade Skill & Karir",
+   "cocok_untuk_topik": [
+    "CV",
+    "lamaran kerja",
+    "HRD"
+   ],
+   "link_afiliasi": "https://myskill.id/payment/review-cv-ai/69c4cda0tcUiaqbwT6pT?affiliate=JPBVQ",
+   "kode_promo": "",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "aktif": true
+  },
+  {
+   "id": "dibimbingid",
+   "merchant": "dibimbing.id",
+   "nama": "dibimbing.id (link menyusul)",
+   "kategori": "Upgrade Skill & Karir",
+   "cocok_untuk_topik": [],
+   "link_afiliasi": "",
+   "kode_promo": "",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "catatan": "Link masih '#' di halaman Koper Bukti. Isi link lalu ubah aktif menjadi true.",
+   "aktif": false
+  },
+  {
+   "id": "bukunesia",
+   "merchant": "Bukunesia",
+   "nama": "Bukunesia (link menyusul)",
+   "kategori": "Buku & Referensi",
+   "cocok_untuk_topik": [],
+   "link_afiliasi": "",
+   "kode_promo": "",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "catatan": "Link masih '#' di halaman Koper Bukti. Isi link lalu ubah aktif menjadi true.",
+   "aktif": false
+  },
+  {
+   "id": "gramedia",
+   "merchant": "Gramedia",
+   "nama": "Gramedia (link menyusul)",
+   "kategori": "Buku & Referensi",
+   "cocok_untuk_topik": [],
+   "link_afiliasi": "",
+   "kode_promo": "",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "catatan": "Link masih '#' di halaman Koper Bukti. Isi link lalu ubah aktif menjadi true.",
+   "aktif": false
+  },
+  {
+   "id": "shopee",
+   "merchant": "Shopee",
+   "nama": "Shopee (link menyusul)",
+   "kategori": "Belanja",
+   "cocok_untuk_topik": [],
+   "link_afiliasi": "",
+   "kode_promo": "",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "catatan": "Link masih '#' di halaman Koper Bukti. Isi link lalu ubah aktif menjadi true.",
+   "aktif": false
+  },
+  {
+   "id": "tiktok-shop",
+   "merchant": "TikTok Shop",
+   "nama": "TikTok Shop (link menyusul)",
+   "kategori": "Belanja",
+   "cocok_untuk_topik": [],
+   "link_afiliasi": "",
+   "kode_promo": "",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "catatan": "Link masih '#' di halaman Koper Bukti. Isi link lalu ubah aktif menjadi true.",
+   "aktif": false
+  },
+  {
+   "id": "lazada",
+   "merchant": "Lazada",
+   "nama": "Lazada (link menyusul)",
+   "kategori": "Belanja",
+   "cocok_untuk_topik": [],
+   "link_afiliasi": "",
+   "kode_promo": "",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "catatan": "Link masih '#' di halaman Koper Bukti. Isi link lalu ubah aktif menjadi true.",
+   "aktif": false
+  },
+  {
+   "id": "blibli",
+   "merchant": "Blibli",
+   "nama": "Blibli (link menyusul)",
+   "kategori": "Belanja",
+   "cocok_untuk_topik": [],
+   "link_afiliasi": "",
+   "kode_promo": "",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "catatan": "Link masih '#' di halaman Koper Bukti. Isi link lalu ubah aktif menjadi true.",
+   "aktif": false
+  },
+  {
+   "id": "dana",
+   "merchant": "DANA",
+   "nama": "DANA (link menyusul)",
+   "kategori": "Finansial",
+   "cocok_untuk_topik": [],
+   "link_afiliasi": "",
+   "kode_promo": "",
+   "boleh_dipakai_di": [
+    "MoFu",
+    "BoFu"
+   ],
+   "catatan": "Link masih '#' di halaman Koper Bukti. Isi link lalu ubah aktif menjadi true.",
+   "aktif": false
+  }
+ ]
 }
