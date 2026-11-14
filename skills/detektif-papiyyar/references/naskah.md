@@ -24,9 +24,9 @@ Cari dulu kontrasnya sebelum menulis apa pun. Kalau tidak ada kontras yang jelas
 
 ## Teknik kunci (wajib dipakai)
 
-1. **Sapaan "sudah tahu" di awal TKP**: "Kamu pasti sudah dengar…", "Kasus ini lagi ramai…". Penonton merasa diajak ngobrol, bukan diceramahi.
-2. **Penyangkalan netral sebelum menusuk**: "Terlepas dari semua berita yang ada…", "Oke, kita coba berpikir positif dulu…". Detektif terlihat adil, lalu vonisnya terasa lebih tajam. Pakai sekali per video.
-3. **Kata belok yang tegas** untuk menandai perpindahan: "Tapi di sisi lain…", "Apalagi…", "Dan yang lebih lucu lagi…". Twist utama tetap disimpan untuk momen Papiyyar.
+1. **Sapaan "udah tahu" di awal TKP**: "Lu pasti udah denger…", "Kasus ini lagi rame banget nih…". Penonton merasa diajak ngobrol, bukan diceramahi.
+2. **Penyangkalan netral sebelum menusuk**: "Terlepas dari semua berita yang ada…", "Oke, gua coba positif dulu deh…". Detektif terlihat adil, lalu vonisnya terasa lebih tajam. Pakai sekali per video.
+3. **Kata belok yang tegas** untuk menandai perpindahan: "Tapi di sisi lain…", "Apalagi…", "Dan yang lebih lucu lagi…", "Literally…". Twist utama tetap disimpan untuk momen Papiyyar.
 4. **Bukti yang bisa dihitung**: ubah angka berita menjadi hitungan sederhana yang bisa diikuti, misalnya "lima puluh ribu kali lima hari, dua ratus lima puluh ribu seminggu".
 5. **Definisi sebagai senjata**: kutip arti kata kunci (kamus atau definisi umum), lalu tabrakkan dengan kenyataan.
 6. **Netizen sebagai saksi**: komentar paling tajam dibacakan sebagai "keterangan saksi". Pendapat keras datang dari saksi, bukan dari detektif.
@@ -54,8 +54,8 @@ Cari dulu kontrasnya sebelum menulis apa pun. Kalau tidak ada kontras yang jelas
 
 Urutannya selalu:
 1. **Vonis** satu kalimat.
-2. **Pertanyaan opini**: "Menurut kamu, siapa yang sebenarnya salah? Tulis di kolom komentar."
-3. **Ajakan follow plus bocoran kasus berikutnya**: "Ikuti akun ini. Kasus berikutnya… [bocoran singkat]."
+2. **Pertanyaan opini**: "Menurut lu, siapa yang sebenernya salah? Tulis di kolom komentar."
+3. **Ajakan follow plus bocoran kasus berikutnya**: "Follow akun ini. Kasus berikutnya… [bocoran singkat]."
 
 Untuk episode MoFu dan BoFu, kalimat pengarah afiliasi ditaruh di sini atau di akhir Barang Bukti, dan **dikonfirmasi pengguna dulu**. Contoh nada: "Alat yang dipakai detektif tadi, linknya ada di bio." Jangan pakai "beli sekarang" atau "diskon gede".
 
@@ -82,6 +82,15 @@ Judul ditulis di atas blok naskah, terpisah dari narasi.
 - Klaim yang belum terbukti: "diduga", "disebut-sebut", "katanya", dan cap **DUGAAN** di layar.
 - Jangan menyimpulkan orang bersalah atas kejahatan. Vonis ditujukan ke ironi atau perilaku yang terlihat di video berita.
 
+## Gaya bahasa (full gaul)
+
+- Pakai "gua" dan "lu", bukan "saya/aku" atau "kamu/Anda".
+- Kosakata gaul Jakarta: udah, nggak, banget, nih, sih, deh, lah ya, kelar, rame, gede, duit, ngaku, nyampein, guys, literally.
+- Tetap pendek dan jelas. Satu ide per kalimat, supaya suara AI tidak terdengar kaku.
+- Gaul bukan berarti kasar. Jangan pakai makian, kata menghina fisik, atau SARA.
+- Celetukan Papiyyar tetap berlogat Madura atau Jawa Timur ("Cong", "Cak"), bukan Jakarta.
+- Kata gaul ditulis sesuai pengucapan ("udah", "nggak", "dinaikin") supaya suara AI membacanya benar.
+
 ## Format narasi (dibacakan suara AI)
 
 - Tulis **hanya** kalimat yang dibacakan. Jangan pakai label "Scene", "Audio", emoji, atau tanda kurung.
@@ -97,7 +106,8 @@ Judul ditulis di atas blok naskah, terpisah dari narasi.
 - [ ] Lima bagian sesuai rumus, urutan tidak berubah.
 - [ ] Total sekitar 130 kata, maksimal sekitar 140.
 - [ ] Hook berupa pertanyaan ironi.
-- [ ] TKP dibuka dengan sapaan "sudah tahu".
+- [ ] TKP dibuka dengan sapaan "udah tahu".
+- [ ] Bahasa full gaul ("gua/lu"), tanpa makian.
 - [ ] Ada "Barang bukti pertama" dan "Kedua".
 - [ ] Ada satu penyangkalan netral.
 - [ ] Ada "Papiyyar... ..., Cong."

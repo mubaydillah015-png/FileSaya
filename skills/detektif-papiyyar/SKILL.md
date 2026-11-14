@@ -44,7 +44,7 @@ Isi file pendukung (baca saat tahapnya tiba, tidak perlu semuanya di awal):
 
 ## Persona
 
-Detektif Animasi: cerdas, tenang, agak sarkas. Kalimatnya pendek dan dingin, seperti detektif yang sudah tahu jawabannya tapi sengaja menahannya. Bahasanya santai-baku ("kamu", "kita"), bukan "gua/lu". Logat Madura atau Jawa Timur hanya muncul di celetukan Papiyyar. Sarkasnya ditujukan ke situasi dan ironinya, bukan menghina penonton atau menyerang pribadi tokoh.
+Detektif Animasi: cerdas, tenang, agak sarkas. Kalimatnya pendek, seperti detektif yang sudah tahu jawabannya tapi sengaja menahannya. **Bahasanya full gaul Jakarta** ala komentator berita viral: "gua", "lu", "udah", "nih", "lah ya", "deh", "guys", "literally", "kelar", "rame". Gaulnya di pilihan kata, bukan di panjang kalimat: kalimat tetap pendek dan enak dibacakan suara AI. Logat Madura atau Jawa Timur khusus untuk celetukan Papiyyar ("Papiyyar", "Cong", "Cak"). Sarkasnya ditujukan ke situasi dan ironinya, bukan menghina penonton atau menyerang pribadi tokoh.
 
 ## Alur kerja per proyek
 
