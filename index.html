@@ -400,6 +400,79 @@
     .promo-steps li { margin-bottom: 2px; }
     .promo-steps strong { color: var(--text); font-weight: 600; }
 
+    /* ===== Tombol dengan label kecil ===== */
+    .btn-stack {
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .btn-tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(232, 217, 181, 0.12);
+      border: 1px solid rgba(232, 217, 181, 0.3);
+      color: var(--paper);
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .dropdown[open] > summary .btn-tag,
+    .btn-stack:hover .btn-tag {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.4);
+      color: #fff;
+    }
+
+    /* ===== Kotak informasi & daftar keuntungan ===== */
+    .info-box {
+      margin: 10px 0;
+      padding: 14px;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      background: var(--card);
+    }
+
+    .info-box .promo-text { margin-bottom: 0; }
+
+    .benefits {
+      list-style: none;
+      margin: 4px 0 0;
+    }
+
+    .benefits li {
+      position: relative;
+      padding-left: 22px;
+      margin-bottom: 6px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .benefits li::before {
+      content: "✓";
+      position: absolute;
+      left: 2px;
+      color: var(--red);
+      font-weight: 700;
+    }
+
+    .benefits strong { color: var(--text); font-weight: 600; }
+
+    .fine-print {
+      margin-top: 8px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      opacity: 0.8;
+    }
+
+    .disclosure {
+      margin: 12px 4px 0;
+      font-size: 0.75rem;
+      font-style: italic;
+      color: var(--text-muted);
+      opacity: 0.85;
+    }
+
     /* ===== FOOTER ===== */
     .footer {
       margin-top: 40px;
@@ -534,13 +607,33 @@
       <h2 class="category">💳 Finansial</h2>
       <!-- Tombol dropdown: referral DANA Bisnis -->
       <details class="dropdown">
-        <summary class="btn">🏪 Daftar DANA Bisnis &amp; Terima Pembayaran QRIS</summary>
+        <summary class="btn btn-stack">
+          <span>🏪 Daftar DANA Bisnis &amp; Terima Pembayaran QRIS</span>
+          <span class="btn-tag">📘 Gratis panduan daftar di @PAPIYYAR</span>
+        </summary>
         <div class="sub-links">
-          <p class="sub-desc">Punya usaha? Terima pembayaran QRIS dari semua e-wallet dan m-banking lewat DANA Bisnis, langsung masuk ke saldo usahamu.</p>
+          <p class="sub-desc">Terima pembayaran QRIS dari semua e-wallet dan m-banking dalam satu aplikasi. Tanpa alat tambahan, tanpa biaya pendaftaran.</p>
+
+          <div class="info-box">
+            <p class="promo-title">✨ Kenapa DANA Bisnis?</p>
+            <ul class="benefits">
+              <li><strong>QRIS gratis &amp; aktif ±10 menit</strong> setelah pendaftaran</li>
+              <li><strong>0% MDR untuk usaha kecil</strong>: hasil jualan masuk utuh</li>
+              <li><strong>Cair di hari yang sama</strong>: tarik gratis ke saldo DANA atau rekening bank*</li>
+              <li><strong>Limit saldo hingga Rp150 juta/bulan</strong>, lebih besar dari akun DANA personal</li>
+              <li><strong>Notifikasi suara</strong> di setiap transaksi masuk</li>
+              <li><strong>Cetak QRIS sendiri</strong> langsung dari menu "Toko"</li>
+            </ul>
+            <p class="fine-print">*Pembayaran dari aplikasi DANA langsung bisa ditarik. Pembayaran dari bank/e-wallet lain cair H+1 pukul 17.00 WIB. Sesuai syarat &amp; ketentuan DANA.</p>
+          </div>
+
+          <div class="info-box">
+            <p class="promo-title">📘 Panduan Gratis dari Papiyyar</p>
+            <p class="promo-text">Ikuti langkah demi langkah dari pendaftaran sampai QRIS aktif di konten @PAPIYYAR.</p>
+          </div>
 
           <div class="promo">
-            <p class="promo-title">🎟️ Kode Referral DANA Bisnis</p>
-            <p class="promo-text">Masukkan kode di bawah ini saat mendaftarkan usaha di DANA Bisnis.</p>
+            <p class="promo-title">🎟️ Pastikan kamu memasukkan kode M3C5AJ</p>
             <div class="promo-code">
               <span class="code">M3C5AJ</span>
               <button type="button" class="copy-btn" data-copy="M3C5AJ" aria-live="polite">Salin Kode</button>
@@ -549,9 +642,11 @@
               <li>Salin kode referral di atas.</li>
               <li>Daftarkan usahamu di aplikasi DANA Bisnis.</li>
               <li>Tempel kode pada kolom <strong>Kode Referral</strong> saat pendaftaran.</li>
-              <li>Aktifkan usaha dengan mulai menerima pembayaran via QRIS.</li>
+              <li>Cetak QRIS dari menu <strong>Toko → Cetak kode QRIS</strong>, lalu mulai terima pembayaran.</li>
             </ol>
           </div>
+
+          <p class="disclosure">Kode ini memberi Papiyyar komisi dari DANA tanpa biaya tambahan untukmu, dan membantu kami terus membuat panduan gratis seperti ini.</p>
         </div>
       </details>
 
