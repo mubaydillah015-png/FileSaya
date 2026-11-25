@@ -1,0 +1,225 @@
+{
+ "cost": 9.77,
+ "duration": 60.37,
+ "bounds": [
+  0,
+  1.51,
+  6.0,
+  8.37,
+  11.72,
+  15.68,
+  20.37,
+  25.77,
+  31.06,
+  33.92,
+  36.5,
+  39.14,
+  41.8,
+  47.11,
+  51.56,
+  55.47,
+  60.37
+ ],
+ "phrases": [
+  {
+   "scene": 1,
+   "start": 0,
+   "text": "Pedagang dibayar..."
+  },
+  {
+   "scene": 1,
+   "start": 0.91,
+   "text": "pakai gambar?"
+  },
+  {
+   "scene": 2,
+   "start": 1.66,
+   "text": "Enam karung beras,"
+  },
+  {
+   "scene": 2,
+   "start": 3.55,
+   "text": "lunas pakai screenshot."
+  },
+  {
+   "scene": 3,
+   "start": 6.15,
+   "text": "Lu pasti udah denger kasusnya."
+  },
+  {
+   "scene": 4,
+   "start": 8.52,
+   "text": "Sepasang suami istri borong sembako di Makassar dan Gowa."
+  },
+  {
+   "scene": 5,
+   "start": 11.87,
+   "text": "Bayarnya pakai QRIS,"
+  },
+  {
+   "scene": 5,
+   "start": 12.93,
+   "text": "katanya."
+  },
+  {
+   "scene": 5,
+   "start": 14.01,
+   "text": "Ternyata duitnya nggak pernah masuk."
+  },
+  {
+   "scene": 6,
+   "start": 15.83,
+   "text": "Dua Oktober,"
+  },
+  {
+   "scene": 6,
+   "start": 16.52,
+   "text": "pasutri yang diduga pelaku diamankan Resmob Polda Sulsel."
+  },
+  {
+   "scene": 7,
+   "start": 20.52,
+   "text": "Barang bukti pertama,"
+  },
+  {
+   "scene": 7,
+   "start": 21.67,
+   "text": "hitungan."
+  },
+  {
+   "scene": 7,
+   "start": 22.6,
+   "text": "Enam karung beras,"
+  },
+  {
+   "scene": 7,
+   "start": 23.56,
+   "text": "empat juta tiga ratus dua puluh ribu."
+  },
+  {
+   "scene": 8,
+   "start": 25.92,
+   "text": "Di toko lain,"
+  },
+  {
+   "scene": 8,
+   "start": 26.59,
+   "text": "kerugiannya lima sampai sepuluh juta."
+  },
+  {
+   "scene": 8,
+   "start": 29.22,
+   "text": "Disita dua HP."
+  },
+  {
+   "scene": 9,
+   "start": 31.21,
+   "text": "Gua coba positif dulu deh,"
+  },
+  {
+   "scene": 9,
+   "start": 32.58,
+   "text": "pedagang kan sibuk."
+  },
+  {
+   "scene": 10,
+   "start": 34.07,
+   "text": "Kedua,"
+  },
+  {
+   "scene": 10,
+   "start": 34.62,
+   "text": "saksi."
+  },
+  {
+   "scene": 10,
+   "start": 35.72,
+   "text": "Kata netizen,"
+  },
+  {
+   "scene": 11,
+   "start": 36.65,
+   "text": "pakai QRIS yang kalau duit masuk,"
+  },
+  {
+   "scene": 11,
+   "start": 38.33,
+   "text": "bunyi."
+  },
+  {
+   "scene": 12,
+   "start": 39.29,
+   "text": "Pelaku nunjukin bukti QRIS editan."
+  },
+  {
+   "scene": 13,
+   "start": 41.95,
+   "text": "Pedagang lupa ngecek M-Banking atau e-wallet sendiri."
+  },
+  {
+   "scene": 13,
+   "start": 45.12,
+   "text": "Sadar setelah pelaku pergi."
+  },
+  {
+   "scene": 14,
+   "start": 47.26,
+   "text": "Papiyyar..."
+  },
+  {
+   "scene": 14,
+   "start": 48.57,
+   "text": "berasnya asli,"
+  },
+  {
+   "scene": 14,
+   "start": 49.69,
+   "text": "bayarnya bohongan,"
+  },
+  {
+   "scene": 14,
+   "start": 51.04,
+   "text": "Cong."
+  },
+  {
+   "scene": 15,
+   "start": 51.71,
+   "text": "Bukti bayar?"
+  },
+  {
+   "scene": 15,
+   "start": 52.77,
+   "text": "Bunyi HP lu,"
+  },
+  {
+   "scene": 15,
+   "start": 53.5,
+   "text": "bukan gambar HP orang."
+  },
+  {
+   "scene": 16,
+   "start": 55.62,
+   "text": "Menurut lu,"
+  },
+  {
+   "scene": 16,
+   "start": 56.25,
+   "text": "salah siapa?"
+  },
+  {
+   "scene": 16,
+   "start": 56.89,
+   "text": "Tulis di komentar."
+  },
+  {
+   "scene": 16,
+   "start": 58.24,
+   "text": "Follow,"
+  },
+  {
+   "scene": 16,
+   "start": 58.57,
+   "text": "kasus QRIS berikutnya udah nunggu."
+  }
+ ]
+}
