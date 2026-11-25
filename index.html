@@ -473,6 +473,37 @@
       opacity: 0.85;
     }
 
+    /* ===== Tombol ajakan utama di dalam dropdown ===== */
+    .cta-btn {
+      display: block;
+      margin: 12px 0 0;
+      padding: 13px 16px;
+      border-radius: 10px;
+      background: var(--red);
+      color: #fff;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      box-shadow: 0 4px 0 var(--red-dark);
+      transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .cta-btn:hover,
+    .cta-btn:focus-visible {
+      background: #C92A48;
+      transform: translateY(-1px);
+    }
+
+    .cta-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 var(--red-dark);
+    }
+
+    .cta-btn:focus-visible {
+      outline: 2px solid var(--paper);
+      outline-offset: 2px;
+    }
+
     /* ===== FOOTER ===== */
     .footer {
       margin-top: 40px;
@@ -670,6 +701,83 @@
           </div>
 
           <p class="disclosure">Kode ini memberi Papiyyar komisi dari DANA tanpa biaya tambahan untukmu, dan membantu kami terus membuat panduan gratis seperti ini.</p>
+        </div>
+      </details>
+
+      <!-- Tombol dropdown: Bibit -->
+      <details class="dropdown">
+        <summary class="btn btn-stack">
+          <span>📈 Mulai Investasi Reksa Dana di Bibit</span>
+          <span class="btn-tag">🎁 Cashback Rp25.000*</span>
+        </summary>
+        <div class="sub-links">
+          <p class="sub-desc">Investasi reksa dana yang dirancang untuk pemula. Fitur Robo Advisor membantu menyusun portofolio sesuai profil risikomu, sehingga kamu bisa mulai investasi terprogram dengan mudah.</p>
+
+          <div class="info-box">
+            <p class="promo-title">✨ Kenapa Bibit?</p>
+            <ul class="benefits">
+              <li><strong>Terdaftar dan diawasi OJK</strong></li>
+              <li><strong>Robo Advisor</strong>: portofolio disusun sesuai profil risikomu</li>
+              <li><strong>Pilihan reksa dana dan SBN</strong> dalam satu aplikasi</li>
+              <li><strong>Cashback Rp25.000</strong> untuk investasi pertama minimal Rp1.000.000 dengan kode referral*</li>
+            </ul>
+          </div>
+
+          <div class="promo">
+            <p class="promo-title">🎟️ Pastikan kamu memasukkan kode papiyyar</p>
+            <div class="promo-code">
+              <span class="code">papiyyar</span>
+              <button type="button" class="copy-btn" data-copy="papiyyar" aria-live="polite">Salin Kode</button>
+            </div>
+            <ol class="promo-steps">
+              <li>Salin kode, lalu daftar lewat tombol di bawah dan masukkan kode <strong>papiyyar</strong> saat pendaftaran.</li>
+              <li>Pilih <strong>Investasi Sekarang</strong> di menu utama, lalu beli reksa dana atau SBN minimal <strong>Rp1.000.000</strong>.</li>
+              <li>Klik tombol <strong>Cashback</strong> → <strong>Beli Sekarang</strong>, dan pastikan produk cashback masuk ke rincian pembelian.</li>
+              <li>Selesaikan pembayaran. Reksa dana dari cashback masuk ke portofolio maksimal 5×24 jam setelah pembelian utama berhasil.</li>
+            </ol>
+          </div>
+
+          <a class="cta-btn" href="https://linkto.bibit.id/Sjpp/referralbibit" target="_blank" rel="noopener">Daftar Bibit Sekarang →</a>
+
+          <p class="disclosure">*Sesuai syarat &amp; ketentuan Bibit. Investasi mengandung risiko. Pelajari produk sebelum berinvestasi. Kode ini memberi Papiyyar komisi tanpa biaya tambahan untukmu.</p>
+        </div>
+      </details>
+
+      <!-- Tombol dropdown: Pluang -->
+      <details class="dropdown">
+        <summary class="btn btn-stack">
+          <span>📊 Investasi Multi-Aset dalam Satu Aplikasi di Pluang</span>
+          <span class="btn-tag">🎁 Hadiah Rp5.000–Rp1.000.000*</span>
+        </summary>
+        <div class="sub-links">
+          <p class="sub-desc">Diversifikasi portofolio dengan lebih praktis. Kelola saham, emas, dan aset kripto dalam satu aplikasi.</p>
+
+          <div class="info-box">
+            <p class="promo-title">✨ Kenapa Pluang?</p>
+            <ul class="benefits">
+              <li><strong>Saham, emas, dan kripto</strong> dalam satu aplikasi</li>
+              <li><strong>Diversifikasi lebih mudah</strong> tanpa berpindah-pindah aplikasi</li>
+              <li><strong>Hadiah acak Rp5.000–Rp1.000.000</strong> dengan kode referral, masuk ke Saldo IDR untuk investasi berikutnya*</li>
+            </ul>
+          </div>
+
+          <div class="promo">
+            <p class="promo-title">🎟️ Pastikan kamu memasukkan kode MUBA698969</p>
+            <div class="promo-code">
+              <span class="code">MUBA698969</span>
+              <button type="button" class="copy-btn" data-copy="MUBA698969" aria-live="polite">Salin Kode</button>
+            </div>
+            <ol class="promo-steps">
+              <li>Salin kode, lalu daftar lewat tombol di bawah dan masukkan kode <strong>MUBA698969</strong> saat pendaftaran.</li>
+              <li>Beli aset minimal <strong>Rp1.000.000 dalam satu kali transaksi</strong> (tidak akumulatif).</li>
+              <li>Tahan aset tersebut <strong>minimal 45 hari</strong> tanpa dijual. Penurunan harga pasar tidak membatalkan hadiah.</li>
+              <li>Setelah hari ke-45, buka menu <strong>Akun</strong> → banner <strong>Ajak Teman Bawa Cuan</strong> → <strong>Klaim</strong>.</li>
+            </ol>
+          </div>
+
+          <a class="cta-btn" href="https://pluang.onelink.me/jTjO/l4cz48xe" target="_blank" rel="noopener">Daftar Pluang Sekarang →</a>
+
+          <p class="disclosure">*Sesuai syarat &amp; ketentuan Pluang. Investasi mengandung risiko, termasuk aset kripto yang nilainya sangat fluktuatif. Pelajari produk sebelum berinvestasi. Kode ini memberi Papiyyar komisi tanpa biaya tambahan untukmu.</p>
         </div>
       </details>
 
