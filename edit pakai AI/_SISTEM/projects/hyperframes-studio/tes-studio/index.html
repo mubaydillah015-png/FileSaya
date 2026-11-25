@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      /* Placeholders: replace all three with the film's own palette and display face. */
+      :root {
+        --ground: #101225;
+        --ink: #ffffff;
+        --font-display: sans-serif;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: var(--ground);
+      }
+      #root {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-display);
+      }
+      .stage{perspective:1200px}
+      #title {
+        color: var(--ink);
+        font-size: 120px; text-align:center;
+        font-weight: 600;
+        letter-spacing: -0.03em;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root" class="stage"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="3"
+      data-width="1080"
+      data-height="1920"
+    >
+      <h1 id="title" class="clip" data-start="0" data-duration="3" data-track-index="0">Studio Siap<br><span style="font-size:56px;color:#ffd166">HyperFrames 3D OK</span></h1>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#title",{rotationY:-90,opacity:0,z:-400},{rotationY:0,opacity:1,z:0,duration:1.2,ease:"power3.out"},0);
+      tl.to("#title",{rotationX:15,scale:1.1,duration:1.5,ease:"sine.inOut"},1.3);
+      // Example: tl.fromTo("#title", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power4.out" }, 0);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

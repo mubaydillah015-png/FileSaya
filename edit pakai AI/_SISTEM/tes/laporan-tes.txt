@@ -1,0 +1,21 @@
+Laporan tes studio - 2026-11-25 01:23:19 UTC
+== Versi ==
+node    v26.13.1  (/home/user/FileSaya/edit pakai AI/_SISTEM/tools/node/bin/node)
+ffmpeg  N-129267-g9ec5cf1aac-20261124  (/home/user/FileSaya/edit pakai AI/_SISTEM/tools/ffmpeg/bin/ffmpeg)
+yt-dlp  2026.11.23  (/home/user/FileSaya/edit pakai AI/_SISTEM/tools/yt-dlp/yt-dlp)
+whisper /home/user/FileSaya/edit pakai AI/_SISTEM/tools/whisper/bin/whisper-cli  model: /home/user/FileSaya/edit pakai AI/_SISTEM/tools/whisper/models/ggml-small.bin
+remotion 4.0.547
+hyperframes 0.9.92
+== Hasil ==
+[LULUS] Remotion: render 1080x1920 3.000000s
+[LULUS] HyperFrames: render animasi 3D 3.000000s
+[LULUS] FFmpeg: potong 2.000000s, gabung 4.023242s, konversi 540p 4.033333s
+[LULUS] Whisper: caption.srt -> " And so my fellow Americans, ask not what your country can do for you,..."
+[LULUS] yt-dlp: unduh -> 1 file .mp4 saja (sementara di _SISTEM/kerja/yt-dlp), disimpan potongan 5 detik
+[INFO]  yt-dlp: YouTube diblokir jaringan cloud (butuh izin jaringan)
+== Folder pengguna ==
+Hasil final: 0 item
+Baham edit: 0 item
+Referensi: 0 item
+== File baru di luar folder utama selama tes ==
+tidak ada

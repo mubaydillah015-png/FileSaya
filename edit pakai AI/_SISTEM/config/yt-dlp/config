@@ -1,0 +1,18 @@
+# yt-dlp: hanya 1 file .mp4 ke Referensi, file sementara di _SISTEM/kerja
+-P "home:/home/user/FileSaya/edit pakai AI/Referensi"
+-P "temp:/home/user/FileSaya/edit pakai AI/_SISTEM/kerja/yt-dlp"
+--cache-dir "/home/user/FileSaya/edit pakai AI/_SISTEM/cache/yt-dlp"
+--ffmpeg-location "/home/user/FileSaya/edit pakai AI/_SISTEM/tools/ffmpeg/bin"
+-f "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4]/bv*+ba/b"
+--merge-output-format mp4
+--remux-video mp4
+-o "%(title).80B [%(id)s].%(ext)s"
+--no-write-thumbnail
+--no-write-subs
+--no-write-auto-subs
+--no-write-info-json
+--no-write-description
+--no-embed-metadata
+--no-mtime
+--no-playlist
+--compat-options no-certifi

@@ -1,3 +1,19 @@
 output/*.mp4
 preview/render/vo_track.wav
 preview/render/*.wav
+
+# Studio editing: tools, cache, file sementara & video tidak di-commit
+edit pakai AI/Hasil final/*
+edit pakai AI/Baham edit/*
+edit pakai AI/Referensi/*
+edit pakai AI/_SISTEM/tools/
+edit pakai AI/_SISTEM/cache/
+edit pakai AI/_SISTEM/kerja/
+edit pakai AI/_SISTEM/config/hyperframes/
+edit pakai AI/_SISTEM/tes/**/*.mp4
+edit pakai AI/_SISTEM/tes/**/*.wav
+edit pakai AI/_SISTEM/tes/**/*.png
+edit pakai AI/_SISTEM/projects/**/node_modules/
+edit pakai AI/_SISTEM/projects/hyperframes-studio/tes-studio/assets/gsap.min.js
+edit pakai AI/_SISTEM/config/pulse/
+edit pakai AI/_SISTEM/projects/**/.hyperframes/
