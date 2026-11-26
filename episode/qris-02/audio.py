@@ -80,19 +80,19 @@ def riser(d=5): t=t_(d); return mix(lp(noise(d),.05)*(t/d)**2*.4,np.sin(2*np.pi*
 sfx=np.zeros(N+SR*3)
 def at(tm,x,g=1.0):
     s=int(tm*SR); sfx[s:s+len(x)]+=x*g
-cues=[(0.05,whoosh()),(0.2,tape()),(0.94,stamp()),(0.94,bass(.6)),
-(2.3,stamp()),(2.6,pop()),(3.46,drop(.9),.8),(3.46,scratch(.3)),
-(3.7,whoosh()),(4.4,stamp(),.6),(6.3,whoosh()),(7.0,stamp(),.6),(7.9,rip(.3)),(8.6,tape()),(8.7,stamp()),
-(10.1,whoosh()),(10.17,click()),(10.84,notif(),.5),(11.17,click()),(11.6,whoosh()),(11.7,jingle(),.5),(12.0,buzz(.3)),
-(14.0,whoosh()),(14.9,stamp()),(14.9,bass(.6,48)),
-(16.0,pop()),(17.3,printer(1.0)),(18.3,stamp()),(18.6,scribble(.4)),(18.9,stamp(),.5),
-(20.7,whoosh()),(21.0,heart()),(22.24,pop()),(23.0,heart()),
-(24.3,whoosh()),(26.13,pop()),(27.1,pop()),(27.49,pop()),
-(28.3,thud(70,.25)),(28.4,pop()),(29.0,notif(),.5),(29.6,notif(),.5),(32.6,ding()),
-(34.1,whoosh()),(36.7,whoosh()),(37.0,scribble(.3)),(38.5,scribble(.5)),(38.9,stamp()),(38.9,bass(.6)),
-(40.33,slash()),(40.37,drop()),(40.37,scratch()),(40.45,clang()),(41.65,stamp()),(42.45,stamp()),(43.58,crickets(.6)),
-(45.0,pop()),(45.07,thud(60,.6)),(45.07,stamp(),.6),(46.25,pop()),
-(47.6,notif()),(48.0,tickseq(10,1.2),.4),(49.2,tape()),(49.2,stamp(),.5),(50.21,pop()),(50.7,stamp()),(51.0,jingle())]
+cues=[(0.08,whoosh()),(0.32,tape()),(1.52,stamp()),(1.52,bass(.6)),
+(3.47,stamp()),(3.82,pop()),(4.80,drop(.9),.8),(4.80,scratch(.3)),
+(6.06,whoosh()),(6.56,stamp(),.6),(7.94,whoosh()),(8.93,stamp(),.6),(10.20,rip(.3)),(10.71,tape()),(10.78,stamp()),
+(11.82,whoosh()),(11.88,click()),(12.95,notif(),.5),(13.48,click()),(14.09,whoosh()),(14.17,jingle(),.5),(14.41,buzz(.3)),
+(16.04,whoosh()),(17.04,stamp()),(17.04,bass(.6,48)),
+(18.24,pop()),(19.57,printer(1.0)),(20.60,stamp()),(20.76,scribble(.4)),(20.92,stamp(),.5),
+(21.97,whoosh()),(22.18,heart()),(23.04,pop()),(23.75,heart()),
+(24.94,whoosh()),(25.90,pop()),(26.71,pop()),(27.03,pop()),
+(28.00,thud(70,.25)),(28.17,pop()),(29.16,notif(),.5),(30.16,notif(),.5),(33.30,ding()),
+(35.00,whoosh()),(37.13,whoosh()),(37.37,scribble(.3)),(38.60,scribble(.5)),(38.98,stamp()),(38.98,bass(.6)),
+(40.35,slash()),(40.39,drop()),(40.39,scratch()),(40.47,clang()),(41.65,stamp()),(42.52,stamp()),(43.40,crickets(.6)),
+(44.75,pop()),(44.80,thud(60,.6)),(44.80,stamp(),.6),(46.13,pop()),
+(47.60,notif()),(48.10,tickseq(10,1.2),.4),(49.60,tape()),(49.60,stamp(),.5),(50.49,pop()),(50.92,stamp()),(51.18,jingle())]
 for c in cues: at(c[0],c[1],c[2] if len(c)>2 else 1.0)
 sfx=sfx[:N]
 # ---- music bed ----
@@ -115,7 +115,7 @@ def section(t0,t1,gain=1.0,tense=False,closing=False):
         tm+=beat/2;k+=1
 # ===================== MUSIK (CONTOH) =====================
 # section(mulai,akhir,gain,tegang,penutup). Matikan musik saat momen Papiyyar & jeda dramatis lewat g[...]=0.
-section(0.0,33.9); section(33.9,40.3,1.0,True); section(47.1,52.5,1.1,False,True)
+section(0.0,34.8); section(34.8,40.3,1.0,True); section(47.25,52.5,1.1,False,True)
 # drone gating: off during silence & papiyyar
 g=np.ones(N)
 def fade(t0,t1,v0,v1):
