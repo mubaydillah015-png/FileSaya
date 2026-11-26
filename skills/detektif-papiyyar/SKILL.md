@@ -64,7 +64,7 @@ Kerjakan tahap demi tahap. Di akhir setiap tahap, tunjukkan hasilnya lalu **tung
    - Akhiri dengan **"Ada aset yang mau diganti?"**, lalu tunggu.
 5. **Gambar storyboard per scene.** Kirim sebagai lembar gambar berisi enam scene per lembar. Kalau foto pengguna belum ada, pakai placeholder bertuliskan kodenya (misalnya `FOTO-1`). Akhiri lagi dengan **"Ada aset yang mau diganti?"**.
 6. **Render**, setelah pengguna mengirim file suara narasi dan aset. Ikuti `references/produksi.md`:
-   - samakan waktu scene dengan jeda di narasi,
+   - samakan waktu scene dengan jeda di narasi, lalu **cek manual** dan kirim tabel waktunya ke pengguna; **render hanya setelah pengguna bilang oke**,
    - buat animasi,
    - cek frame uji,
    - render,

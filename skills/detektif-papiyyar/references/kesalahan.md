@@ -18,59 +18,62 @@ Baca file ini sebelum produksi. Setiap poin pernah benar-benar terjadi.
 5. **Claude tidak bisa mendengarkan audio.**
    **Cara menghindari:** katakan terus terang. Minta pengguna mengecek titik penting, misalnya momen Papiyyar dan zoom.
 
+6. **Skor `align_vo.py` bagus (cost 2,0) tapi scene 2–9 tetap meleset 1–2,5 detik** di episode QRIS #2. Penyebabnya kalimat pendek dan ekspresif di awal ("Damn broo!!!"), sehingga skrip salah memasangkan potongan kalimat ke potongan suara.
+   **Cara menghindari:** jangan percaya skor saja. Setelah `align_vo.py`, jalankan `silencedetect` (`-25dB`, `d=0.1`), lalu cocokkan manual setiap kalimat dengan potongan suara di antara jeda: panjang kalimat harus masuk akal (sekitar 0,15 detik per suku kata), dan jeda kecil harus jatuh di koma. Tampilkan tabel waktu ke pengguna dan **jangan render sebelum pengguna bilang oke**.
+
 ## Tata letak dan visual
 
-6. **Caption terpotong di tepi kanan** karena lebih dari sekitar 30 karakter.
+7. **Caption terpotong di tepi kanan** karena lebih dari sekitar 30 karakter.
    **Cara menghindari:** caption di layar maksimal sekitar 28 karakter dan boleh lebih pendek dari narasi. Narasi tetap utuh, yang dipendekkan hanya teks layarnya.
-7. **Teks "50 RIBU vs BELASAN JUTA" tertutup garis sayatan** di momen Papiyyar.
+8. **Teks "50 RIBU vs BELASAN JUTA" tertutup garis sayatan** di momen Papiyyar.
    **Cara menghindari:** teks di atas latar merah atau sayatan selalu diberi kotak gelap `#23262C` di belakangnya.
-8. **Zoom ke satu objek ikut menggeser seluruh grup**, sehingga struk log menutupi judul.
+9. **Zoom ke satu objek ikut menggeser seluruh grup**, sehingga struk log menutupi judul.
    **Cara menghindari:** zoom hanya objek yang dituju, jangan grup yang berisi banyak elemen.
-9. **Elemen saling tumpuk**, misalnya ikon kamera di atas angka "0", atau judul koran di atas label.
+10. **Elemen saling tumpuk**, misalnya ikon kamera di atas angka "0", atau judul koran di atas label.
    **Cara menghindari:** setelah menulis scene, selalu render frame uji di beberapa titik waktu, susun jadi satu lembar, lalu **lihat gambarnya** sebelum render penuh.
-10. **Ikon tidak muncul** karena bentuk SVG salah, misalnya ikon bulan.
+11. **Ikon tidak muncul** karena bentuk SVG salah, misalnya ikon bulan.
     **Cara menghindari:** frame uji juga menangkap masalah ini. Pakai bentuk sederhana, misalnya bulan dari dua lingkaran.
-11. **Tekstur kertas terlalu bernoda, mirip loreng.**
+12. **Tekstur kertas terlalu bernoda, mirip loreng.**
     **Cara menghindari:** pakai `make_textures.py` dengan noda rendah. Nilainya sudah benar di skrip.
-12. **Teks melebar keluar dari kotak**, misalnya pertanyaan di kotak komentar.
+13. **Teks melebar keluar dari kotak**, misalnya pertanyaan di kotak komentar.
     **Cara menghindari:** lebarkan kotak atau kecilkan huruf, lalu cek di frame uji.
 
 ## Berita, fakta, dan aset asli
 
-13. **Gaya referensi (Issei) kadang menyebut tuduhan yang belum terbukti** seolah fakta, misalnya "mata-mata".
+14. **Gaya referensi (Issei) kadang menyebut tuduhan yang belum terbukti** seolah fakta, misalnya "mata-mata".
     **Cara menghindari:** klaim yang belum terbukti wajib memakai "diduga" di narasi dan cap DUGAAN di layar. Vonis ditujukan ke ironi atau situasi, bukan menuduh orang berbuat kejahatan.
-14. **Mencoba mengunduh dari Instagram, TikTok, atau situs berita**, dan gagal karena jaringan sesi diblokir.
+15. **Mencoba mengunduh dari Instagram, TikTok, atau situs berita**, dan gagal karena jaringan sesi diblokir.
     **Cara menghindari:** jangan buang waktu. Minta pengguna mengirim file atau ringkasan beritanya, dan pakai placeholder sampai aset datang.
-15. **Cap DUGAAN menutupi wajah di foto TKP.**
+16. **Cap DUGAAN menutupi wajah di foto TKP.**
     **Cara menghindari:** atur `capPos` di `fotoTKP()` ke bagian foto yang kosong, lalu cek di frame uji.
-16. **Foto atau frame klip kosong di hasil render**, karena file belum sempat termuat.
+17. **Foto atau frame klip kosong di hasil render**, karena file belum sempat termuat.
     **Cara menghindari:** perkecil foto (lebar sekitar 1080 px), pecah klip menjadi frame JPG, dan selalu cek frame uji di scene yang memakai foto.
-17. **Mengedit wajah tokoh asli supaya terlihat menghina** (meniru thumbnail referensi).
+18. **Mengedit wajah tokoh asli supaya terlihat menghina** (meniru thumbnail referensi).
     **Cara menghindari:** foto tokoh dipakai apa adanya. Dramanya dari teks, coretan, dan komposisi.
-18. **Rumus naskah diubah atau bagiannya tertukar.**
+19. **Rumus naskah diubah atau bagiannya tertukar.**
     **Cara menghindari:** lima bagian rumus (Hook, TKP, Barang Bukti, Papiyyar, Vonis dan CTA) wajib dan urutannya tetap. Hitung kata per bagian sebelum mengirim.
-19. **Merek atau link afiliasi ditulis tanpa konfirmasi.**
+20. **Merek atau link afiliasi ditulis tanpa konfirmasi.**
     **Cara menghindari:** tanyakan produknya dan tunjukkan kalimat pengarahnya ke pengguna sebelum naskah final.
 
 ## Audio
 
-20. **Efek suara pecah atau terlalu keras** karena puncaknya hampir tiga kali batas.
+21. **Efek suara pecah atau terlalu keras** karena puncaknya hampir tiga kali batas.
     **Cara menghindari:** normalisasi lalu lunakkan puncaknya. Ini sudah ada di `audio_template.py`.
-21. **Error numpy "operands could not be broadcast"** saat menjumlahkan dua suara yang panjangnya berbeda.
+22. **Error numpy "operands could not be broadcast"** saat menjumlahkan dua suara yang panjangnya berbeda.
     **Cara menghindari:** pakai fungsi `mix()` di template.
-22. **Error ffmpeg "Stream specifier matches no streams"** karena label yang sama dipakai dua kali.
+23. **Error ffmpeg "Stream specifier matches no streams"** karena label yang sama dipakai dua kali.
     **Cara menghindari:** gandakan dulu dengan `asplit`. Perintahnya ada di `produksi.md`.
-23. **Kredit ElevenLabs hampir terpakai untuk efek suara.**
+24. **Kredit ElevenLabs hampir terpakai untuk efek suara.**
     **Cara menghindari:** buat efek suara dan musik dengan kode. Pakai ElevenLabs hanya kalau pengguna setuju.
 
 ## Repositori dan pengiriman
 
-24. **Salah bilang video sekitar 100 MB tidak bisa di-push.** Batas GitHub adalah 100 **MiB** per file, yaitu 104.857.600 byte, jadi file 96,9 MiB masih bisa.
+25. **Salah bilang video sekitar 100 MB tidak bisa di-push.** Batas GitHub adalah 100 **MiB** per file, yaitu 104.857.600 byte, jadi file 96,9 MiB masih bisa.
     **Cara menghindari:** cek ukuran dalam byte sebelum menyimpulkan. Kalau di atas batas, turunkan kualitas (CRF lebih tinggi) atau pakai Git LFS.
-25. **Hook pengingat meminta commit karena ada file yang belum disimpan.**
+26. **Hook pengingat meminta commit karena ada file yang belum disimpan.**
     **Cara menghindari:** setelah video jadi, commit dan push ke branch kerja. Nama file mengikuti pola `PAPIYYAR_<Judul>_<NoEpisode>_<Funnel>.mp4`.
 
 ## Etika referensi
 
-26. **Video referensi memakai maskot dan desain milik orang lain.**
+27. **Video referensi memakai maskot dan desain milik orang lain.**
     **Cara menghindari:** ambil gayanya saja, seperti font, warna, ritme, dan cara caption tampil. Tokoh detektif, ikon, dan isi dibuat sendiri.
