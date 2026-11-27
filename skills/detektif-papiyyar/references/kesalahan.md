@@ -55,25 +55,28 @@ Baca file ini sebelum produksi. Setiap poin pernah benar-benar terjadi.
 20. **Merek atau link afiliasi ditulis tanpa konfirmasi.**
     **Cara menghindari:** tanyakan produknya dan tunjukkan kalimat pengarahnya ke pengguna sebelum naskah final.
 
+21. **Tulisan "IKUTI @PAPIYYAR" terbaca "KUTI"** karena serpihan kertas di penutup digambar di atas tombol.
+    **Cara menghindari:** serpihan selalu digambar paling awal (di belakang), tombol minimal lebar 196. Cek penutup dengan close-up sebelum render.
+
 ## Audio
 
-21. **Efek suara pecah atau terlalu keras** karena puncaknya hampir tiga kali batas.
+22. **Efek suara pecah atau terlalu keras** karena puncaknya hampir tiga kali batas.
     **Cara menghindari:** normalisasi lalu lunakkan puncaknya. Ini sudah ada di `audio_template.py`.
-22. **Error numpy "operands could not be broadcast"** saat menjumlahkan dua suara yang panjangnya berbeda.
+23. **Error numpy "operands could not be broadcast"** saat menjumlahkan dua suara yang panjangnya berbeda.
     **Cara menghindari:** pakai fungsi `mix()` di template.
-23. **Error ffmpeg "Stream specifier matches no streams"** karena label yang sama dipakai dua kali.
+24. **Error ffmpeg "Stream specifier matches no streams"** karena label yang sama dipakai dua kali.
     **Cara menghindari:** gandakan dulu dengan `asplit`. Perintahnya ada di `produksi.md`.
-24. **Kredit ElevenLabs hampir terpakai untuk efek suara.**
+25. **Kredit ElevenLabs hampir terpakai untuk efek suara.**
     **Cara menghindari:** buat efek suara dan musik dengan kode. Pakai ElevenLabs hanya kalau pengguna setuju.
 
 ## Repositori dan pengiriman
 
-25. **Salah bilang video sekitar 100 MB tidak bisa di-push.** Batas GitHub adalah 100 **MiB** per file, yaitu 104.857.600 byte, jadi file 96,9 MiB masih bisa.
+26. **Salah bilang video sekitar 100 MB tidak bisa di-push.** Batas GitHub adalah 100 **MiB** per file, yaitu 104.857.600 byte, jadi file 96,9 MiB masih bisa.
     **Cara menghindari:** cek ukuran dalam byte sebelum menyimpulkan. Kalau di atas batas, turunkan kualitas (CRF lebih tinggi) atau pakai Git LFS.
-26. **Hook pengingat meminta commit karena ada file yang belum disimpan.**
+27. **Hook pengingat meminta commit karena ada file yang belum disimpan.**
     **Cara menghindari:** setelah video jadi, commit dan push ke branch kerja. Nama file mengikuti pola `PAPIYYAR_<Judul>_<NoEpisode>_<Funnel>.mp4`.
 
 ## Etika referensi
 
-27. **Video referensi memakai maskot dan desain milik orang lain.**
+28. **Video referensi memakai maskot dan desain milik orang lain.**
     **Cara menghindari:** ambil gayanya saja, seperti font, warna, ritme, dan cara caption tampil. Tokoh detektif, ikon, dan isi dibuat sendiri.
